@@ -15,8 +15,9 @@ Tarea número 4 del curso, regresión líneal vs logística
 - Interpretar resultados de forma simple
 
 ## Actividades (con tiempos estimados)
-- Parte 1: regresión lineal
-- Parte 2: regresión logística
+- Parte 1: regresión lineal (90min)
+- Parte 2: regresión logística (50min)
+- Teórico y formato del archivo (60min)
 
 ## Desarrollo
 Se completó fragmentos de código con la finalidad de aprender a usar funciones específicas para predecir determinados casos reales.
@@ -24,8 +25,7 @@ Se usaron funciones de regresión lineal y logística.
 Se afianzaron conceptos teóricos de las nombradas regresiones.
 
 ## Evidencias
-- Enlace a material o capturas en `docs/assets/`
-- Se adjunta imagen "tarea4_tabla.png"
+- Se adjunta imagen "tarea4_tabla.png" en `docs/assets/`
 
 ## Reflexión
 Lo que más costó fueron identificar las funciones necesarias para completar el código y ententer lo que se estaba imprimiendo por pantalla.
@@ -33,7 +33,7 @@ Los conceptos en sí, fueron fáciles de aprender e identificar.
 
 ---
 
-# Regresión Lineal - Regresión Logística
+# Regresión Lineal - Regresión Logística: solución
 
 ## Parte 1: Código y respuestas teóricas
 
@@ -129,14 +129,14 @@ for i in range(5):
 
 ## 📚 BONUS: ¿Qué significan estas métricas?
 ### Completa las definiciones:
-### MAE (Mean Absolute Error): Promedio de los errores en valor absoluto, sin importar si son positivos o negativos.
-### MSE (Mean Squared Error): Promedio de los errores al cuadrado, penaliza más los errores grandes.
-### RMSE: Raíz cuadrada del MSE, vuelve a las unidades originales del problema.
-### R²: Indica qué porcentaje de la variable dependiente es explicada por el modelo (0-1, donde 1 es perfecto).
-### MAPE: Error porcentual promedio, útil para comparar modelos con diferentes escalas de datos.
+#### MAE (Mean Absolute Error): Promedio de los errores en valor absoluto, sin importar si son positivos o negativos.
+#### MSE (Mean Squared Error): Promedio de los errores al cuadrado, penaliza más los errores grandes.
+#### RMSE: Raíz cuadrada del MSE, vuelve a las unidades originales del problema.
+#### R²: Indica qué porcentaje de la variable dependiente es explicada por el modelo (0-1, donde 1 es perfecto).
+#### MAPE: Error porcentual promedio, útil para comparar modelos con diferentes escalas de datos.
 
 
-## Parte 2: Código y respuestas teóricas
+## Parte 2: Código
 
 ```python
 # Importar librerías que vamos a usar
@@ -231,32 +231,32 @@ for i in range(5):
 
 ## 📚 BONUS: ¿Qué significan las métricas de clasificación?
 ## Completa las definiciones:
-### Accuracy: Porcentaje de predicciones correctas sobre el total.
-### Precision: De todas las predicciones positivas, ¿cuántas fueron realmente correctas?
-### Recall (Sensibilidad): De todos los casos positivos reales, ¿cuántos detectamos?
-### F1-Score: Promedio armónico entre precision y recall.
-### Matriz de Confusión: Tabla que muestra prediccion vs valores reales.
+#### Accuracy: Porcentaje de predicciones correctas sobre el total.
+#### Precision: De todas las predicciones positivas, ¿cuántas fueron realmente correctas?
+#### Recall (Sensibilidad): De todos los casos positivos reales, ¿cuántos detectamos?
+#### F1-Score: Promedio armónico entre precision y recall.
+#### Matriz de Confusión: Tabla que muestra prediccion vs valores reales.
 
 ## 🎯 Paso 6: Preguntas de Reflexión
 ## Responde estas preguntas simples:
 
 ### ¿Cuál es la diferencia principal entre regresión lineal y logística?
 ### 💡 PISTA: Piensa en qué tipo de valores produce cada una (números vs categorías)
-### La regresión lineal predice valores numéricos (ej: temperatura).
-### La regresión logística predice categorías, esto o aquello (ej: benigno/maligno).
+#### La regresión lineal predice valores numéricos (ej: temperatura).
+#### La regresión logística predice categorías, esto o aquello (ej: benigno/maligno).
 
 ### ¿Por qué dividimos los datos en entrenamiento y prueba?
 ### 💡 PISTA: 🔗 Artículo sobre train/test split
-### Para evaluar el modelo en datos que no se ha visto antes.
-### Así comprobamos si realmente se generaliza bien, y no solo se “memoriza” el conjunto de entrenamiento.
+#### Para evaluar el modelo en datos que no se ha visto antes.
+#### Así comprobamos si realmente se generaliza bien, y no solo se “memoriza” el conjunto de entrenamiento.
 
 ### ¿Qué significa una exactitud del 95%?
 ### 💡 PISTA: Si tienes 100 pacientes, ¿en cuántos acertaría el modelo?
-### Que el modelo acierta en 95 de cada 100 pacientes.
+#### Que el modelo acierta en 95 de cada 100 pacientes.
 
 ### ¿Cuál es más peligroso: predecir "benigno" cuando es "maligno", o al revés?
 ### 💡 PISTA: 🩺 Piensa en las consecuencias médicas de cada error
-### Más peligroso es predecir benigno cuando en realidad es maligno (falso negativo), porque el paciente podría no recibir tratamiento a tiempo.
+#### Más peligroso es predecir benigno cuando en realidad es maligno (falso negativo), porque el paciente podría no recibir tratamiento a tiempo.
 
 ## 🔍 Paso 7: Comparación Simple
 ## Completa esta tabla comparando ambos modelos:
@@ -268,15 +268,13 @@ for i in range(5):
 
 ### ¿Cuál modelo usarías para predecir el salario de un empleado?
 ### 💡 PISTA: El salario, ¿es un número continuo o una categoría?
-### Usaría regresión lineal ya que el salario es un número continuo.
+#### Usaría regresión lineal ya que el salario es un número continuo.
 
 ### ¿Cuál modelo usarías para predecir si un email es spam?
 ### 💡 PISTA: 📧 ¿Cuántas opciones hay? (spam/no spam)
-### Regresión logística porque estaríamos clasificando algo "binario", 0 o 1, spam o no spam.
+#### Regresión logística porque estaríamos clasificando algo "binario", 0 o 1, spam o no spam.
 
 ### ¿Por qué es importante separar datos de entrenamiento y prueba?
 ### 💡 PISTA: 🔗 Conceptos de validación en ML
-### Porque queremos medir el rendimiento real del modelo con datos nuevos.
-### Si usamos los mismos datos para entrenar y después evaluar, el modelo va a parecer muy bueno, pero puede fallar con datos desconocidos, lo que se conoce como overfitting.
-
-```
+#### Porque queremos medir el rendimiento real del modelo con datos nuevos.
+#### Si usamos los mismos datos para entrenar y después evaluar, el modelo va a parecer muy bueno, pero puede fallar con datos desconocidos, lo que se conoce como overfitting.
