@@ -33,7 +33,7 @@ Los conceptos en sí, fueron fáciles de aprender e identificar.
 
 ---
 
-# Regresión Lineal - Predicción de Precio de Casas
+# Regresión Lineal - Regresión Logística
 
 ## Parte 1: Código y respuestas teóricas
 
@@ -125,16 +125,16 @@ for i in range(5):
     real = y_test.iloc[i]
     predicho = predicciones[i]
     print(f"   Casa {i+1}: Real ${real:.1f}k vs Predicho ${predicho:.1f}k")
-
-# 📚 BONUS: ¿Qué significan estas métricas?
-# Completa las definiciones:
-
-# MAE (Mean Absolute Error): Promedio de los errores en valor absoluto, sin importar si son positivos o negativos.
-# MSE (Mean Squared Error): Promedio de los errores al cuadrado, penaliza más los errores grandes.
-# RMSE: Raíz cuadrada del MSE, vuelve a las unidades originales del problema.
-# R²: Indica qué porcentaje de la variable dependiente es explicada por el modelo (0-1, donde 1 es perfecto).
-# MAPE: Error porcentual promedio, útil para comparar modelos con diferentes escalas de datos.
 ```
+
+## 📚 BONUS: ¿Qué significan estas métricas?
+### Completa las definiciones:
+### MAE (Mean Absolute Error): Promedio de los errores en valor absoluto, sin importar si son positivos o negativos.
+### MSE (Mean Squared Error): Promedio de los errores al cuadrado, penaliza más los errores grandes.
+### RMSE: Raíz cuadrada del MSE, vuelve a las unidades originales del problema.
+### R²: Indica qué porcentaje de la variable dependiente es explicada por el modelo (0-1, donde 1 es perfecto).
+### MAPE: Error porcentual promedio, útil para comparar modelos con diferentes escalas de datos.
+
 
 ## Parte 2: Código y respuestas teóricas
 
@@ -227,55 +227,56 @@ for i in range(5):
     real = "Benigno" if y_test_cancer[i] == 1 else "Maligno"
     predicho = "Benigno" if predicciones_cancer[i] == 1 else "Maligno"
     print(f"   Paciente {i+1}: Real: {real} vs Predicho: {predicho}")
+```
 
-# 📚 BONUS: ¿Qué significan las métricas de clasificación?
-# Completa las definiciones:
+## 📚 BONUS: ¿Qué significan las métricas de clasificación?
+## Completa las definiciones:
+### Accuracy: Porcentaje de predicciones correctas sobre el total.
+### Precision: De todas las predicciones positivas, ¿cuántas fueron realmente correctas?
+### Recall (Sensibilidad): De todos los casos positivos reales, ¿cuántos detectamos?
+### F1-Score: Promedio armónico entre precision y recall.
+### Matriz de Confusión: Tabla que muestra prediccion vs valores reales.
 
-# Accuracy: Porcentaje de predicciones correctas sobre el total.
-# Precision: De todas las predicciones positivas, ¿cuántas fueron realmente correctas?
-# Recall (Sensibilidad): De todos los casos positivos reales, ¿cuántos detectamos?
-# F1-Score: Promedio armónico entre precision y recall.
-# Matriz de Confusión: Tabla que muestra prediccion vs valores reales.
+## 🎯 Paso 6: Preguntas de Reflexión
+## Responde estas preguntas simples:
 
-# 🎯 Paso 6: Preguntas de Reflexión
-# Responde estas preguntas simples:
+### ¿Cuál es la diferencia principal entre regresión lineal y logística?
+### 💡 PISTA: Piensa en qué tipo de valores produce cada una (números vs categorías)
+### La regresión lineal predice valores numéricos (ej: temperatura).
+### La regresión logística predice categorías, esto o aquello (ej: benigno/maligno).
 
-# ¿Cuál es la diferencia principal entre regresión lineal y logística?
-# 💡 PISTA: Piensa en qué tipo de valores produce cada una (números vs categorías)
-# La regresión lineal predice valores numéricos (ej: temperatura).
-# La regresión logística predice categorías, esto o aquello (ej: benigno/maligno).
+### ¿Por qué dividimos los datos en entrenamiento y prueba?
+### 💡 PISTA: 🔗 Artículo sobre train/test split
+### Para evaluar el modelo en datos que no se ha visto antes.
+### Así comprobamos si realmente se generaliza bien, y no solo se “memoriza” el conjunto de entrenamiento.
 
-# ¿Por qué dividimos los datos en entrenamiento y prueba?
-# 💡 PISTA: 🔗 Artículo sobre train/test split
-# Para evaluar el modelo en datos que no se ha visto antes.
-# Así comprobamos si realmente se generaliza bien, y no solo se “memoriza” el conjunto de entrenamiento.
+### ¿Qué significa una exactitud del 95%?
+### 💡 PISTA: Si tienes 100 pacientes, ¿en cuántos acertaría el modelo?
+### Que el modelo acierta en 95 de cada 100 pacientes.
 
-# ¿Qué significa una exactitud del 95%?
-# 💡 PISTA: Si tienes 100 pacientes, ¿en cuántos acertaría el modelo?
-# Que el modelo acierta en 95 de cada 100 pacientes.
+### ¿Cuál es más peligroso: predecir "benigno" cuando es "maligno", o al revés?
+### 💡 PISTA: 🩺 Piensa en las consecuencias médicas de cada error
+### Más peligroso es predecir benigno cuando en realidad es maligno (falso negativo), porque el paciente podría no recibir tratamiento a tiempo.
 
-# ¿Cuál es más peligroso: predecir "benigno" cuando es "maligno", o al revés?
-# 💡 PISTA: 🩺 Piensa en las consecuencias médicas de cada error
-# Más peligroso es predecir benigno cuando en realidad es maligno (falso negativo), porque el paciente podría no recibir tratamiento a tiempo.
+## 🔍 Paso 7: Comparación Simple
+## Completa esta tabla comparando ambos modelos:
+### Imágen tabla comparativa, regresión logística vs lineal
+![Tabla comparativa](../assets/tarea4_tabla.png){ width="420" }
 
-# 🔍 Paso 7: Comparación Simple
-# Completa esta tabla comparando ambos modelos:
-# Adjunto imágen: "tarea4_tabla.png"
+## 🎯 Paso 8: Reflexión Final
+## Responde con tus propias palabras:
 
-# 🎯 Paso 8: Reflexión Final
-# Responde con tus propias palabras:
+### ¿Cuál modelo usarías para predecir el salario de un empleado?
+### 💡 PISTA: El salario, ¿es un número continuo o una categoría?
+### Usaría regresión lineal ya que el salario es un número continuo.
 
-# ¿Cuál modelo usarías para predecir el salario de un empleado?
-# 💡 PISTA: El salario, ¿es un número continuo o una categoría?
-# Usaría regresión lineal ya que el salario es un número continuo.
+### ¿Cuál modelo usarías para predecir si un email es spam?
+### 💡 PISTA: 📧 ¿Cuántas opciones hay? (spam/no spam)
+### Regresión logística porque estaríamos clasificando algo "binario", 0 o 1, spam o no spam.
 
-# ¿Cuál modelo usarías para predecir si un email es spam?
-# 💡 PISTA: 📧 ¿Cuántas opciones hay? (spam/no spam)
-# Regresión logística porque estaríamos clasificando algo "binario", 0 o 1, spam o no spam.
-
-# ¿Por qué es importante separar datos de entrenamiento y prueba?
-# 💡 PISTA: 🔗 Conceptos de validación en ML
-# Porque queremos medir el rendimiento real del modelo con datos nuevos.
-# Si usamos los mismos datos para entrenar y después evaluar, el modelo va a parecer muy bueno, pero puede fallar con datos desconocidos, lo que se conoce como overfitting.
+### ¿Por qué es importante separar datos de entrenamiento y prueba?
+### 💡 PISTA: 🔗 Conceptos de validación en ML
+### Porque queremos medir el rendimiento real del modelo con datos nuevos.
+### Si usamos los mismos datos para entrenar y después evaluar, el modelo va a parecer muy bueno, pero puede fallar con datos desconocidos, lo que se conoce como overfitting.
 
 ```
