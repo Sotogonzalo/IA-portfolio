@@ -1,6 +1,6 @@
 ---
 title: "Acerca de mí"
-date: 2025-01-01
+date: 2025-08-22
 ---
 
 # Acerca de mí
