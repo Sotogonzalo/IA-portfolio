@@ -1,9 +1,9 @@
 ---
-title: "tarea 4"
+title: "Tarea 4"
 date: 2025-08-24
 ---
 
-# tarea 4
+# Tarea 4
 
 ## Contexto
 Tarea número 4 del curso, regresión líneal vs logística
@@ -35,7 +35,7 @@ Los conceptos en sí, fueron fáciles de aprender e identificar.
 
 # Regresión Lineal - Regresión Logística: solución
 
-## Parte 1: Código y respuestas teóricas
+## Parte 1: Código
 
 ```python
 # Importar librerías que vamos a usar
