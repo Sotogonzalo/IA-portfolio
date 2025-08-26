@@ -185,3 +185,117 @@ plt.grid(True, alpha=0.3)
 plt.show()
 
 ```
+
+## Parte 3: Código
+
+```python
+# === COMPETENCIA DE MODELOS ===
+
+print("🏆 TORNEO: ¿Cuál modelo funciona mejor para diagnóstico médico?")
+
+# 1. Definir candidatos (diferentes algoritmos)
+models = {
+    'Logistic Regression': Pipeline([
+        ('scaler', StandardScaler()),
+        ('classifier', LogisticRegression(max_iter=1000, random_state=42))
+    ]),
+
+    # 2. Ridge Classifier (regresión logística con regularización L2)
+    'Ridge Classifier': Pipeline([
+        ('scaler', StandardScaler()),
+        ('classifier', RidgeClassifier(alpha=1.0, random_state=42))
+    ]),
+
+    # 3. Random Forest (ensemble, no necesita escalado)
+    'Random Forest': Pipeline([
+        ('classifier', RandomForestClassifier(n_estimators=100, random_state=42))
+    ])
+}
+
+print(f"Modelos en competencia: {list(models.keys())}")
+
+# 4. Evaluar cada modelo con validación cruzada
+print(f"\nEVALUANDO MODELOS CON 5-FOLD CV...")
+
+results = {}
+for name, model in models.items():
+    print(f"   Evaluando {name}...")
+
+    # Usar StratifiedKFold para mantener balance de clases
+    scores = cross_val_score(
+        model, X_features, y_target, 
+        cv=StratifiedKFold(n_splits=5, shuffle=True, random_state=42),
+        scoring='accuracy'
+    )
+
+    results[name] = scores
+
+    print(f"   {name}: {scores.mean():.4f} ± {scores.std():.4f}")
+    print(f"      Scores: {[f'{s:.3f}' for s in scores]}")
+
+# 5. Encontrar el mejor modelo
+print(f"\nRESULTADOS FINALES:")
+
+# Encontrar modelo con mayor accuracy promedio
+best_mean_score = 0
+best_model_name = ""
+
+for name, scores in results.items():
+    if scores.mean() > best_mean_score:
+        best_mean_score = scores.mean()
+        best_model_name = name
+
+print(f"GANADOR: {best_model_name}")
+print(f"Score: {best_mean_score:.4f}")
+
+# 6. Análisis detallado de estabilidad
+print(f"\nANÁLISIS DE ESTABILIDAD:")
+for name, scores in results.items():
+    stability = scores.std()
+
+    if stability < 0.02:
+        status = "MUY ESTABLE"
+    elif stability < 0.05:
+        status = "ESTABLE"
+    else:
+        status = "INESTABLE"
+
+    print(f"   {name}: {status} (std: {stability:.4f})")
+
+# 7. Visualización comparativa
+plt.figure(figsize=(12, 6))
+
+# Boxplot de distribución de scores
+plt.subplot(1, 2, 1)
+plt.boxplot([results[name] for name in models.keys()], 
+           labels=[name.split()[0] for name in models.keys()])
+plt.title('Distribución de Accuracy por Modelo')
+plt.ylabel('Accuracy')
+plt.grid(True, alpha=0.3)
+
+# Barplot de medias con error bars
+plt.subplot(1, 2, 2)
+names = list(models.keys())
+means = [results[name].mean() for name in names]
+stds = [results[name].std() for name in names]
+
+plt.bar(range(len(names)), means, yerr=stds, capsize=5)
+plt.xticks(range(len(names)), [name.split()[0] for name in names])
+plt.title('Accuracy Promedio ± Desviación Estándar')
+plt.ylabel('Accuracy')
+plt.grid(True, alpha=0.3)
+
+plt.tight_layout()
+plt.show()
+```
+
+##📚 BONUS: ¿Qué significan las métricas de validación?
+##Completa las definiciones:
+###Cross-Validation: Técnica que divide los datos en _ partes para entrenar y evaluar múltiples veces.
+###Accuracy promedio: La _ de rendimiento esperado en datos nuevos.
+###Desviación estándar: Indica qué tan _ es el modelo entre diferentes divisiones de datos.
+###StratifiedKFold: Mantiene la _ de clases en cada fold, especialmente importante en datasets desbalanceados.
+
+---
+##🚀 BONUS: Optimización de Hiperparámetros
+
