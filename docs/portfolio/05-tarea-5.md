@@ -56,8 +56,6 @@ print("Setup completo!")
 
 ```
 
-## Parte 1: Código
-
 ```python
 # Cargar dataset de estudiantes desde UCI
 student_data = fetch_ucirepo(id=697)
@@ -97,6 +95,11 @@ if 'Age at enrollment' in X.columns:
     print(f"  Promedio: {age_col.mean():.1f} años")
     print(f"  Rango: {age_col.min():.0f}-{age_col.max():.0f} años")
 
+```
+
+## Parte 1: Código
+
+```python
 # Preparar variable objetivo como serie simple
 # Convertir strings a números para sklearn
 target_mapping = {0: 'Dropout', 1: 'Enrolled', 2: 'Graduate'}
@@ -115,6 +118,11 @@ print(f"X shape: {X_features.shape}")
 print(f"y shape: {y_target.shape}")
 print(f"Clases únicas: {sorted(y_target.unique())}")
 print(f"Mapeo: {target_mapping}")
+```
+
+## Parte 2: Código
+
+```python
 
 # === VALIDACIÓN CRUZADA PARA ESTABILIDAD ===
 
