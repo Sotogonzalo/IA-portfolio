@@ -37,7 +37,7 @@ Los conceptos en sí, fueron fáciles de aprender e identificar.
 
 ## Parte 1: Descripción
 
-#### En esta primer parte se analizaron las librerias pertinentes para completar el código siguiente. Se usó de apoyo las pistas brindadas por el docente.
+###### En esta primer parte se analizaron las librerias pertinentes para completar el código siguiente. Se usó de apoyo las pistas brindadas por el docente.
 
 ## Parte 1: Código
 
