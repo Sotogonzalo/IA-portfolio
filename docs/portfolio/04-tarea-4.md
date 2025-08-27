@@ -6,7 +6,7 @@ date: 2025-08-24
 # Tarea 4
 
 ## Contexto
-Tarea número 4 del curso, regresión líneal vs logística
+Tarea número 4 del curso, se busca entender los primeros pasos de modelos reales entrenados con regresión líneal vs regresión logística.
 
 ## Objetivos
 - Aprender a cargar y explorar datos
@@ -38,7 +38,9 @@ Los conceptos en sí, fueron fáciles de aprender e identificar.
 # Regresión Lineal - Regresión Logística: solución
 
 ## Parte 1: Descripción
-En esta primer parte se analizaron las librerias pertinentes para completar el código siguiente. Se usó de apoyo las pistas brindadas por el docente.Por otro lado, se cargó el dataset de precios de una inmobiliaria de Boston Housing y se intentará predecir los valores de cada propiedad.A su vez, se evaluaran determinadas métricas para el calculo del valor de la propiedad, y por último, se haran comparativas de los valores actuales y los que se predijeron.
+En esta primer parte se analizaron las librerias pertinentes para completar el código siguiente. Se usó de apoyo las pistas brindadas por el docente.
+Por otro lado, se cargó el dataset de precios de una inmobiliaria de Boston Housing y se intentará predecir los valores de cada propiedad.
+A su vez, se evaluaran determinadas métricas para el calculo del valor de la propiedad, y por último, se haran comparativas de los valores actuales y los que se predijeron.
 
 ## Parte 1: Código
 ```python
@@ -138,11 +140,16 @@ En la imágen podemos observar que el modelo entrenado con Regresion Lineal ha p
 
 📚 BONUS: ¿Qué significan estas métricas?
 Completa las definiciones:
-#### MAE (Mean Absolute Error): ##### Promedio de los errores en valor absoluto, sin importar si son positivos o negativos.
-#### MSE (Mean Squared Error): ##### Promedio de los errores al cuadrado, penaliza más los errores grandes.
-#### RMSE: ##### Raíz cuadrada del MSE, vuelve a las unidades originales del problema.
-#### R²: ##### Indica qué porcentaje de la variable dependiente es explicada por el modelo (0-1, donde 1 es perfecto).
-#### MAPE: ##### Error porcentual promedio, útil para comparar modelos con diferentes escalas de datos.
+#### MAE (Mean Absolute Error): 
+##### Promedio de los errores en valor absoluto, sin importar si son positivos o negativos.
+#### MSE (Mean Squared Error): 
+##### Promedio de los errores al cuadrado, penaliza más los errores grandes.
+#### RMSE: 
+##### Raíz cuadrada del MSE, vuelve a las unidades originales del problema.
+#### R²: 
+##### Indica qué porcentaje de la variable dependiente es explicada por el modelo (0-1, donde 1 es perfecto).
+#### MAPE: 
+##### Error porcentual promedio, útil para comparar modelos con diferentes escalas de datos.
 
 ## Parte 2: Descripción
 En esta parte cargamos el dataset de Diagnísticos Médicos en el cual tendremos análisis de tests de cáncer de mama.
@@ -244,16 +251,22 @@ for i in range(5):
 ## Parte 2: Resultados
 #### Imágen tabla comparativa de resultados
 ![Tabla comparativa](../assets/resultado-t4-parte2.png)
+
 En la imágen podemos observar que al entrenar el modelo con Regresión Logística se obtuvo con un 94,6% de acierto los casos que fueron diagnosticados como Benignos, de los que realmente son casos Benignos se detecto un 98,6%. Existe una precisión del 96,6% en este caso.
 Por otro lado, de los 114 pacientes de prueba sólo uno dio como falso negativo, es decir, que tiene cancer de mama Maligno y se lo diagnostico como Benigno, un error grave pero estadísticamente es menos de un 1%, y muestra la importancia de estos modelos de predicción para re-evaluar pacientes y diagnosticarlos correctamente.
 
 📚 BONUS: ¿Qué significan las métricas de clasificación?
 Completa las definiciones:
-#### Accuracy: ##### Porcentaje de predicciones correctas sobre el total.
-#### Precision: ##### De todas las predicciones positivas, ¿cuántas fueron realmente correctas?
-#### Recall (Sensibilidad): ##### De todos los casos positivos reales, ¿cuántos detectamos?
-#### F1-Score: ##### Promedio armónico entre precision y recall.
-#### Matriz de Confusión: ##### Tabla que muestra prediccion vs valores reales.
+#### Accuracy: 
+##### Porcentaje de predicciones correctas sobre el total.
+#### Precision: 
+##### De todas las predicciones positivas, ¿cuántas fueron realmente correctas?
+#### Recall (Sensibilidad): 
+##### De todos los casos positivos reales, ¿cuántos detectamos?
+#### F1-Score: 
+##### Promedio armónico entre precision y recall.
+#### Matriz de Confusión: 
+##### Tabla que muestra prediccion vs valores reales.
 
 🎯 Paso 6: Preguntas de Reflexión
 Responde estas preguntas simples:
