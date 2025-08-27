@@ -35,6 +35,10 @@ Los conceptos en sí, fueron fáciles de aprender e identificar.
 
 # Regresión Lineal - Regresión Logística: solución
 
+## Parte 1: Descripción
+
+#### En esta primer parte se analizaron las librerias pertinentes para completar el código siguiente. Se usó de apoyo las pistas brindadas por el docente.
+
 ## Parte 1: Código
 
 ```python
@@ -129,7 +133,7 @@ for i in range(5):
 
 ## 📚 BONUS: ¿Qué significan estas métricas?
 ### Completa las definiciones:
-#### MAE (Mean Absolute Error): Promedio de los errores en valor absoluto, sin importar si son positivos o negativos.
+##### MAE (Mean Absolute Error): Promedio de los errores en valor absoluto, sin importar si son positivos o negativos.
 #### MSE (Mean Squared Error): Promedio de los errores al cuadrado, penaliza más los errores grandes.
 #### RMSE: Raíz cuadrada del MSE, vuelve a las unidades originales del problema.
 #### R²: Indica qué porcentaje de la variable dependiente es explicada por el modelo (0-1, donde 1 es perfecto).
