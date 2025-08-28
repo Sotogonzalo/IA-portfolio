@@ -6,7 +6,7 @@ date: 2025-08-24
 # Tarea 4
 
 ## Contexto
-Tarea número 4 del curso, se busca entender los primeros pasos de modelos reales entrenados con regresión líneal vs regresión logística.
+Tarea número 4 del curso, regresión líneal vs logística
 
 ## Objetivos
 - Aprender a cargar y explorar datos
@@ -17,17 +17,15 @@ Tarea número 4 del curso, se busca entender los primeros pasos de modelos reale
 ## Actividades (con tiempos estimados)
 - Parte 1: regresión lineal (90min)
 - Parte 2: regresión logística (50min)
-- Teórico y formato del archivo (100min)
+- Teórico y formato del archivo (60min)
 
 ## Desarrollo
-Se completó fragmentos de código con la finalidad de aprender a usar funciones específicas para predecir determinados casos reales. 
+Se completó fragmentos de código con la finalidad de aprender a usar funciones específicas para predecir determinados casos reales.
 Se usaron funciones de regresión lineal y logística.
 Se afianzaron conceptos teóricos de las nombradas regresiones.
 
 ## Evidencias
 - Se adjunta imagen "tarea4_tabla.png" en `docs/assets/`
-- Se adjunta imagen "resultado-t4-parte1.png" en `docs/assets/`
-- Se adjunta imagen "resultado-t4-parte2.png" en `docs/assets/`
 
 ## Reflexión
 Lo que más costó fueron identificar las funciones necesarias para completar el código y ententer lo que se estaba imprimiendo por pantalla.
@@ -37,12 +35,8 @@ Los conceptos en sí, fueron fáciles de aprender e identificar.
 
 # Regresión Lineal - Regresión Logística: solución
 
-## Parte 1: Descripción
-En esta primer parte se analizaron las librerias pertinentes para completar el código siguiente. Se usó de apoyo las pistas brindadas por el docente.
-Por otro lado, se cargó el dataset de precios de una inmobiliaria de Boston Housing y se intentará predecir los valores de cada propiedad.
-A su vez, se evaluaran determinadas métricas para el calculo del valor de la propiedad, y por último, se haran comparativas de los valores actuales y los que se predijeron.
-
 ## Parte 1: Código
+
 ```python
 # Importar librerías que vamos a usar
 import pandas as pd
@@ -133,30 +127,18 @@ for i in range(5):
     print(f"   Casa {i+1}: Real ${real:.1f}k vs Predicho ${predicho:.1f}k")
 ```
 
-## Parte 1: Resultados
-Imágen tabla comparativa de resultados
-![Tabla comparativa](../assets/resultado-t4-parte1.png)
-En la imágen podemos observar que el modelo entrenado con Regresion Lineal ha predicho los precios de las propiedades, 102 en este caso, con un error del 16% respecto al valor real, lo cual esta muy bien, y que en promedio la diferencia esta en un $3.19k. Se muestra en pantalla 5 ejemplos.
+## 📚 BONUS: ¿Qué significan estas métricas?
 
-📚 BONUS: ¿Qué significan estas métricas?
 Completa las definiciones:
-#### MAE (Mean Absolute Error): 
-##### Promedio de los errores en valor absoluto, sin importar si son positivos o negativos.
-#### MSE (Mean Squared Error): 
-##### Promedio de los errores al cuadrado, penaliza más los errores grandes.
-#### RMSE: 
-##### Raíz cuadrada del MSE, vuelve a las unidades originales del problema.
-#### R²: 
-##### Indica qué porcentaje de la variable dependiente es explicada por el modelo (0-1, donde 1 es perfecto).
-#### MAPE: 
-##### Error porcentual promedio, útil para comparar modelos con diferentes escalas de datos.
+#### MAE (Mean Absolute Error): Promedio de los errores en valor absoluto, sin importar si son positivos o negativos.
+#### MSE (Mean Squared Error): Promedio de los errores al cuadrado, penaliza más los errores grandes.
+#### RMSE: Raíz cuadrada del MSE, vuelve a las unidades originales del problema.
+#### R²: Indica qué porcentaje de la variable dependiente es explicada por el modelo (0-1, donde 1 es perfecto).
+#### MAPE: Error porcentual promedio, útil para comparar modelos con diferentes escalas de datos.
 
-## Parte 2: Descripción
-En esta parte cargamos el dataset de Diagnísticos Médicos en el cual tendremos análisis de tests de cáncer de mama.
-Nuestro objetivo es entrenar un modelo, analizar métricas y buscar una conclusión que respalde el análisis hecho por los médicos, ya sea afirmando el diagnóstico o rechazandolo.
-Finalmente daremos un veredicto por paciente si el resultado del analisis es "Benigno" o "Maligno".
 
 ## Parte 2: Código
+
 ```python
 # Importar librerías que vamos a usar
 import pandas as pd
@@ -248,57 +230,52 @@ for i in range(5):
     print(f"   Paciente {i+1}: Real: {real} vs Predicho: {predicho}")
 ```
 
-## Parte 2: Resultados
-#### Imágen tabla comparativa de resultados
-![Tabla comparativa](../assets/resultado-t4-parte2.png)
+## 📚 BONUS: ¿Qué significan las métricas de clasificación?
+## Completa las definiciones:
+#### Accuracy: Porcentaje de predicciones correctas sobre el total.
+#### Precision: De todas las predicciones positivas, ¿cuántas fueron realmente correctas?
+#### Recall (Sensibilidad): De todos los casos positivos reales, ¿cuántos detectamos?
+#### F1-Score: Promedio armónico entre precision y recall.
+#### Matriz de Confusión: Tabla que muestra prediccion vs valores reales.
 
-En la imágen podemos observar que al entrenar el modelo con Regresión Logística se obtuvo con un 94,6% de acierto los casos que fueron diagnosticados como Benignos, de los que realmente son casos Benignos se detecto un 98,6%. Existe una precisión del 96,6% en este caso.
-Por otro lado, de los 114 pacientes de prueba sólo uno dio como falso negativo, es decir, que tiene cancer de mama Maligno y se lo diagnostico como Benigno, un error grave pero estadísticamente es menos de un 1%, y muestra la importancia de estos modelos de predicción para re-evaluar pacientes y diagnosticarlos correctamente.
+## 🎯 Paso 6: Preguntas de Reflexión
+## Responde estas preguntas simples:
 
-📚 BONUS: ¿Qué significan las métricas de clasificación?
-Completa las definiciones:
-#### Accuracy: 
-##### Porcentaje de predicciones correctas sobre el total.
-#### Precision: 
-##### De todas las predicciones positivas, ¿cuántas fueron realmente correctas?
-#### Recall (Sensibilidad): 
-##### De todos los casos positivos reales, ¿cuántos detectamos?
-#### F1-Score: 
-##### Promedio armónico entre precision y recall.
-#### Matriz de Confusión: 
-##### Tabla que muestra prediccion vs valores reales.
-
-🎯 Paso 6: Preguntas de Reflexión
-Responde estas preguntas simples:
 ### ¿Cuál es la diferencia principal entre regresión lineal y logística?
-#### 💡 PISTA: Piensa en qué tipo de valores produce cada una (números vs categorías)
-##### La regresión lineal predice valores numéricos (ej: temperatura).
-##### La regresión logística predice categorías, esto o aquello (ej: benigno/maligno).
-### ¿Por qué dividimos los datos en entrenamiento y prueba?
-#### 💡 PISTA: 🔗 Artículo sobre train/test split
-##### Para evaluar el modelo en datos que no se ha visto antes.
-##### Así comprobamos si realmente se generaliza bien, y no solo se “memoriza” el conjunto de entrenamiento.
-### ¿Qué significa una exactitud del 95%?
-#### 💡 PISTA: Si tienes 100 pacientes, ¿en cuántos acertaría el modelo?
-##### Que el modelo acierta en 95 de cada 100 pacientes.
-### ¿Cuál es más peligroso: predecir "benigno" cuando es "maligno", o al revés?
-#### 💡 PISTA: 🩺 Piensa en las consecuencias médicas de cada error
-##### Más peligroso es predecir benigno cuando en realidad es maligno (falso negativo), porque el paciente podría no recibir tratamiento a tiempo.
+### 💡 PISTA: Piensa en qué tipo de valores produce cada una (números vs categorías)
+#### La regresión lineal predice valores numéricos (ej: temperatura).
+#### La regresión logística predice categorías, esto o aquello (ej: benigno/maligno).
 
-🔍 Paso 7: Comparación Simple
-Completa esta tabla comparando ambos modelos:
-#### Imágen tabla comparativa, regresión logística vs lineal
+### ¿Por qué dividimos los datos en entrenamiento y prueba?
+### 💡 PISTA: 🔗 Artículo sobre train/test split
+#### Para evaluar el modelo en datos que no se ha visto antes.
+#### Así comprobamos si realmente se generaliza bien, y no solo se “memoriza” el conjunto de entrenamiento.
+
+### ¿Qué significa una exactitud del 95%?
+### 💡 PISTA: Si tienes 100 pacientes, ¿en cuántos acertaría el modelo?
+#### Que el modelo acierta en 95 de cada 100 pacientes.
+
+### ¿Cuál es más peligroso: predecir "benigno" cuando es "maligno", o al revés?
+### 💡 PISTA: 🩺 Piensa en las consecuencias médicas de cada error
+#### Más peligroso es predecir benigno cuando en realidad es maligno (falso negativo), porque el paciente podría no recibir tratamiento a tiempo.
+
+## 🔍 Paso 7: Comparación Simple
+## Completa esta tabla comparando ambos modelos:
+### Imágen tabla comparativa, regresión logística vs lineal
 ![Tabla comparativa](../assets/tarea4_tabla.png){ width="420" }
 
-🎯 Paso 8: Reflexión Final
-Responde con tus propias palabras:
+## 🎯 Paso 8: Reflexión Final
+## Responde con tus propias palabras:
+
 ### ¿Cuál modelo usarías para predecir el salario de un empleado?
-#### 💡 PISTA: El salario, ¿es un número continuo o una categoría?
-##### Usaría regresión lineal ya que el salario es un número continuo.
+### 💡 PISTA: El salario, ¿es un número continuo o una categoría?
+#### Usaría regresión lineal ya que el salario es un número continuo.
+
 ### ¿Cuál modelo usarías para predecir si un email es spam?
-#### 💡 PISTA: 📧 ¿Cuántas opciones hay? (spam/no spam)
-##### Regresión logística porque estaríamos clasificando algo "binario", 0 o 1, spam o no spam.
+### 💡 PISTA: 📧 ¿Cuántas opciones hay? (spam/no spam)
+#### Regresión logística porque estaríamos clasificando algo "binario", 0 o 1, spam o no spam.
+
 ### ¿Por qué es importante separar datos de entrenamiento y prueba?
-#### 💡 PISTA: 🔗 Conceptos de validación en ML
-##### Porque queremos medir el rendimiento real del modelo con datos nuevos.
-##### Si usamos los mismos datos para entrenar y después evaluar, el modelo va a parecer muy bueno, pero puede fallar con datos desconocidos, lo que se conoce como overfitting.
+### 💡 PISTA: 🔗 Conceptos de validación en ML
+#### Porque queremos medir el rendimiento real del modelo con datos nuevos.
+#### Si usamos los mismos datos para entrenar y después evaluar, el modelo va a parecer muy bueno, pero puede fallar con datos desconocidos, lo que se conoce como overfitting.
