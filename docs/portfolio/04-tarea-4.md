@@ -292,7 +292,7 @@ Completa esta tabla comparando ambos modelos:
 
 🎯 Paso 8: Reflexión Final
 Responde con tus propias palabras:
-### ¿Cuál modelo usarías para predecir el salario de un empleado?
+### ¿Cuál modelo usarías para predecir el salario de un empleado? 
 #### 💡 PISTA: El salario, ¿es un número continuo o una categoría?
 ##### Usaría regresión lineal ya que el salario es un número continuo.
 ### ¿Cuál modelo usarías para predecir si un email es spam?
