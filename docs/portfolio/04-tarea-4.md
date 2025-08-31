@@ -138,7 +138,7 @@ Imágen tabla comparativa de resultados
 ![Tabla comparativa](../assets/resultado-t4-parte1.png)
 En la imágen podemos observar que el modelo entrenado con Regresion Lineal ha predicho los precios de las propiedades, 102 en este caso, con un error del 16% respecto al valor real, lo cual esta muy bien, y que en promedio la diferencia esta en un $3.19k. Se muestra en pantalla 5 ejemplos.
 
-📚 BONUS: ¿Qué significan estas métricas?
+📚 BONUS: ¿Qué significan estas métricas? 
 Completa las definiciones:
 #### MAE (Mean Absolute Error): 
 ##### Promedio de los errores en valor absoluto, sin importar si son positivos o negativos.
@@ -255,7 +255,7 @@ for i in range(5):
 En la imágen podemos observar que al entrenar el modelo con Regresión Logística se obtuvo con un 94,6% de acierto los casos que fueron diagnosticados como Benignos, de los que realmente son casos Benignos se detecto un 98,6%. Existe una precisión del 96,6% en este caso.
 Por otro lado, de los 114 pacientes de prueba sólo uno dio como falso negativo, es decir, que tiene cancer de mama Maligno y se lo diagnostico como Benigno, un error grave pero estadísticamente es menos de un 1%, y muestra la importancia de estos modelos de predicción para re-evaluar pacientes y diagnosticarlos correctamente.
 
-📚 BONUS: ¿Qué significan las métricas de clasificación?
+📚 BONUS: ¿Qué significan las métricas de clasificación? 
 Completa las definiciones:
 #### Accuracy: 
 ##### Porcentaje de predicciones correctas sobre el total.
@@ -268,7 +268,7 @@ Completa las definiciones:
 #### Matriz de Confusión: 
 ##### Tabla que muestra prediccion vs valores reales.
 
-🎯 Paso 6: Preguntas de Reflexión
+🎯 Paso 6: Preguntas de Reflexión. 
 Responde estas preguntas simples:
 ### ¿Cuál es la diferencia principal entre regresión lineal y logística?
 #### 💡 PISTA: Piensa en qué tipo de valores produce cada una (números vs categorías)
@@ -285,12 +285,12 @@ Responde estas preguntas simples:
 #### 💡 PISTA: 🩺 Piensa en las consecuencias médicas de cada error
 ##### Más peligroso es predecir benigno cuando en realidad es maligno (falso negativo), porque el paciente podría no recibir tratamiento a tiempo.
 
-🔍 Paso 7: Comparación Simple
+🔍 Paso 7: Comparación Simple. 
 Completa esta tabla comparando ambos modelos:
 #### Imágen tabla comparativa, regresión logística vs lineal
 ![Tabla comparativa](../assets/tarea4_tabla.png){ width="420" }
 
-🎯 Paso 8: Reflexión Final
+🎯 Paso 8: Reflexión Final. 
 Responde con tus propias palabras:
 ### ¿Cuál modelo usarías para predecir el salario de un empleado?
 #### 💡 PISTA: El salario, ¿es un número continuo o una categoría?
