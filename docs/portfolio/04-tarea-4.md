@@ -255,7 +255,7 @@ for i in range(5):
 En la imágen podemos observar que al entrenar el modelo con Regresión Logística se obtuvo con un 94,6% de acierto los casos que fueron diagnosticados como Benignos, de los que realmente son casos Benignos se detecto un 98,6%. Existe una precisión del 96,6% en este caso.
 Por otro lado, de los 114 pacientes de prueba sólo uno dio como falso negativo, es decir, que tiene cancer de mama Maligno y se lo diagnostico como Benigno, un error grave pero estadísticamente es menos de un 1%, y muestra la importancia de estos modelos de predicción para re-evaluar pacientes y diagnosticarlos correctamente.
 
-📚 BONUS: ¿Qué significan las métricas de clasificación? 
+📚 BONUS: ¿Qué significan las métricas de clasificación?
 Completa las definiciones:
 #### Accuracy: 
 ##### Porcentaje de predicciones correctas sobre el total.
@@ -292,7 +292,7 @@ Completa esta tabla comparando ambos modelos:
 
 🎯 Paso 8: Reflexión Final
 Responde con tus propias palabras:
-### ¿Cuál modelo usarías para predecir el salario de un empleado? 
+### ¿Cuál modelo usarías para predecir el salario de un empleado?
 #### 💡 PISTA: El salario, ¿es un número continuo o una categoría?
 ##### Usaría regresión lineal ya que el salario es un número continuo.
 ### ¿Cuál modelo usarías para predecir si un email es spam?
