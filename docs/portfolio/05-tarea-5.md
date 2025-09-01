@@ -206,6 +206,10 @@ plt.show()
 En la imágen se puede apreciar que el StratifiedKFold es más estable pero con un media menor al Kfold normal, el cual tiene una desviación más grande y posee extremos más pronunciados como se puede ver que va desde 0,780 hasta 0,750 aproximadamente.
 En conclusión, si buscamos estabilidad el StratifiedKFold es nuestra mejor opción.
 
+## Parte 3: Descripción
+En esta parte de la tarea se comparan tres modelos de clasificación (Regresión Logística, Ridge Classifier y Random Forest) usando validación cruzada. 
+También calcularemos el accuracy promedio y la desviación estándar para medir rendimiento y estabilidad, y por ultimo, se identificá el mejor modelo, visualizando los resultados con gráficos comparativos.
+
 ## Parte 3: Código
 
 ```python
@@ -309,13 +313,30 @@ plt.tight_layout()
 plt.show()
 ```
 
-##📚 BONUS: ¿Qué significan las métricas de validación?
-##Completa las definiciones:
-###Cross-Validation: Técnica que divide los datos en _ partes para entrenar y evaluar múltiples veces.
-###Accuracy promedio: La _ de rendimiento esperado en datos nuevos.
-###Desviación estándar: Indica qué tan _ es el modelo entre diferentes divisiones de datos.
-###StratifiedKFold: Mantiene la _ de clases en cada fold, especialmente importante en datasets desbalanceados.
+#### Resultados validación cruzada
+![Tabla comparativa](../assets/resultado-t5-parte3.png)
+
+Podemos observar que varias cosas en los modelos, primero se descarta Ridge como ópcion ya que tiene una media muy baja comparada con los otros dos modelo.
+Después, dependiendo de lo que busquemos en nuestro modelo podemos optar por Logistic, si queremos estabilidad y una buena media, y por otro lado, Random Forest que nos da una media mejor pero es menos estable ya que varía entre extremos desde 0,775 hasta 0,757 aproximadamente, que aún así es mejor que el más bajo del Logistic.
+En definitiva, como comparamos medias, Random Forest sería nuestra mejor opción.
+
+
+📚 BONUS: ¿Qué significan las métricas de validación?
+Completa las definiciones:
+### Cross-Validation: 
+#### Técnica que divide los datos en k partes para entrenar y evaluar múltiples veces.
+### Accuracy promedio: 
+#### La medida de rendimiento esperado en datos nuevos.
+### Desviación estándar: 
+#### Indica qué tan consistente es el modelo entre diferentes divisiones de datos.
+### StratifiedKFold: 
+#### Mantiene la proporción de clases en cada fold, especialmente importante en datasets desbalanceados.
 
 ---
-##🚀 BONUS: Optimización de Hiperparámetros
+🚀 BONUS: Optimización de Hiperparámetros
+## GridSearchCV vs RandomizedSearchCV
 
+```python
+
+
+```
