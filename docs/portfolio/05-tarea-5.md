@@ -15,14 +15,18 @@ Tarea número 5 del curso.
 - Interpretar métricas de estabilidad y selección de modelos
 
 ## Actividades (con tiempos estimados)
-- 
-- 
+- Parte 1 (40min)
+- Parte 2 (50min)
+- Parte 3 (60min)
+- Formato de la page (90min)
 
 ## Desarrollo
 
 
 ## Evidencias
-- 
+- Se adjunta imagen "resultado-t5-parte1.1.png" en `docs/assets/`
+- Se adjunta imagen "resultado-t5-parte1.2.png" en `docs/assets/`
+- Se adjunta imagen "resultado-t5-parte2.png" en `docs/assets/`
 
 ## Reflexión
 
@@ -55,6 +59,10 @@ from sklearn.metrics import accuracy_score, classification_report
 print("Setup completo!")
 
 ```
+## Parte 1: Descripción
+En esta parte de la tarea descargamos y exploramos un dataset de estudiantes del repositorio UCI, revisando características claves, como su tamaño, la variable objetivo y la distribución de las clases, además de convertir los datos a un formato numérico para que puedan ser procesados por sklearn.
+
+## Parte 1: Código - Cargamos dataset de estudiantes
 
 ```python
 # Cargar dataset de estudiantes desde UCI
@@ -96,8 +104,10 @@ if 'Age at enrollment' in X.columns:
     print(f"  Rango: {age_col.min():.0f}-{age_col.max():.0f} años")
 
 ```
+#### Resultados dataset
+![Tabla comparativa](../assets/resultado-t5-parte1.1.png)
 
-## Parte 1: Código
+## Parte 1: Código - Mappeo para sklearn
 
 ```python
 # Preparar variable objetivo como serie simple
@@ -119,6 +129,11 @@ print(f"y shape: {y_target.shape}")
 print(f"Clases únicas: {sorted(y_target.unique())}")
 print(f"Mapeo: {target_mapping}")
 ```
+#### Resultados mappeo
+![Tabla comparativa](../assets/resultado-t5-parte1.2.png)
+
+## Parte 2: Descripción
+Aquí se aplica validación cruzada (con KFold y StratifiedKFold) para evaluar qué tan estable y confiable es el modelo de regresión logística, para esto comparamos los resultados de ambos enfoques y visualizamos la variabilidad de los scores.
 
 ## Parte 2: Código
 
@@ -185,6 +200,11 @@ plt.grid(True, alpha=0.3)
 plt.show()
 
 ```
+#### Resultados validación cruzada
+![Tabla comparativa](../assets/resultado-t5-parte2.png)
+
+En la imágen se puede apreciar que el StratifiedKFold es más estable pero con un media menor al Kfold normal, el cual tiene una desviación más grande y posee extremos más pronunciados como se puede ver que va desde 0,780 hasta 0,750 aproximadamente.
+En conclusión, si buscamos estabilidad el StratifiedKFold es nuestra mejor opción.
 
 ## Parte 3: Código
 
