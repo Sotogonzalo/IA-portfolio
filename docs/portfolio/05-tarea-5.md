@@ -21,15 +21,16 @@ Tarea número 5 del curso.
 - Formato de la page (90min)
 
 ## Desarrollo
-
+En esta tarea probamos distintos modelos y comparamos sus resultados usando validación cruzada. Esto nos ayudó a ver cómo cambia el rendimiento dependiendo de los datos que se usan para entrenar y probar.
 
 ## Evidencias
 - Se adjunta imagen "resultado-t5-parte1.1.png" en `docs/assets/`
 - Se adjunta imagen "resultado-t5-parte1.2.png" en `docs/assets/`
 - Se adjunta imagen "resultado-t5-parte2.png" en `docs/assets/`
+- Se adjunta imagen "resultado-t5-parte3.png" en `docs/assets/`
 
 ## Reflexión
-
+Aprendí que no siempre gana el modelo con mayor precisión, sino el que es más estable y consistente. Es importante evaluar bien antes de elegir, porque así se pueden tomar decisiones más seguras.
 
 ---
 
@@ -316,21 +317,21 @@ plt.show()
 #### Resultados validación cruzada
 ![Tabla comparativa](../assets/resultado-t5-parte3.png)
 
-Podemos observar que varias cosas en los modelos, primero se descarta Ridge como ópcion ya que tiene una media muy baja comparada con los otros dos modelo.
+Podemos observar varias cosas de los modelos, primero se descarta Ridge como ópcion ya que tiene una media muy baja comparada con los otros dos modelo.
 Después, dependiendo de lo que busquemos en nuestro modelo podemos optar por Logistic, si queremos estabilidad y una buena media, y por otro lado, Random Forest que nos da una media mejor pero es menos estable ya que varía entre extremos desde 0,775 hasta 0,757 aproximadamente, que aún así es mejor que el más bajo del Logistic.
 En definitiva, como comparamos medias, Random Forest sería nuestra mejor opción.
 
 
 📚 BONUS: ¿Qué significan las métricas de validación?
 Completa las definiciones:
-### Cross-Validation: 
-#### Técnica que divide los datos en k partes para entrenar y evaluar múltiples veces.
-### Accuracy promedio: 
-#### La medida de rendimiento esperado en datos nuevos.
-### Desviación estándar: 
-#### Indica qué tan consistente es el modelo entre diferentes divisiones de datos.
-### StratifiedKFold: 
-#### Mantiene la proporción de clases en cada fold, especialmente importante en datasets desbalanceados.
+#### Cross-Validation: 
+##### Técnica que divide los datos en k partes para entrenar y evaluar múltiples veces.
+#### Accuracy promedio: 
+##### La medida de rendimiento esperado en datos nuevos.
+#### Desviación estándar: 
+##### Indica qué tan consistente es el modelo entre diferentes divisiones de datos.
+#### StratifiedKFold: 
+##### Mantiene la proporción de clases en cada fold, especialmente importante en datasets desbalanceados.
 
 ---
 🚀 BONUS: Optimización de Hiperparámetros
