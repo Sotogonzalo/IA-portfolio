@@ -638,7 +638,7 @@ print(f"Predicción final (voto mayoritario): {final_pred_name}")
 ```
 
 #### Resultados
-![Tabla comparativa](../assets/resultado-t5-bonus-2.png)
+<!-- ![Tabla comparativa](../assets/resultado-t5-bonus-2.png) -->
 
 
 ¿Por qué es importante la explicabilidad? 
