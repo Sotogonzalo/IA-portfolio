@@ -682,7 +682,7 @@ Completa las razones:
 #### Mejora continua: 
 ##### Entender el modelo ayuda a mejorar futuras versiones.
 
-🎯 Parte 4: Preguntas de Reflexión. 
+## 🎯 Parte 4: Preguntas de Reflexión. 
 Responde estas preguntas simples:
 ### ¿Qué es data leakage y por qué es peligroso?
 #### 💡 PISTA: Piensa en qué información "ve" el modelo antes de tiempo
