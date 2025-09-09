@@ -6,7 +6,7 @@ date: 2025-08-26
 # Tarea 5
 
 ## Contexto
-Tarea número 5 del curso.
+Tarea número 5 de la primer unidad del curso. Aquí se hacen comparativas de modelos, analisis de datos y toma de desiciones basado en variables generales de cada problema.
 
 ## Objetivos
 - Aprender a prevenir data leakage usando pipelines
@@ -18,6 +18,9 @@ Tarea número 5 del curso.
 - Parte 1 (40min)
 - Parte 2 (50min)
 - Parte 3 (60min)
+- Bonus 1 (40min)
+- Bonus 2 (60min)
+- Parte 4 (20min)
 - Formato de la page (90min)
 
 ## Desarrollo
@@ -28,9 +31,15 @@ En esta tarea probamos distintos modelos y comparamos sus resultados usando vali
 - Se adjunta imagen "resultado-t5-parte1.2.png" en `docs/assets/`
 - Se adjunta imagen "resultado-t5-parte2.png" en `docs/assets/`
 - Se adjunta imagen "resultado-t5-parte3.png" en `docs/assets/`
+- Se adjunta imagen "resultado-t5-bonus-1.png" en `docs/assets/`
+- Se adjunta imagen "resultado-t5-bonus2-1.png" en `docs/assets/`
+- Se adjunta imagen "resultado-t5-bonus2-2.png" en `docs/assets/`
+- Se adjunta imagen "resultado-t5-bonus2-3.png" en `docs/assets/`
+- Se adjunta imagen "resultado-t5-bonus2-4.png" en `docs/assets/`
 
 ## Reflexión
 Aprendí que no siempre gana el modelo con mayor precisión, sino el que es más estable y consistente. Es importante evaluar bien antes de elegir, porque así se pueden tomar decisiones más seguras.
+Además, en los bonuses se aprende a elegir bien el modelo según los parámetros del mismo, y la gran importancia que tienen las características dentro de un dataset para analizar y tomar la mejor decision según la situación en cuestión. Es un conjunto de muchos factores lo que hace que un modelo de predición sea exitoso y que este haya sido elegido y utilizado correctamente.
 
 ---
 
