@@ -426,7 +426,7 @@ Completa la guía de decisión:
 ## ¿Por qué el modelo toma esas decisiones?
 
 ## Bonus 2: Descripción
-En el bonus 2 se busca entender por qué el modelo toma sus decisiones. Para ello se usa un Random Forest, ya que permite analizar la importancia de las características, agrupar factores (académicos, demográficos y económicos) y visualizar reglas de decisión dentro de los árboles. Además, se estudia cómo influyen las variables en casos individuales.
+En este busca entender por qué el modelo toma sus decisiones, y para ello se usa un modelo tipo Random Forest, ya que permite analizar la importancia de las características, agrupar factores (académicos, demográficos y económicos) y visualizar reglas de decisión dentro de los árboles. Además, se estudia cómo influyen las variables en casos individuales.
 
 ```python
 # Usar Random Forest para explicabilidad (si no ganó, crearlo)
@@ -638,21 +638,35 @@ print(f"Predicción final (voto mayoritario): {final_pred_name}")
 ```
 
 #### Resultados
-<!-- ![Tabla comparativa](../assets/resultado-t5-bonus-2.png) -->
+![Tabla comparativa](../assets/resultado-t5-bonus-2-1.png)
+Primeramente analizamos las características más importantes del dataset, como podemos ver, en cada una de ellas se predice el porcentaje de éxito, es decir, vemos cómo influye la situación del estudiante en su aprobación y así poder ayudar o intentar mejorar esos porcentajes dependiendo de cada individuo.
+
+![Tabla comparativa](../assets/resultado-t5-bonus-2-2.png)
+Aquí englobamos las caracteristicas en categorias, en este caso se analizaron 3 pero es posible que existas más factores. Esto permite ver a grandes razgos qué afecta más al estudiante.
+Además, dentro de las características vemos que una en particular (Curricular units 2nd sem (approved)) lo cual da indicio que es la más importante, y en base a esto se podría diseñar un plan de apoyo o por lo menos hacer énfasis en mejorar el porcentaje de éxito ahí.
+Por ultimo, podemos ver cómo este analisis ayuda a predecir el resultado de un estudiante en particular, viendo qué características son las más propensas a llevarlo al fracaso, permitiendo que se pueda revertir la situación.
+
+![Tabla comparativa](../assets/resultado-t5-bonus-2-3.png)
+En esta etapa visualizamos 3 árboles de decision, dentro de los 100 totales utilizados. Esto permite ver cómo se comporta el modelo a la hora de analizar cada individuo y poder tener una estimación de su resultado de manera más precisa, por ejemplo en el primer árbol, si Curricular units 2nd sem (approved) es menor a 3.5 va hacia la izquierda "True" y a partir de ahí evalua una vez más y así, de manera que se pueda tener un caso muy especifico de una situación particular. Esto se hace con cada característica disponible que se analizó previamente.
+
+![Tabla comparativa](../assets/resultado-t5-bonus-2-4.png)
+Estadísticas generales de los árboles, y un ejemplo de toma de decisión como explicabamos anteriormente. En base a estos análisis de árboles podemos ver cómo el estudiante que evaluamos previamente está cayendo en el árbol 1 que indica que este tiene un Curricular units 2nd sem (approved) menor a 3.50 entre otras características puntuales.
+
+En conclusión, este análisis permite identificar los factores más influyentes en el rendimiento académico y anticipar riesgos, lo que ayuda a diseñar estrategias de apoyo más efectivas para mejorar las posibilidades de éxito de cada estudiante.
 
 
 ¿Por qué es importante la explicabilidad? 
 Completa las razones:
-##### Confianza: 
-#### Los educadores necesitan entender por qué el modelo predice abandono.
-##### Intervenciones: 
-#### Knowing las características importantes permite crear acciones específicas.
-##### Bias detection: 
-#### La explicabilidad ayuda a detectar sesgos en el modelo.
-##### Regulaciones: 
-#### Muchos contextos requieren modelos explicables por ley.
-##### Mejora continua: 
-#### Entender el modelo ayuda a mejorar futuras versiones.
+#### Confianza: 
+##### Los educadores necesitan entender por qué el modelo predice abandono.
+#### Intervenciones: 
+##### Knowing las características importantes permite crear acciones específicas.
+#### Bias detection: 
+##### La explicabilidad ayuda a detectar sesgos en el modelo.
+#### Regulaciones: 
+##### Muchos contextos requieren modelos explicables por ley.
+#### Mejora continua: 
+##### Entender el modelo ayuda a mejorar futuras versiones.
 
 🎯 Parte 4: Preguntas de Reflexión. 
 Responde estas preguntas simples:
