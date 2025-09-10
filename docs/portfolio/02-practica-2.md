@@ -1,12 +1,12 @@
 ---
-title: "Tarea 5"
+title: "Práctica 5"
 date: 2025-08-26
 ---
 
-# Tarea 5
+# Práctica 5
 
 ## Contexto
-Tarea número 5 de la primer unidad del curso. Aquí se hacen comparativas de modelos, analisis de datos y toma de desiciones basado en variables generales de cada problema.
+Práctica número 5 de la primer unidad del curso. Aquí se hacen comparativas de modelos, analisis de datos y toma de desiciones basado en variables generales de cada problema.
 
 ## Objetivos
 - Aprender a prevenir data leakage usando pipelines
@@ -24,7 +24,7 @@ Tarea número 5 de la primer unidad del curso. Aquí se hacen comparativas de mo
 - Formato de la page (90min)
 
 ## Desarrollo
-En esta tarea probamos distintos modelos y comparamos sus resultados usando validación cruzada. Esto nos ayudó a ver cómo cambia el rendimiento dependiendo de los datos que se usan para entrenar y probar.
+En esta Práctica probamos distintos modelos y comparamos sus resultados usando validación cruzada. Esto nos ayudó a ver cómo cambia el rendimiento dependiendo de los datos que se usan para entrenar y probar.
 
 ## Evidencias
 - Se adjunta imagen "resultado-t5-parte1.1.png" en `docs/assets/`
@@ -70,7 +70,7 @@ print("Setup completo!")
 
 ```
 ## Parte 1: Descripción
-En esta parte de la tarea descargamos y exploramos un dataset de estudiantes del repositorio UCI, revisando características claves, como su tamaño, la variable objetivo y la distribución de las clases, además de convertir los datos a un formato numérico para que puedan ser procesados por sklearn.
+En esta parte de la Práctica descargamos y exploramos un dataset de estudiantes del repositorio UCI, revisando características claves, como su tamaño, la variable objetivo y la distribución de las clases, además de convertir los datos a un formato numérico para que puedan ser procesados por sklearn.
 
 ## Parte 1: Código - Cargamos dataset de estudiantes
 
@@ -217,7 +217,7 @@ En la imágen se puede apreciar que el StratifiedKFold es más estable pero con 
 En conclusión, si buscamos estabilidad el StratifiedKFold es nuestra mejor opción.
 
 ## Parte 3: Descripción
-En esta parte de la tarea se comparan tres modelos de clasificación (Regresión Logística, Ridge Classifier y Random Forest) usando validación cruzada. 
+En esta parte de la Práctica se comparan tres modelos de clasificación (Regresión Logística, Ridge Classifier y Random Forest) usando validación cruzada. 
 También calcularemos el accuracy promedio y la desviación estándar para medir rendimiento y estabilidad, y por ultimo, se identificá el mejor modelo, visualizando los resultados con gráficos comparativos.
 
 ## Parte 3: Código

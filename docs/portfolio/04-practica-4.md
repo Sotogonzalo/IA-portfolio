@@ -1,12 +1,12 @@
 ---
-title: "Tarea 4"
+title: "Práctica 4"
 date: 2025-08-24
 ---
 
-# Tarea 4
+# Práctica 4
 
 ## Contexto
-Tarea número 4 del curso, se busca entender los primeros pasos de modelos reales entrenados con regresión líneal vs regresión logística.
+Práctica número 4 del curso, se busca entender los primeros pasos de modelos reales entrenados con regresión líneal vs regresión logística.
 
 ## Objetivos
 - Aprender a cargar y explorar datos
