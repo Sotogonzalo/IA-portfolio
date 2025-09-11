@@ -1,5 +1,5 @@
 ---
-title: "Práctica 5"
+title: "Práctica 1"
 date: 2025-08-26
 ---
 
@@ -15,19 +15,19 @@ Práctica número 1 de la primer unidad del curso. Aquí se dan los primeros pas
 - Vizualizar datos y relaciones del dataset.
 
 ## Actividades (con tiempos estimados)
-- SetUp (30min).
-- Analisis de datos y preguntas (60min).
-- Formato de la página (30min).
+- SetUp (30min). 
+- Analisis de datos y preguntas (60min). 
+- Formato de la página (30min). 
 
 ## Desarrollo
-Primero vimos a grandes razgos el tipo de datos y los nulos que teniamos en el dataset del Titanic, de manera que se pueda entender lo que estamos modeloando. En base a eso hicimos una vizualización de datos, y en este analisis quesó en evidencia las relaciones entre los sobrevivientes y las características que los mismos poseían, ya que influían drásticamente en su tasa de supervivencia.
+Inicialmente analizamos a grandes razgos los tipos de datos que tenia el dataset, y los la cantidad de valores faltantes, de manera que se pueda entender lo que estamos modelando. En base a eso hicimos una vizualización de datos, y en este analisis quedó en evidencia las relaciones entre los sobrevivientes y las características que los mismos poseían, ya que influían drásticamente en su tasa de supervivencia. 
 
 ## Evidencias
 - Se adjunta imagen "resultado-t1-parte1.png" en `docs/assets/`.
-- Se adjunta imagen "resultado-t1-parte2.png" en `docs/assets/`.
+- Se adjunta imagen "resultado-t1-parte2.png" en `docs/assets/`. 
 
 ## Reflexión
-Analizando el dataset es posible predecir qué pasajeros tienen más probabilidad de sobrevivir, basandonos en las caracteristicas y visualizaciones realizadas.
+Analizando el dataset es posible predecir qué pasajeros tienen más probabilidad de sobrevivir, basandonos en las caracteristicas y visualizaciones realizadas. 
 
 ---
 
@@ -40,37 +40,37 @@ El objetivo es entrenar un modelo usando los datos del train set (que incluye la
 
 ### ¿Qué columnas/atributos contiene el dataset? ¿Qué representa cada una? ¿Cuál es la variable objetivo?
 
-Según la documentación en Kaggle, en el Data Dictionary se incluyen las siguientes columnas:
+Según la documentación en Kaggle, en el Data Dictionary se incluyen las siguientes columnas: 
 
-Survived: variable objetivo; 1 si sobrevivió, 0 si no.
-Pclass: clase del boleto (1st primera, 2nd segunda o 3rd tercera).
-Sex: sexo del pasajero.
-Age: edad del pasajero.
-SibSp: número de hermanos/esposos a bordo.
-Parch: número de padres/hijos a bordo.
-Ticket: número del ticket.
-Fare: tarifa pagada.
-Cabin: número de camarote.
-Embarked: puerto de embarque: C = Cherbourg, Q = Queenstown, S = Southampton.
+Survived: variable objetivo; 1 si sobrevivió, 0 si no. 
+Pclass: clase del boleto (1st primera, 2nd segunda o 3rd tercera). 
+Sex: sexo del pasajero. 
+Age: edad del pasajero. 
+SibSp: número de hermanos/esposos a bordo. 
+Parch: número de padres/hijos a bordo. 
+Ticket: número del ticket. 
+Fare: tarifa pagada. 
+Cabin: número de camarote. 
+Embarked: puerto de embarque: C = Cherbourg, Q = Queenstown, S = Southampton. 
 
 ### ¿Qué factores crees que más influyeron en la supervivencia?
-Entre las caraterísticas claves que podria influir en la supervivencia analizo lo siguiente:
-Sex: las mujeres tuvieron más posibilidades de sobrevivir, “mujeres y niños primero”.
-Age: los niños tenían prioridad.
-Pclass: los pasajeros de primera clase tuvieron acceso preferente a los botes salvavidas.
-SibSp/Parch: esto influye en cómo actua cada pasajero respecto a la catastrofe ya que no es lo mismo salvarse sólo que tener familia a bordo.
-Cabin: esto depende de dónde fue el primer impacto y si la unicación de la cabina en cuestión ayudó a evitar aglomeración para evacuar.
+Entre las caraterísticas claves que podria influir en la supervivencia analizo lo siguiente: 
+Sex: las mujeres tuvieron más posibilidades de sobrevivir, “mujeres y niños primero”. 
+Age: los niños tenían prioridad. 
+Pclass: los pasajeros de primera clase tuvieron acceso preferente a los botes salvavidas. 
+SibSp/Parch: esto influye en cómo actua cada pasajero respecto a la catastrofe ya que no es lo mismo salvarse sólo que tener familia a bordo. 
+Cabin: esto depende de dónde fue el primer impacto y si la unicación de la cabina en cuestión ayudó a evitar aglomeración para evacuar. 
 
 ### ¿Qué desafíos de calidad de datos esperas encontrar?
 En un dataser nos podemos encontrar muchos desafios en cuanto a los datos analizados, por ejemplo, edad y camarote podría tener valores nulos, Ticket y Cabin son cadenas variadas, alfanuméricas, lo que puede complicar el modelado. También se puede encontrar datos atipimos como tarifas altas o bajas, edades improbables y nombres/apellidos con carácteres especiales.
 
 ### ¿Qué variables podrían estar correlacionadas?
-Las variables más tipicas a relacionarse son las siguientes.
-Pclass y Fare: una tarifa elevada se asociada a clase alta.
-SibSp y Parch: relaciones familiares a bordo.
-Cabin y clase: primera clase tenían camarotes asignados con más probabilidad.
-Age y Parch: los niños podrían tener padres/tutores a bordo.
-Embarked, Fare y Pclass: es posible que algunas rutas estuvieran relacionadas a un puerto específico.
+Las variables más tipicas a relacionarse son las siguientes. 
+Pclass y Fare: una tarifa elevada se asociada a clase alta. 
+SibSp y Parch: relaciones familiares a bordo. 
+Cabin y clase: primera clase tenían camarotes asignados con más probabilidad. 
+Age y Parch: los niños podrían tener padres/tutores a bordo. 
+Embarked, Fare y Pclass: es posible que algunas rutas estuvieran relacionadas a un puerto específico. 
 
 ## Setup en colab: Código
 
@@ -153,12 +153,12 @@ plt.show()
 #### Datos del dataset
 ![Tabla comparativa](../assets/resultado-t1-parte1.png)
 
-Aquí podemos ver todos los atributos del dataset, dentro de los que habiamos nombrados se suma PassengerId que es un identificador único para cada pasajero. Podemos ver el tipo de datos de cada atributo y la cantidad de nulos en cada uno de ellos. Por último, se puede ver en porcentaje la cantidad de pasajeros que sobrevivieron.
+Aquí podemos ver todos los atributos del dataset, dentro de los que habiamos nombrados se suma PassengerId que es un identificador único para cada pasajero. Podemos ver el tipo de datos de cada atributo y la cantidad de nulos en cada uno de ellos. Por último, se puede ver en porcentaje la cantidad de pasajeros que sobrevivieron. 
 
 #### Visualización de datos
 ![Tabla comparativa](../assets/resultado-t1-parte2.png)
 
-Aquí tenemos varias gráficas para analizar. Primero vemos que el sexo de la persona ingluyó mucho en la supervivencia ya que muchos del total de pasajeros, murieron 66% de hombres y solo un 12% de mujeres aproximadamente, también, vemos que la clase ayudó a la supervivencia ya que los de primera clase vive en un 63% mientras que tercera clase apenas supera el 20%. Finalmente, observamos que la edad influye ya que los menores sobrevivieron en más porcentaje, y terminamos con una tabla de correlaciones entre atributos, por ejemplo, los familiares tienden a sobrevivir más ya que tienden a ayudarse entre ellos.
+Aquí tenemos varias gráficas para analizar. Primero vemos que el sexo de la persona ingluyó mucho en la supervivencia ya que muchos del total de pasajeros, murieron 66% de hombres y solo un 12% de mujeres aproximadamente, también, vemos que la clase ayudó a la supervivencia ya que los de primera clase vive en un 63% mientras que tercera clase apenas supera el 20%. Finalmente, observamos que la edad influye ya que los menores sobrevivieron en más porcentaje, y terminamos con una tabla de correlaciones entre atributos, por ejemplo, los familiares tienden a sobrevivir más ya que tienden a ayudarse entre ellos. 
 
 ## ❓ Preguntas para el equipo
 #### ¿Qué variables parecen más relacionadas con Survived?

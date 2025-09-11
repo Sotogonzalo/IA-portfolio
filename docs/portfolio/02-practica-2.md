@@ -1,5 +1,5 @@
 ---
-title: "Práctica 5"
+title: "Práctica 2"
 date: 2025-08-26
 ---
 
