@@ -55,6 +55,7 @@ Según la documentación en Kaggle, en el Data Dictionary se incluyen las siguie
 
 ### ¿Qué factores crees que más influyeron en la supervivencia?
 Entre las caraterísticas claves que podria influir en la supervivencia analizo lo siguiente: 
+
 - Sex: las mujeres tuvieron más posibilidades de sobrevivir, “mujeres y niños primero”. 
 - Age: los niños tenían prioridad. 
 - Pclass: los pasajeros de primera clase tuvieron acceso preferente a los botes salvavidas. 
@@ -66,6 +67,7 @@ En un dataser nos podemos encontrar muchos desafios en cuanto a los datos analiz
 
 ### ¿Qué variables podrían estar correlacionadas?
 Las variables más tipicas a relacionarse son las siguientes. 
+
 - Pclass y Fare: una tarifa elevada se asociada a clase alta. 
 - SibSp y Parch: relaciones familiares a bordo. 
 - Cabin y clase: primera clase tenían camarotes asignados con más probabilidad. 
