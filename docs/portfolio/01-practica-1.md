@@ -42,35 +42,35 @@ El objetivo es entrenar un modelo usando los datos del train set (que incluye la
 
 Según la documentación en Kaggle, en el Data Dictionary se incluyen las siguientes columnas: 
 
-Survived: variable objetivo; 1 si sobrevivió, 0 si no. 
-Pclass: clase del boleto (1st primera, 2nd segunda o 3rd tercera). 
-Sex: sexo del pasajero. 
-Age: edad del pasajero. 
-SibSp: número de hermanos/esposos a bordo. 
-Parch: número de padres/hijos a bordo. 
-Ticket: número del ticket. 
-Fare: tarifa pagada. 
-Cabin: número de camarote. 
-Embarked: puerto de embarque: C = Cherbourg, Q = Queenstown, S = Southampton. 
+- Survived: variable objetivo; 1 si sobrevivió, 0 si no. 
+- Pclass: clase del boleto (1st primera, 2nd segunda o 3rd tercera). 
+- Sex: sexo del pasajero. 
+- Age: edad del pasajero. 
+- SibSp: número de hermanos/esposos a bordo. 
+- Parch: número de padres/hijos a bordo. 
+- Ticket: número del ticket. 
+- Fare: tarifa pagada. 
+- Cabin: número de camarote. 
+- Embarked: puerto de embarque: C = Cherbourg, Q = Queenstown, S = Southampton. 
 
 ### ¿Qué factores crees que más influyeron en la supervivencia?
 Entre las caraterísticas claves que podria influir en la supervivencia analizo lo siguiente: 
-Sex: las mujeres tuvieron más posibilidades de sobrevivir, “mujeres y niños primero”. 
-Age: los niños tenían prioridad. 
-Pclass: los pasajeros de primera clase tuvieron acceso preferente a los botes salvavidas. 
-SibSp/Parch: esto influye en cómo actua cada pasajero respecto a la catastrofe ya que no es lo mismo salvarse sólo que tener familia a bordo. 
-Cabin: esto depende de dónde fue el primer impacto y si la unicación de la cabina en cuestión ayudó a evitar aglomeración para evacuar. 
+- Sex: las mujeres tuvieron más posibilidades de sobrevivir, “mujeres y niños primero”. 
+- Age: los niños tenían prioridad. 
+- Pclass: los pasajeros de primera clase tuvieron acceso preferente a los botes salvavidas. 
+- SibSp/Parch: esto influye en cómo actua cada pasajero respecto a la catastrofe ya que no es lo mismo salvarse sólo que tener familia a bordo. 
+- Cabin: esto depende de dónde fue el primer impacto y si la unicación de la cabina en cuestión ayudó a evitar aglomeración para evacuar. 
 
 ### ¿Qué desafíos de calidad de datos esperas encontrar?
 En un dataser nos podemos encontrar muchos desafios en cuanto a los datos analizados, por ejemplo, edad y camarote podría tener valores nulos, Ticket y Cabin son cadenas variadas, alfanuméricas, lo que puede complicar el modelado. También se puede encontrar datos atipimos como tarifas altas o bajas, edades improbables y nombres/apellidos con carácteres especiales.
 
 ### ¿Qué variables podrían estar correlacionadas?
 Las variables más tipicas a relacionarse son las siguientes. 
-Pclass y Fare: una tarifa elevada se asociada a clase alta. 
-SibSp y Parch: relaciones familiares a bordo. 
-Cabin y clase: primera clase tenían camarotes asignados con más probabilidad. 
-Age y Parch: los niños podrían tener padres/tutores a bordo. 
-Embarked, Fare y Pclass: es posible que algunas rutas estuvieran relacionadas a un puerto específico. 
+- Pclass y Fare: una tarifa elevada se asociada a clase alta. 
+- SibSp y Parch: relaciones familiares a bordo. 
+- Cabin y clase: primera clase tenían camarotes asignados con más probabilidad. 
+- Age y Parch: los niños podrían tener padres/tutores a bordo. 
+- Embarked, Fare y Pclass: es posible que algunas rutas estuvieran relacionadas a un puerto específico. 
 
 ## Setup en colab: Código
 
