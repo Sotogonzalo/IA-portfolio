@@ -420,7 +420,7 @@ En esta parte buscamos iniciar la normalización del dataset.
 ```
 
 #### Resultados: análisis de estadísticas
-![Tabla comparativa](../assets/resultado-t6-parte2.1.png)
+<!-- ![Tabla comparativa](../assets/resultado-t6-parte2.1.png) -->
 
 
 
