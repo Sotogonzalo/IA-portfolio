@@ -22,7 +22,16 @@ En esta práctica número 6 del curso tenemos la siguiente problemática: Los ce
 
 
 ## Evidencias
-- Se adjunta imagen "resultado-t5-parte1.1.png" en `docs/assets/`
+- Se adjunta imagen "resultado-t6-parte1.1.png" en `docs/assets/`
+- Se adjunta imagen "resultado-t6-parte1.2.png" en `docs/assets/`
+- Se adjunta imagen "resultado-t6-parte1.3.png" en `docs/assets/`
+- Se adjunta imagen "resultado-t6-parte1.4.png" en `docs/assets/`
+- Se adjunta imagen "resultado-t6-parte1.5.png" en `docs/assets/`
+- Se adjunta imagen "resultado-t6-parte1.6.png" en `docs/assets/`
+- Se adjunta imagen "resultado-t6-parte1.7.png" en `docs/assets/`
+- Se adjunta imagen "resultado-t6-parte1.8.png" en `docs/assets/`
+- Se adjunta imagen "resultado-t6-parte1.9.png" en `docs/assets/`
+- Se adjunta imagen "resultado-t6-parte1.10.png" en `docs/assets/`
 
 ## Reflexión
 
