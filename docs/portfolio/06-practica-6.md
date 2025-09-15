@@ -1,701 +1,417 @@
 ---
-title: "Práctica 5"
-date: 2025-08-26
+title: "Práctica 6"
+date: 2025-09-09
 ---
 
-# Práctica 5
+# Práctica 6
 
 ## Contexto
-Práctica número 5 de la primer unidad del curso. Aquí se hacen comparativas de modelos, analisis de datos y toma de desiciones basado en variables generales de cada problema.
+En esta práctica número 6 del curso tenemos la siguiente problemática: Los centros comerciales buscan conocer mejor a sus clientes, pero el problema a resolver es la segmentación de clientes, es decir, agruparlos según sus características y comportamientos para poder diseñar campañas de marketing más personalizadas, ofrecer promociones específicas, invertir mejor en publicidad y comprender cómo compran los distintos tipos de clientes.
 
 ## Objetivos
-- Aprender a prevenir data leakage usando pipelines
-- Implementar validación cruzada (cross-validation) robusta
-- Comparar múltiples modelos de forma sistemática
-- Interpretar métricas de estabilidad y selección de modelos
+- Identificar 3-5 segmentos de clientes distintos usando K-Means.
+- Aplicar técnicas de normalización (MinMax, Standard, Robust).
+- Usar PCA para reducción de dimensionalidad y visualización.
+- Comparar PCA con métodos de selección de features.
+- Interpretar resultados desde perspectiva de negocio.
 
 ## Actividades (con tiempos estimados)
 - Parte 1 (40min)
-- Parte 2 (50min)
-- Parte 3 (60min)
-- Bonus 1 (40min)
-- Bonus 2 (60min)
-- Parte 4 (20min)
-- Formato de la page (90min)
 
 ## Desarrollo
-En esta Práctica probamos distintos modelos y comparamos sus resultados usando validación cruzada. Esto nos ayudó a ver cómo cambia el rendimiento dependiendo de los datos que se usan para entrenar y probar.
+
 
 ## Evidencias
 - Se adjunta imagen "resultado-t5-parte1.1.png" en `docs/assets/`
-- Se adjunta imagen "resultado-t5-parte1.2.png" en `docs/assets/`
-- Se adjunta imagen "resultado-t5-parte2.png" en `docs/assets/`
-- Se adjunta imagen "resultado-t5-parte3.png" en `docs/assets/`
-- Se adjunta imagen "resultado-t5-bonus-1.png" en `docs/assets/`
-- Se adjunta imagen "resultado-t5-bonus2-1.png" en `docs/assets/`
-- Se adjunta imagen "resultado-t5-bonus2-2.png" en `docs/assets/`
-- Se adjunta imagen "resultado-t5-bonus2-3.png" en `docs/assets/`
-- Se adjunta imagen "resultado-t5-bonus2-4.png" en `docs/assets/`
 
 ## Reflexión
-Aprendí que no siempre gana el modelo con mayor precisión, sino el que es más estable y consistente. Es importante evaluar bien antes de elegir, porque así se pueden tomar decisiones más seguras.
-Además, en los bonuses se aprende a elegir bien el modelo según los parámetros del mismo, y la gran importancia que tienen las características dentro de un dataset para analizar y tomar la mejor decision según la situación en cuestión. Es un conjunto de muchos factores lo que hace que un modelo de predición sea exitoso y que este haya sido elegido y utilizado correctamente.
 
 ---
 
-# Machine Learning Clásico: solución
+# Machine Learning Clásico: Clustering y PCA - Mall Customer Segmentation
 
 ## Setup inicial: Código
 
 ```python
-# Instalar
-!pip install ucimlrepo
-
-# Importar librerías que vamos a usar
+# === IMPORTS BÁSICOS PARA EMPEZAR ===
 import pandas as pd
 import numpy as np
-import matplotlib.pyplot as plt
 
-# Para validación y selección de modelos
-from sklearn.linear_model import LogisticRegression, RidgeClassifier
-from sklearn.ensemble import RandomForestClassifier
-from sklearn.model_selection import train_test_split, cross_val_score, KFold, StratifiedKFold
-from sklearn.preprocessing import StandardScaler
-from sklearn.pipeline import Pipeline
-# Para cargar datos desde UCI ML Repository
-from ucimlrepo import fetch_ucirepo
-from sklearn.metrics import accuracy_score, classification_report
-
-print("Setup completo!")
-
+print("Iniciando análisis de Mall Customer Segmentation Dataset")
+print("Pandas y NumPy cargados - listos para trabajar con datos")
 ```
+
 ## Parte 1: Descripción
-En esta parte de la Práctica descargamos y exploramos un dataset de estudiantes del repositorio UCI, revisando características claves, como su tamaño, la variable objetivo y la distribución de las clases, además de convertir los datos a un formato numérico para que puedan ser procesados por sklearn.
+Aquí empezamos por cargar el dataset de clientes, analizaremos sus atributos, los tipos de datos que manejamos y más.
 
-## Parte 1: Código - Cargamos dataset de estudiantes
+## Parte 1: Código
 
 ```python
-# Cargar dataset de estudiantes desde UCI
-student_data = fetch_ucirepo(id=697)
+# Descargar desde GitHub (opción más confiable)
+url = "https://raw.githubusercontent.com/SteffiPeTaffy/machineLearningAZ/master/Machine%20Learning%20A-Z%20Template%20Folder/Part%204%20-%20Clustering/Section%2024%20-%20K-Means%20Clustering/Mall_Customers.csv"
 
-# Preparar datos
-X = student_data.data.features
-y = student_data.data.targets
+df_customers = pd.read_csv(url)
 
-print("Dataset: Student Dropout and Academic Success")
-print(f"Estudiantes: {X.shape[0]}, Características: {X.shape[1]}")
-print(f"Objetivo: Predecir {len(y.columns)} variable(s)")
+print("INFORMACIÓN DEL DATASET:")
+print(f"Shape: {df_customers.shape[0]} filas, {df_customers.shape[1]} columnas")
+print(f"Columnas: {list(df_customers.columns)}")
+print(f"Memoria: {df_customers.memory_usage(deep=True).sum() / 1024:.1f} KB")
 
-# Explorar variable objetivo
-target_col = y.columns[0]  # Primera columna objetivo
-y_series = y[target_col]
-print(f"\nVariable objetivo: {target_col}")
+print(f"\nPRIMERAS 5 FILAS:")
+df_customers.head()
 
-# Mapear valores para mejor interpretación
-target_mapping = {0: 'Dropout', 1: 'Enrolled', 2: 'Graduate'}
-y_mapped = y_series.map(target_mapping)
+# === ANÁLISIS DE TIPOS Y ESTRUCTURA ===
+print("INFORMACIÓN DETALLADA DE COLUMNAS:")
+print(df_customers.info())
 
-# Distribución de clases
-print("\nDistribución de resultados académicos:")
-value_counts = y_mapped.value_counts()
-for outcome, count in value_counts.items():
-    percentage = (count / len(y_mapped)) * 100
-    print(f"  {outcome}: {count} estudiantes ({percentage:.1f}%)")
+print(f"\nESTADÍSTICAS DESCRIPTIVAS:")
+df_customers.describe()
 
-# Ver algunas características
-print(f"\nPrimeras características:")
-print(X.columns.tolist()[:10], "...")
+# === ANÁLISIS DE GÉNERO ===
+print("DISTRIBUCIÓN POR GÉNERO:")
+gender_counts = df_customers['Genre'].value_counts()
+print(gender_counts)
+print(f"\nPorcentajes:")
+for gender, count in gender_counts.items():
+    pct = (count / len(df_customers) * 100)
+    print(f"   {gender}: {pct:.1f}%")
 
-# Estadísticas básicas
-print(f"\nAge at enrollment:")
-if 'Age at enrollment' in X.columns:
-    age_col = X['Age at enrollment']
-    print(f"  Promedio: {age_col.mean():.1f} años")
-    print(f"  Rango: {age_col.min():.0f}-{age_col.max():.0f} años")
+# === ESTADÍSTICAS DE VARIABLES DE SEGMENTACIÓN ===
+numeric_vars = ['Age', 'Annual Income (k$)', 'Spending Score (1-100)']
+
+print("ESTADÍSTICAS CLAVE:")
+print(df_customers[numeric_vars].describe().round(2))
+
+print(f"\nRANGOS OBSERVADOS:")
+for var in numeric_vars:
+    min_val, max_val = df_customers[var].min(), df_customers[var].max()
+    mean_val = df_customers[var].mean()
+    print(f"   {var}: {min_val:.0f} - {max_val:.0f} (promedio: {mean_val:.1f})")
+
+# === DETECCIÓN DE OUTLIERS USANDO IQR ===
+print("DETECCIÓN DE OUTLIERS:")
+
+outlier_cols = ['Age', 'Annual Income (k$)', 'Spending Score (1-100)']
+
+for col in outlier_cols:
+    Q1 = df_customers[col].quantile(0.25)
+    Q3 = df_customers[col].quantile(0.75)
+    IQR = Q3 - Q1
+
+    # Calcular límites
+    lower_bound = Q1 - 1.5 * IQR
+    upper_bound = Q3 + 1.5 * IQR
+
+    # Encontrar outliers
+    outliers = df_customers[(df_customers[col] < lower_bound) | 
+                           (df_customers[col] > upper_bound)]
+
+    print(f"   {col}: {len(outliers)} outliers ({len(outliers)/len(df_customers)*100:.1f}%)")
+    print(f"      Límites normales: {lower_bound:.1f} - {upper_bound:.1f}")
 
 ```
-#### Resultados dataset
-![Tabla comparativa](../assets/resultado-t5-parte1.1.png)
+#### Resultados: info del dataset
+![Tabla comparativa](../assets/resultado-t6-parte1.1.png)
 
-## Parte 1: Código - Mappeo para sklearn
+Cargamos el dataset usando la funcion read.csv() de pandas y vemos información general de las columnas que manipularemos, cantidad de columnas, cantidad de filas, memoria, tipos de datos y memoria usada por el dataset.
+
+#### Resultados: análisis de datos
+![Tabla comparativa](../assets/resultado-t6-parte1.2.png)
+
+Aqui analizaremos estadísticas claves del dataset, como la cantidad de mujeres y hombres, vemos métricas claves en los atributos numéricos del dataset, por ejemplo, la media de edad, de ingresos, el minimo y máximo de edad, y también tenemos los valores de estos atributos para los quartiles, Q1, Q2 y Q3, representando el 25%, 50% y 75% de la información respectivamente. Posteriormente, observamos los rangos que manejamos en nuestros datos, en este caso la edad, el ingreso anual y el puntaje de comprador; para lograr esto usamos las funciones de min(), max() y mean(), de manera de obtener el mínimo, máximo y promedio, facilitando el cálculo.
+Finalmente utilizamos los quartiles que nombramos para calcular outlines de los atributos, es decir, vemos el límite inferior y superior en el que se varia esa métrica.
 
 ```python
-# Preparar variable objetivo como serie simple
-# Convertir strings a números para sklearn
-target_mapping = {0: 'Dropout', 1: 'Enrolled', 2: 'Graduate'}
-reverse_mapping = {'Dropout': 0, 'Enrolled': 1, 'Graduate': 2}
+# === IMPORTS PARA VISUALIZACIÓN ===
+import matplotlib.pyplot as plt
+import seaborn as sns
 
-# Si y_series contiene strings, convertir a números
-if y_series.dtype == 'object':
-    y_target = y_series.map(reverse_mapping)
+# Configurar estilo
+plt.style.use('default')
+sns.set_palette("husl")
+
+# === HISTOGRAMAS DE VARIABLES PRINCIPALES ===
+fig, axes = plt.subplots(1, 3, figsize=(15, 5))
+fig.suptitle('Distribuciones de Variables Clave', fontsize=14, fontweight='bold')
+
+vars_to_plot = ['Age', 'Annual Income (k$)', 'Spending Score (1-100)']
+colors = ['#FF6B6B', '#4ECDC4', '#45B7D1']
+
+for i, (var, color) in enumerate(zip(vars_to_plot, colors)):
+    axes[i].hist(df_customers[var], bins=20, alpha=0.7, color=color, edgecolor='black')
+    axes[i].set_title(f'{var}')
+    axes[i].set_xlabel(var)
+    axes[i].set_ylabel('Frecuencia')
+    axes[i].grid(True, alpha=0.3)
+
+plt.tight_layout()
+plt.show()
+```
+
+#### Resultados: visualización de datos
+![Tabla comparativa](../assets/resultado-t6-parte1.3.png)
+
+Aqui observamos la frecuencia de los datos, para lograr esto, usamos la libreria matplotlib que nos permite graficar y la seaborn para agregarle formato a la visualización.
+
+```python
+# === SCATTER PLOTS PARA RELACIONES CLAVE ===
+fig, axes = plt.subplots(1, 3, figsize=(18, 5))
+fig.suptitle('Relaciones Entre Variables', fontsize=14, fontweight='bold')
+
+# Age vs Income
+axes[0].scatter(df_customers['Age'], df_customers['Annual Income (k$)'], 
+                alpha=0.6, color='#96CEB4', s=50)
+axes[0].set_xlabel('Age (años)')
+axes[0].set_ylabel('Annual Income (k$)')
+axes[0].set_title('Age vs Income')
+axes[0].grid(True, alpha=0.3)
+
+# Income vs Spending Score ⭐ CLAVE PARA SEGMENTACIÓN
+axes[1].scatter(df_customers['Annual Income (k$)'], df_customers['Spending Score (1-100)'], 
+                alpha=0.6, color='#FFEAA7', s=50)
+axes[1].set_xlabel('Annual Income (k$)')
+axes[1].set_ylabel('Spending Score (1-100)')
+axes[1].set_title('Income vs Spending Score (CLAVE)')
+axes[1].grid(True, alpha=0.3)
+
+# Age vs Spending Score
+axes[2].scatter(df_customers['Age'], df_customers['Spending Score (1-100)'], 
+                alpha=0.6, color='#DDA0DD', s=50)
+axes[2].set_xlabel('Age (años)')
+axes[2].set_ylabel('Spending Score (1-100)')
+axes[2].set_title('Age vs Spending Score')
+axes[2].grid(True, alpha=0.3)
+
+plt.tight_layout()
+plt.show()
+```
+
+#### Resultados: relación entre atributos
+![Tabla comparativa](../assets/resultado-t6-parte1.4.png)
+
+En esta visualización buscamos observar la relación entre los atributos, por ejemplo, el puntaje de compra según la edad o el ingreso anual segun la edad/puntaje de compra.
+
+```python
+# === MATRIZ DE CORRELACIÓN ===
+correlation_vars = ['Age', 'Annual Income (k$)', 'Spending Score (1-100)']
+corr_matrix = df_customers[correlation_vars].corr()
+
+print("MATRIZ DE CORRELACIÓN:")
+print(corr_matrix.round(3))
+
+# Visualizar matriz de correlación
+plt.figure(figsize=(8, 6))
+sns.heatmap(corr_matrix, annot=True, cmap='RdYlBu_r', center=0, 
+            fmt='.3f', linewidths=0.5, square=True)
+plt.title('Matriz de Correlación - Mall Customers')
+plt.tight_layout()
+plt.show()
+
+print(f"\nCORRELACIÓN MÁS FUERTE:")
+# Encontrar la correlación más alta (excluyendo diagonal)
+corr_flat = corr_matrix.where(np.triu(np.ones(corr_matrix.shape), k=1).astype(bool))
+max_corr = corr_flat.stack().idxmax()
+max_val = corr_flat.stack().max()
+print(f"   {max_corr[0]} ↔ {max_corr[1]}: {max_val:.3f}")
+```
+#### Resultados: matriz de correlación
+![Tabla comparativa](../assets/resultado-t6-parte1.6.png)
+
+En esta matriz de correlación buscamos analizar entre atributos, cual son los que influyen más entre sí. Por ejemplo, se observa que la edad no influye tanto en el puntaje de compra, si no que el ingreso anual es el que tiene más peso en ese aspecto.
+
+```python
+# === COMPARACIÓN ESTADÍSTICAS POR GÉNERO ===
+print("ANÁLISIS COMPARATIVO POR GÉNERO:")
+
+gender_stats = df_customers.groupby('Genre')[numeric_vars].agg(['mean', 'std']).round(2)
+print(gender_stats)
+
+print(f"\nINSIGHTS POR GÉNERO:")
+for var in numeric_vars:
+    male_avg = df_customers[df_customers['Genre'] == 'Male'][var].mean()
+    female_avg = df_customers[df_customers['Genre'] == 'Female'][var].mean()
+
+    if male_avg > female_avg:
+        higher = "Hombres"
+        diff = male_avg - female_avg
+    else:
+        higher = "Mujeres" 
+        diff = female_avg - male_avg
+
+print(f"   {var}: {higher} tienen promedio más alto (diferencia: {diff:.1f})")
+```
+#### Resultados: análisis del género
+![Tabla comparativa](../assets/resultado-t6-parte1.7.png)
+
+Observamos un pequeño análisis de la influencia que tiene el género en el el puntaje de compra, y en este caso las mujeres tienen un promedio superior al hombre, es decir, son clientes más redituables económicamente. Utilizamos funciones como la media, mean() para el análisis.
+
+```python
+# === COMPLETE ESTOS INSIGHTS BASÁNDOTE EN LO OBSERVADO ===
+print("INSIGHTS PRELIMINARES - COMPLETE:")
+
+print(f"\nCOMPLETE BASÁNDOTE EN TUS OBSERVACIONES:")
+print(f"   Variable con mayor variabilidad: Ingreso anual (Annual Income (k$))")
+print(f"   ¿Existe correlación fuerte entre alguna variable? Si, entre el ingreso anual y el puntaje de compra.")
+print(f"   ¿Qué variable tiene más outliers? La edad.") 
+print(f"   ¿Los hombres y mujeres tienen patrones diferentes? Si, las mujeres tienen tendencia a tener mayor puntaje de compra, es decir, comprar más.")
+print(f"   ¿Qué insight es más relevante para el análisis? La relación entre ingresos y puntaje de compra, porque define segmentos de clientes valiosos.")
+print(f"   ¿Qué 2 variables serán más importantes para clustering? Annual Income (k$) y Spending Score (1-100).")
+
+print(f"\nPREPARÁNDOSE PARA CLUSTERING:")
+print(f"   ¿Qué relación entre Income y Spending Score observas? La relación es que con mayor ingreso anual, mayor es el puntaje de compra.")
+print(f"   ¿Puedes imaginar grupos naturales de clientes? Si, clientes de bajo ingreso/bajo gasto, alto ingreso/alto gasto, y un grupo intermedio.")
+```
+
+```python
+# === ANÁLISIS DE COLUMNAS DISPONIBLES ===
+print("ANÁLISIS DE COLUMNAS PARA CLUSTERING:")
+print(f"   Todas las columnas: {list(df_customers.columns)}")
+print(f"   Numéricas: {df_customers.select_dtypes(include=[np.number]).columns.tolist()}")
+print(f"   Categóricas: {df_customers.select_dtypes(include=[object]).columns.tolist()}")
+
+# Identificar qué excluir y qué incluir
+exclude_columns = ['CustomerID']  # ID no aporta información
+numeric_columns = ['Age', 'Annual Income (k$)', 'Spending Score (1-100)']
+categorical_columns = ['Genre']
+
+print(f"\nSELECCIÓN DE FEATURES:")
+print(f"   Excluidas: {exclude_columns} (no informativas)")
+print(f"   Numéricas: {numeric_columns}")
+print(f"   Categóricas: {categorical_columns} (codificaremos)")
+```
+
+Aqui mostramos las columnas disponibles, y las clasificamos entre numéricas y categóricas, y a su vez excluimos las que no nos brindan información de la persona en cuestión.
+
+```python
+# === IMPORT ONEHOTENCODER ===
+from sklearn.preprocessing import OneHotEncoder
+
+print("CODIFICACIÓN DE VARIABLES CATEGÓRICAS CON SKLEARN:")
+print("Usaremos OneHotEncoder en lugar de pd.get_dummies() por varias razones:")
+print("   Integración perfecta con pipelines de sklearn")
+print("   Manejo automático de categorías no vistas en nuevos datos") 
+print("   Control sobre nombres de columnas y comportamiento")
+print("   Consistencia con el ecosistema de machine learning")
+
+# Crear y configurar OneHotEncoder
+encoder = OneHotEncoder(sparse_output=False)
+
+# Ajustar y transformar Genre
+genre_data = df_customers[['Genre']]  # Debe ser 2D para sklearn
+genre_encoded_array = encoder.fit_transform(genre_data)  # Método para ajustar y transformar
+
+# Obtener nombres de las nuevas columnas
+feature_names = encoder.get_feature_names_out(['Genre'])  # Método para obtener nombres de las features
+genre_encoded = pd.DataFrame(genre_encoded_array, columns=feature_names)
+
+print(f"\nRESULTADO DE CODIFICACIÓN:")
+print(f"   Categorías originales: {df_customers['Genre'].unique()}")
+print(f"   Columnas generadas: {list(genre_encoded.columns)}")
+print(f"   Shape: {genre_data.shape} → {genre_encoded.shape}")
+
+# Mostrar ejemplo de codificación
+print(f"\nEJEMPLO DE TRANSFORMACIÓN:")
+comparison = pd.concat([
+    df_customers['Genre'].head().reset_index(drop=True),
+    genre_encoded.head()
+], axis=1)
+print(comparison)
+```
+
+#### Resultados: OneHotEncoder
+![Tabla comparativa](../assets/resultado-t6-parte1.8.png)
+
+En esta seccion lo que buscamos es favorecer el modelo y para ello, creamos 2 categorias más a partir de los datos en sí, Male/Female ahora tienen sus atributos Genre_Female y Genre_Male, las cuales son booleans indicando si son hombres o mujeres.
+
+```python
+# === CREACIÓN DEL DATASET FINAL ===
+# Combinar variables numéricas + categóricas codificadas
+X_raw = pd.concat([
+    df_customers[numeric_columns],
+    genre_encoded
+], axis=1)
+
+print("DATASET FINAL PARA CLUSTERING:")
+print(f"   Shape: {X_raw.shape}")
+print(f"   Columnas: {list(X_raw.columns)}")
+print(f"   Variables numéricas: {numeric_columns}")
+print(f"   Variables categóricas codificadas: {list(genre_encoded.columns)}")
+print(f"   Total features: {X_raw.shape[1]} (3 numéricas + 2 categóricas binarias)")
+print(f"   Memoria: {X_raw.memory_usage(deep=True).sum() / 1024:.1f} KB")
+
+# === VERIFICACIONES ANTES DE CONTINUAR ===
+print("VERIFICACIÓN DE CALIDAD:")
+
+# 1. Datos faltantes
+missing_data = X_raw.isnull().sum()
+print(f"\nDATOS FALTANTES:")
+if missing_data.sum() == 0:
+    print("   PERFECTO! No hay datos faltantes")
 else:
-    y_target = y_series
+    for col, missing in missing_data.items():
+        if missing > 0:
+            pct = (missing / len(X_raw)) * 100
+            print(f"   WARNING {col}: {missing} faltantes ({pct:.1f}%)")
 
-X_features = X       # Features del dataset
+# 2. Vista previa
+print(f"\nVISTA PREVIA DEL DATASET:")
+print(X_raw.head())
 
-print("Datos preparados para validación:")
-print(f"X shape: {X_features.shape}")
-print(f"y shape: {y_target.shape}")
-print(f"Clases únicas: {sorted(y_target.unique())}")
-print(f"Mapeo: {target_mapping}")
+# 3. Tipos de datos
+print(f"\nTIPOS DE DATOS:")
+print(X_raw.dtypes)
 ```
-#### Resultados mappeo
-![Tabla comparativa](../assets/resultado-t5-parte1.2.png)
+
+#### Resultados: Nuevo DataSet
+![Tabla comparativa](../assets/resultado-t6-parte1.9.png)
+
+Creamos el dataset final con las variables creadas y numéricas que ya teniamos, y además, hacemos un breve chequeo si tenemos que pulir el dataset en caso de nulos o información faltante.
+
+```python
+# === ANÁLISIS DE ESCALAS ===
+print("ANÁLISIS DE ESCALAS - ¿Por qué necesitamos normalización?")
+
+print(f"\nESTADÍSTICAS POR VARIABLE:")
+for col in X_raw.columns:
+    if X_raw[col].dtype in ['int64', 'float64']:  # Solo numéricas
+        min_val = X_raw[col].min()
+        max_val = X_raw[col].max()
+        mean_val = X_raw[col].mean()
+        std_val = X_raw[col].std()
+
+        print(f"\n   {col}:")
+        print(f"      Rango: {min_val:.1f} - {max_val:.1f}")
+        print(f"      Media: {mean_val:.1f}")
+        print(f"      Desviación: {std_val:.1f}")
+
+print(f"\nANÁLISIS DE LAS ESTADÍSTICAS - COMPLETA:")
+print(f"   ¿Qué variable tiene el rango más amplio? Annual Income (k$).")
+print(f"   ¿Cuál es la distribución de género en el dataset? Balanceada, un poquito más de mujeres.")
+print(f"   ¿Qué variable muestra mayor variabilidad (std)? Annual Income (k$).")
+print(f"   ¿Los clientes son jóvenes o mayores en promedio? Jóvenes-adultos, la edad promedio es de alrededor de 37 años.")
+print(f"   ¿El income promedio sugiere qué clase social? Clase media.")
+print(f"   ¿Por qué la normalización será crítica aca? Porque las variables están en escalas muy distintas, y puede llegar a sesgar los algoritmos de clustering.")
+
+# Guardar para próximas fases
+feature_columns = list(X_raw.columns)
+print(f"\nLISTO PARA DATA PREPARATION con {len(feature_columns)} features")
+
+```
+
+#### Resultados: análisis de estadísticas
+![Tabla comparativa](../assets/resultado-t6-parte1.10.png)
 
 ## Parte 2: Descripción
-Aquí se aplica validación cruzada (con KFold y StratifiedKFold) para evaluar qué tan estable y confiable es el modelo de regresión logística, para esto comparamos los resultados de ambos enfoques y visualizamos la variabilidad de los scores.
+En esta parte buscamos iniciar la normalización del dataset.
 
 ## Parte 2: Código
-
 ```python
 
-# === VALIDACIÓN CRUZADA PARA ESTABILIDAD ===
-
-print("🔬 VALIDACIÓN CRUZADA: ¿Qué tan estable es nuestro modelo?")
-
-# 1. Crear pipeline robusto para usar en CV
-pipeline_robust = Pipeline([
-    ('scaler', StandardScaler()),
-    ('classifier', LogisticRegression(max_iter=1000, random_state=42))
-])
-
-print("Pipeline creado para validación cruzada")
-
-# 2. Crear KFold básico
-kfold = KFold(n_splits=5, shuffle=True, random_state=42)
-
-# 3. Evaluar con KFold usando cross_val_score
-scores_kfold = cross_val_score(
-    pipeline_robust, X_features, y_target, cv=kfold, scoring='accuracy'
-)
-
-print(f"\nKFOLD RESULTS:")
-print(f"   Scores individuales: {scores_kfold}")
-print(f"   Media: {scores_kfold.mean():.4f}")
-print(f"   Desviación estándar: {scores_kfold.std():.4f}")
-print(f"   Resultado: {scores_kfold.mean():.4f} ± {scores_kfold.std():.4f}")
-
-# 4. Crear StratifiedKFold (mantiene proporción de clases)
-stratified_kfold = StratifiedKFold(n_splits=5, shuffle=True, random_state=42)
-
-# 5. Evaluar con StratifiedKFold
-scores_stratified = cross_val_score(
-    pipeline_robust, X_features, y_target, cv=stratified_kfold, scoring='accuracy'
-)
-
-print(f"\nSTRATIFIED KFOLD RESULTS:")
-print(f"   Scores individuales: {scores_stratified}")
-print(f"   Media: {scores_stratified.mean():.4f}")
-print(f"   Desviación estándar: {scores_stratified.std():.4f}")
-print(f"   Resultado: {scores_stratified.mean():.4f} ± {scores_stratified.std():.4f}")
-
-# 6. Comparar estabilidad (menor desviación = más estable)
-print(f"\nCOMPARACIÓN DE ESTABILIDAD:")
-if scores_stratified.std() < scores_kfold.std():
-    print("   StratifiedKFold es MÁS ESTABLE (menor variabilidad)")
-    mejor_cv = "StratifiedKFold"
-else:
-    print("   KFold es MÁS ESTABLE (menor variabilidad)")
-    mejor_cv = "KFold"
-
-print(f"   Recomendación: Usar {mejor_cv} para este dataset")
-
-# 7. Visualizar la distribución de scores
-import matplotlib.pyplot as plt
-plt.figure(figsize=(10, 6))
-plt.boxplot([scores_kfold, scores_stratified], labels=['KFold', 'StratifiedKFold'])
-plt.title('Distribución de Scores - Validación Cruzada')
-plt.ylabel('Accuracy')
-plt.grid(True, alpha=0.3)
-plt.show()
-
-```
-#### Resultados validación cruzada
-![Tabla comparativa](../assets/resultado-t5-parte2.png)
-
-En la imágen se puede apreciar que el StratifiedKFold es más estable pero con un media menor al Kfold normal, el cual tiene una desviación más grande y posee extremos más pronunciados como se puede ver que va desde 0,780 hasta 0,750 aproximadamente.
-En conclusión, si buscamos estabilidad el StratifiedKFold es nuestra mejor opción.
-
-## Parte 3: Descripción
-En esta parte de la Práctica se comparan tres modelos de clasificación (Regresión Logística, Ridge Classifier y Random Forest) usando validación cruzada. 
-También calcularemos el accuracy promedio y la desviación estándar para medir rendimiento y estabilidad, y por ultimo, se identificá el mejor modelo, visualizando los resultados con gráficos comparativos.
-
-## Parte 3: Código
-
-```python
-# === COMPETENCIA DE MODELOS ===
-
-print("🏆 TORNEO: ¿Cuál modelo funciona mejor para diagnóstico médico?")
-
-# 1. Definir candidatos (diferentes algoritmos)
-models = {
-    'Logistic Regression': Pipeline([
-        ('scaler', StandardScaler()),
-        ('classifier', LogisticRegression(max_iter=1000, random_state=42))
-    ]),
-
-    # 2. Ridge Classifier (regresión logística con regularización L2)
-    'Ridge Classifier': Pipeline([
-        ('scaler', StandardScaler()),
-        ('classifier', RidgeClassifier(alpha=1.0, random_state=42))
-    ]),
-
-    # 3. Random Forest (ensemble, no necesita escalado)
-    'Random Forest': Pipeline([
-        ('classifier', RandomForestClassifier(n_estimators=100, random_state=42))
-    ])
-}
-
-print(f"Modelos en competencia: {list(models.keys())}")
-
-# 4. Evaluar cada modelo con validación cruzada
-print(f"\nEVALUANDO MODELOS CON 5-FOLD CV...")
-
-results = {}
-for name, model in models.items():
-    print(f"   Evaluando {name}...")
-
-    # Usar StratifiedKFold para mantener balance de clases
-    scores = cross_val_score(
-        model, X_features, y_target, 
-        cv=StratifiedKFold(n_splits=5, shuffle=True, random_state=42),
-        scoring='accuracy'
-    )
-
-    results[name] = scores
-
-    print(f"   {name}: {scores.mean():.4f} ± {scores.std():.4f}")
-    print(f"      Scores: {[f'{s:.3f}' for s in scores]}")
-
-# 5. Encontrar el mejor modelo
-print(f"\nRESULTADOS FINALES:")
-
-# Encontrar modelo con mayor accuracy promedio
-best_mean_score = 0
-best_model_name = ""
-
-for name, scores in results.items():
-    if scores.mean() > best_mean_score:
-        best_mean_score = scores.mean()
-        best_model_name = name
-
-print(f"GANADOR: {best_model_name}")
-print(f"Score: {best_mean_score:.4f}")
-
-# 6. Análisis detallado de estabilidad
-print(f"\nANÁLISIS DE ESTABILIDAD:")
-for name, scores in results.items():
-    stability = scores.std()
-
-    if stability < 0.02:
-        status = "MUY ESTABLE"
-    elif stability < 0.05:
-        status = "ESTABLE"
-    else:
-        status = "INESTABLE"
-
-    print(f"   {name}: {status} (std: {stability:.4f})")
-
-# 7. Visualización comparativa
-plt.figure(figsize=(12, 6))
-
-# Boxplot de distribución de scores
-plt.subplot(1, 2, 1)
-plt.boxplot([results[name] for name in models.keys()], 
-           labels=[name.split()[0] for name in models.keys()])
-plt.title('Distribución de Accuracy por Modelo')
-plt.ylabel('Accuracy')
-plt.grid(True, alpha=0.3)
-
-# Barplot de medias con error bars
-plt.subplot(1, 2, 2)
-names = list(models.keys())
-means = [results[name].mean() for name in names]
-stds = [results[name].std() for name in names]
-
-plt.bar(range(len(names)), means, yerr=stds, capsize=5)
-plt.xticks(range(len(names)), [name.split()[0] for name in names])
-plt.title('Accuracy Promedio ± Desviación Estándar')
-plt.ylabel('Accuracy')
-plt.grid(True, alpha=0.3)
-
-plt.tight_layout()
-plt.show()
-```
-
-#### Resultados de distintos modelos
-![Tabla comparativa](../assets/resultado-t5-parte3.png)
-
-Podemos observar varias cosas de los modelos, primero se descarta Ridge como ópcion ya que tiene una media muy baja comparada con los otros dos modelo.
-Después, dependiendo de lo que busquemos en nuestro modelo podemos optar por Logistic, si queremos estabilidad y una buena media, y por otro lado, Random Forest que nos da una media mejor pero es menos estable ya que varía entre extremos desde 0,775 hasta 0,757 aproximadamente, que aún así es mejor que el más bajo del Logistic.
-En definitiva, como comparamos medias, Random Forest sería nuestra mejor opción.
-
-
-📚 BONUS: ¿Qué significan las métricas de validación?
-Completa las definiciones:
-#### Cross-Validation: 
-##### Técnica que divide los datos en k partes para entrenar y evaluar múltiples veces.
-#### Accuracy promedio: 
-##### La medida de rendimiento esperado en datos nuevos.
-#### Desviación estándar: 
-##### Indica qué tan consistente es el modelo entre diferentes divisiones de datos.
-#### StratifiedKFold: 
-##### Mantiene la proporción de clases en cada fold, especialmente importante en datasets desbalanceados.
-
----
-🚀 BONUS: Optimización de Hiperparámetros
-## GridSearchCV vs RandomizedSearchCV
-
-## Bonus 1: Descripción
-En este primer bonus buscamos optimizar el modelo ganador ajustando sus hiperparámetros. Para eso usamos dos métodos: GridSearchCV, que prueba todas las combinaciones posibles, y RandomizedSearchCV, que elige algunas al azar para reducir tiempo de cálculo.
-
-```python
-from sklearn.model_selection import GridSearchCV, RandomizedSearchCV
-
-# Seleccionar el mejor modelo de la competencia anterior
-best_model_base = models[best_model_name]
-
-print(f"Optimizando hiperparámetros para: {best_model_name}")
-
-# Definir espacio de búsqueda de hiperparámetros
-if 'Random Forest' in best_model_name:
-    param_grid = {
-        'classifier__n_estimators': [50, 100, 200],
-        'classifier__max_depth': [None, 10, 20, 30],
-        'classifier__min_samples_split': [2, 5, 10]
-    }
-elif 'Logistic' in best_model_name:
-    param_grid = {
-        'classifier__C': [0.1, 1, 10, 100],
-        'classifier__max_iter': [1000, 2000]
-    }
-else:  # Ridge
-    param_grid = {
-        'classifier__alpha': [0.1, 1, 10, 100]
-    }
-
-# MÉTODO 1: GridSearchCV (búsqueda exhaustiva)
-print("\nMétodo 1: GridSearchCV (búsqueda exhaustiva)")
-grid_search = GridSearchCV(
-    best_model_base,
-    param_grid,
-    cv=5,
-    scoring='accuracy',
-    n_jobs=-1,
-    verbose=1
-)
-
-grid_search.fit(X_features, y_target)
-
-print(f"Mejores parámetros (Grid): {grid_search.best_params_}")
-print(f"Mejor score (Grid): {grid_search.best_score_:.4f}")
-
-# MÉTODO 2: RandomizedSearchCV (búsqueda aleatoria, más eficiente)
-print("\nMétodo 2: RandomizedSearchCV (búsqueda aleatoria)")
-random_search = RandomizedSearchCV(
-    best_model_base,
-    param_grid,
-    n_iter=20,  # Solo 20 combinaciones aleatorias
-    cv=5,
-    scoring='accuracy',
-    n_jobs=-1,
-    random_state=42,
-    verbose=1
-)
-
-random_search.fit(X_features, y_target)
-
-print(f"Mejores parámetros (Random): {random_search.best_params_}")
-print(f"Mejor score (Random): {random_search.best_score_:.4f}")
-
-# Comparar eficiencia
-print(f"\nComparación de eficiencia:")
-print(f"GridSearch probó: {len(grid_search.cv_results_['params'])} combinaciones")
-print(f"RandomSearch probó: {len(random_search.cv_results_['params'])} combinaciones")
-
-# Evaluar modelo final optimizado
-final_model = grid_search.best_estimator_
-final_scores = cross_val_score(final_model, X_features, y_target, cv=5)
-print(f"\nModelo final optimizado: {final_scores.mean():.4f} ± {final_scores.std():.4f}")
-```
-
-#### Resultados de optimizaciones
-![Tabla comparativa](../assets/resultado-t5-bonus-1.png)
-
-La prueba que hicimos con Random Forest muestra que el modelo puede predecir con un 77,8% de acierto si un estudiante va a continuar, abandonar o graduarse. Utilizamos dos formas distintas de buscar los mejores parámetros, una más exhaustiva en GridSearch, y la otra más rápida y aleatoria, RandomSearch. Las dos dieron exactamente el mismo resultado, aunque la segunda fue más eficiente porque necesitó menos intentos.
-
-¿Cuándo usar cada método? 
-Completa la guía de decisión:
-##### GridSearchCV cuando tienes pocos hiperparámetros y suficiente tiempo de cómputo.
-##### RandomizedSearchCV cuando tienes muchos hiperparámetros o el tiempo limitado.
-##### Pipeline + SearchCV siempre previene data leakage automáticamente.
-##### cross_val_score en el resultado final valida que la optimización no causó overfitting.
-
----
-🔍 BONUS 2: Explicabilidad del Modelo
-## ¿Por qué el modelo toma esas decisiones?
-
-## Bonus 2: Descripción
-En este busca entender por qué el modelo toma sus decisiones, y para ello se usa un modelo tipo Random Forest, ya que permite analizar la importancia de las características, agrupar factores (académicos, demográficos y económicos) y visualizar reglas de decisión dentro de los árboles. Además, se estudia cómo influyen las variables en casos individuales.
-
-```python
-# Usar Random Forest para explicabilidad (si no ganó, crearlo)
-if 'Random Forest' not in best_model_name:
-    # Crear Random Forest específico para explicabilidad
-    # Random Forest no necesita escalado, así que lo omitimos para simplicidad
-    rf_model = Pipeline([
-        ('classifier', RandomForestClassifier(n_estimators=100, random_state=42))
-    ])
-    rf_model.fit(X_features, y_target)
-    print("Creado Random Forest específico para análisis de explicabilidad")
-else:
-    rf_model = final_model
-    print("Usando el modelo ganador para explicabilidad")
-
-# Verificar estructura del pipeline
-print(f"Componentes del pipeline: {list(rf_model.named_steps.keys())}")
-
-# 1. FEATURE IMPORTANCE - ¿Qué características son más importantes?
-feature_names = X_features.columns
-importances = rf_model.named_steps['classifier'].feature_importances_
-
-# Crear DataFrame para mejor visualización
-feature_importance_df = pd.DataFrame({
-    'feature': feature_names,
-    'importance': importances
-}).sort_values('importance', ascending=False)
-
-print("\nTOP 10 CARACTERÍSTICAS MÁS IMPORTANTES:")
-for i, row in feature_importance_df.head(10).iterrows():
-    print(f"{row['feature']}: {row['importance']:.4f}")
-
-# Visualizar importancia de características
-plt.figure(figsize=(10, 8))
-top_features = feature_importance_df.head(15)
-plt.barh(range(len(top_features)), top_features['importance'])
-plt.yticks(range(len(top_features)), top_features['feature'])
-plt.xlabel('Importancia')
-plt.title('Top 15 Características Más Importantes para Predecir Éxito Estudiantil')
-plt.gca().invert_yaxis()
-plt.tight_layout()
-plt.show()
-
-# 2. ANÁLISIS POR CATEGORÍAS - Agrupar características relacionadas
-academic_features = [col for col in feature_names if any(word in col.lower() 
-                    for word in ['grade', 'units', 'curricular', 'semester'])]
-demographic_features = [col for col in feature_names if any(word in col.lower() 
-                       for word in ['age', 'gender', 'nationality', 'marital'])]
-economic_features = [col for col in feature_names if any(word in col.lower() 
-                    for word in ['scholarship', 'debt', 'fee', 'tuition'])]
-
-def calculate_category_importance(features, importance_df):
-    if not features:
-        return 0
-    category_importance = importance_df[importance_df['feature'].isin(features)]['importance'].sum()
-    return category_importance
-
-academic_importance = calculate_category_importance(academic_features, feature_importance_df)
-demographic_importance = calculate_category_importance(demographic_features, feature_importance_df)
-economic_importance = calculate_category_importance(economic_features, feature_importance_df)
-
-print(f"\nIMPORTANCIA POR CATEGORÍAS:")
-print(f"Factores académicos: {academic_importance:.4f}")
-print(f"Factores demográficos: {demographic_importance:.4f}")
-print(f"Factores económicos: {economic_importance:.4f}")
-
-# 3. INTERPRETACIÓN PRÁCTICA - ¿Qué significa esto?
-print(f"\nINTERPRETACIÓN PARA INTERVENCIONES:")
-print(f"La característica más importante es: {feature_importance_df.iloc[0]['feature']}")
-print(f"Esto sugiere que para reducir abandono estudiantil debemos enfocarnos en:")
-
-# Generar recomendaciones basadas en las top features
-top_3_features = feature_importance_df.head(3)['feature'].tolist()
-for i, feature in enumerate(top_3_features, 1):
-    print(f"{i}. Monitorear y mejorar: {feature}")
-
-# 4. PREDICCIÓN INDIVIDUAL - ¿Por qué un estudiante específico está en riesgo?
-print(f"\nANÁLISIS DE ESTUDIANTE INDIVIDUAL (ejemplo):")
-student_idx = 0
-student_data = X_features.iloc[student_idx:student_idx+1]
-prediction = rf_model.predict(student_data)[0]
-prediction_proba = rf_model.predict_proba(student_data)[0]
-
-# Definir mapeo localmente para esta sección
-outcome_mapping = {0: 'Dropout', 1: 'Enrolled', 2: 'Graduate'}
-
-# Manejar si prediction es string o número
-if isinstance(prediction, str):
-    predicted_outcome = prediction
-else:
-    predicted_outcome = outcome_mapping[prediction]
-
-print(f"Estudiante #{student_idx}:")
-print(f"Predicción: {predicted_outcome}")
-print(f"Probabilidades:")
-for i, prob in enumerate(prediction_proba):
-    outcome_name = outcome_mapping[i]
-    print(f"  {outcome_name}: {prob:.3f}")
-
-# Mostrar las características más importantes de este estudiante
-student_features = pd.DataFrame({
-    'feature': feature_names,
-    'value': student_data.iloc[0].values,
-    'importance': importances
-}).sort_values('importance', ascending=False)
-
-print(f"\nTop 5 características que influyen en esta predicción:")
-for i, row in student_features.head(5).iterrows():
-    print(f"{row['feature']}: {row['value']:.2f} (importancia: {row['importance']:.4f})")
-
-# 5. VISUALIZACIÓN DE ÁRBOLES INDIVIDUALES
-print(f"\nVISUALIZACIÓN DE ÁRBOLES DEL RANDOM FOREST:")
-
-# Instalar graphviz si no está disponible
-try:
-    from sklearn.tree import export_graphviz, plot_tree, export_text
-    import matplotlib.pyplot as plt
-
-    # Obtener algunos árboles del bosque
-    forest = rf_model.named_steps['classifier']
-    n_trees_to_show = min(3, len(forest.estimators_))
-
-    print(f"Mostrando {n_trees_to_show} árboles de {len(forest.estimators_)} totales")
-
-    # Visualizar árboles con plot_tree (más simple)
-    fig, axes = plt.subplots(1, n_trees_to_show, figsize=(25, 12))
-    if n_trees_to_show == 1:
-        axes = [axes]
-
-    for i in range(n_trees_to_show):
-        tree = forest.estimators_[i]
-
-        # Limitar profundidad para que sea legible
-        plot_tree(tree, 
-                 ax=axes[i],
-                 feature_names=list(feature_names),  # Usar todos los nombres de características
-                 class_names=list(outcome_mapping.values()),
-                 filled=True,
-                 max_depth=3,  # Limitar profundidad
-                 fontsize=6)  # Fuente más pequeña para que quepa
-
-        axes[i].set_title(f'Árbol {i+1} (profundidad máx: 3)', fontsize=12)
-
-    plt.tight_layout()
-    plt.show()
-
-    # Información sobre la estructura de los árboles
-    print(f"\nESTADÍSTICAS DE LOS ÁRBOLES:")
-    depths = [tree.get_depth() for tree in forest.estimators_[:5]]
-    n_nodes = [tree.tree_.node_count for tree in forest.estimators_[:5]]
-
-    print(f"Profundidad promedio (primeros 5 árboles): {sum(depths)/len(depths):.1f}")
-    print(f"Número promedio de nodos (primeros 5): {sum(n_nodes)/len(n_nodes):.1f}")
-
-    # Mostrar un árbol muy simple por texto
-    print(f"\nEJEMPLO DE REGLAS DE DECISIÓN (Árbol 1, simplificado):")
-    tree_rules = export_text(forest.estimators_[0], 
-                           feature_names=list(feature_names),
-                           max_depth=2)
-    print(tree_rules[:500] + "..." if len(tree_rules) > 500 else tree_rules)
-
-except ImportError:
-    print("Para visualizar árboles, instala: pip install graphviz")
-    print("Alternativamente, mostramos la estructura del bosque:")
-
-    forest = rf_model.named_steps['classifier']
-    print(f"Random Forest contiene {len(forest.estimators_)} árboles")
-    print(f"Cada árbol fue entrenado con {forest.max_features_} características aleatorias")
-
-    # Estadísticas básicas sin visualización
-    if len(forest.estimators_) > 0:
-        depths = [tree.get_depth() for tree in forest.estimators_[:5]]
-        print(f"Profundidad promedio: {sum(depths)/len(depths):.1f}")
-
-# 6. DIVERSIDAD DEL BOSQUE
-print(f"\nDIVERSIDAD EN EL RANDOM FOREST:")
-print("El poder del Random Forest viene de la diversidad de sus árboles:")
-print("- Cada árbol ve una muestra diferente de datos (bootstrap)")
-print("- Cada split considera solo un subconjunto aleatorio de características")
-print("- La predicción final es el voto mayoritario de todos los árboles")
-
-# Mostrar diferencias en predicciones individuales
-student_sample = X_features.iloc[0:1]
-individual_predictions = []
-
-# Preparar datos dependiendo de si el modelo tiene scaler o no
-if 'scaler' in rf_model.named_steps:
-    # Modelo con scaler
-    scaled_sample = rf_model.named_steps['scaler'].transform(student_sample)
-    print("Usando datos escalados para árboles individuales")
-else:
-    # Modelo sin scaler (ej: Random Forest sin preprocesamiento)
-    scaled_sample = student_sample.values
-    print("Usando datos sin escalar para árboles individuales")
-
-for i, tree in enumerate(forest.estimators_[:5]):
-    tree_pred = tree.predict(scaled_sample)[0]
-    individual_predictions.append(tree_pred)
-
-print(f"\nPredicciones de árboles individuales para el Estudiante #0:")
-for i, pred in enumerate(individual_predictions):
-    pred_name = outcome_mapping[pred] if isinstance(pred, int) else pred
-    print(f"  Árbol {i+1}: {pred_name}")
-
-final_pred = max(set(individual_predictions), key=individual_predictions.count)
-final_pred_name = outcome_mapping[final_pred] if isinstance(final_pred, int) else final_pred
-print(f"Predicción final (voto mayoritario): {final_pred_name}")
 
 ```
 
-#### Resultados
-![Tabla comparativa](../assets/resultado-t5-bonus-2-1.png)
-
-Primeramente analizamos las características más importantes del dataset, como podemos ver, en cada una de ellas se predice el porcentaje de éxito, es decir, vemos cómo influye la situación del estudiante en su aprobación y así poder ayudar o intentar mejorar esos porcentajes dependiendo de cada individuo.
-
-![Tabla comparativa](../assets/resultado-t5-bonus-2-2.png)
-
-Aquí englobamos las caracteristicas en categorias, en este caso se analizaron 3 pero es posible que existas más factores. Esto permite ver a grandes razgos qué afecta más al estudiante.
-Además, dentro de las características vemos que una en particular (Curricular units 2nd sem (approved)) lo cual da indicio que es la más importante, y en base a esto se podría diseñar un plan de apoyo o por lo menos hacer énfasis en mejorar el porcentaje de éxito ahí.
-Por ultimo, podemos ver cómo este analisis ayuda a predecir el resultado de un estudiante en particular, viendo qué características son las más propensas a llevarlo al fracaso, permitiendo que se pueda revertir la situación.
-
-![Tabla comparativa](../assets/resultado-t5-bonus-2-3.png)
-
-En esta etapa visualizamos 3 árboles de decision, dentro de los 100 totales utilizados. Esto permite ver cómo se comporta el modelo a la hora de analizar cada individuo y poder tener una estimación de su resultado de manera más precisa, por ejemplo en el primer árbol, si Curricular units 2nd sem (approved) es menor a 3.5 va hacia la izquierda "True" y a partir de ahí evalua una vez más y así, de manera que se pueda tener un caso muy especifico de una situación particular. Esto se hace con cada característica disponible que se analizó previamente.
-
-![Tabla comparativa](../assets/resultado-t5-bonus-2-4.png)
-
-Estadísticas generales de los árboles, y un ejemplo de toma de decisión como explicabamos anteriormente. En base a estos análisis de árboles podemos ver cómo el estudiante que evaluamos previamente está cayendo en el árbol 1 que indica que este tiene un Curricular units 2nd sem (approved) menor a 3.50 entre otras características puntuales.
-
-En conclusión, este análisis permite identificar los factores más influyentes en el rendimiento académico y anticipar riesgos, lo que ayuda a diseñar estrategias de apoyo más efectivas para mejorar las posibilidades de éxito de cada estudiante.
+#### Resultados: análisis de estadísticas
+![Tabla comparativa](../assets/resultado-t6-parte2.1.png)
 
 
-¿Por qué es importante la explicabilidad? 
-Completa las razones:
-#### Confianza: 
-##### Los educadores necesitan entender por qué el modelo predice abandono.
-#### Intervenciones: 
-##### Knowing las características importantes permite crear acciones específicas.
-#### Bias detection: 
-##### La explicabilidad ayuda a detectar sesgos en el modelo.
-#### Regulaciones: 
-##### Muchos contextos requieren modelos explicables por ley.
-#### Mejora continua: 
-##### Entender el modelo ayuda a mejorar futuras versiones.
 
-## 🎯 Parte 4: Preguntas de Reflexión. 
-Responde estas preguntas simples:
-### ¿Qué es data leakage y por qué es peligroso?
-#### 💡 PISTA: Piensa en qué información "ve" el modelo antes de tiempo
-##### Es cuando el modelo accede a información que no debería tener en el entrenamiento y es peligroso porque hace que el modelo parezca muy bueno, pero en la práctica falla con datos nuevos.
-### ¿Cuándo usar KFold vs StratifiedKFold?
-#### 💡 PISTA: ¿Qué pasa si una clase tiene muy pocas muestras?
-##### KFold se usa cuando los datos están balanceados. StratifiedKFold se usa cuando hay clases poco representadas, porque asegura que en cada división la proporción de clases se mantenga.
-### ¿Cómo interpretar "95.2% ± 2.1%" en cross-validation?
-#### 💡 PISTA: ¿Qué significa cada número para el rendimiento del modelo?
-##### El 95.2% es el rendimiento promedio esperado y el ± 2.1% indica qué tan variable o estable fue el modelo.
-### ¿Por qué Random Forest no necesita StandardScaler?
-#### 💡 PISTA: 🔗 Cómo funcionan los árboles de decisión
-##### Porque se basa en árboles de decisión, que dividen los datos con reglas (mayor o menor que un valor).
-### En diagnóstico médico, ¿prefieres un modelo con 98% accuracy pero inestable, o 95% accuracy pero muy estable?
-#### 💡 PISTA: 🩺 ¿Qué es más importante: máximo rendimiento o confiabilidad?
-##### Es preferible el modelo más estable (95%), porque en medicina por ejemplo, la confiabilidad es más importante que tener un pico de rendimiento que no siempre se repite.
