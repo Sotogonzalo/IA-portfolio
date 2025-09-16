@@ -20,3 +20,6 @@ Bienvenido a las entradas del portafolio. Usá la plantilla para crear nuevas p�
 - Práctica 5: [05-practica-5.md](05-practica-5.md)
 - Práctica 6: [06-practica-6.md](06-practica-6.md)
 
+### UT2
+- Práctica 7: [07-practica-7.md](07-practica-7.md)
+
