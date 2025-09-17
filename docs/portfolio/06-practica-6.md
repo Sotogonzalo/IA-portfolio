@@ -16,7 +16,11 @@ En esta práctica número 6 del curso tenemos la siguiente problemática: Los ce
 - Interpretar resultados desde perspectiva de negocio.
 
 ## Actividades (con tiempos estimados)
-- Parte 1 (40min)
+- Parte 1 (180min)
+- Parte 2 (150min)
+- Parte 3 (30min)
+- Parte 4 (15min)
+- Diseño del github pages (200min)
 
 ## Desarrollo
 
@@ -32,6 +36,19 @@ En esta práctica número 6 del curso tenemos la siguiente problemática: Los ce
 - Se adjunta imagen "resultado-t6-parte1.8.png" en `docs/assets/`
 - Se adjunta imagen "resultado-t6-parte1.9.png" en `docs/assets/`
 - Se adjunta imagen "resultado-t6-parte1.10.png" en `docs/assets/`
+- Se adjunta imagen "resultado-t6-parte2.1.png" en `docs/assets/`
+- Se adjunta imagen "resultado-t6-parte2.2.png" en `docs/assets/`
+- Se adjunta imagen "resultado-t6-parte2.3.png" en `docs/assets/`
+- Se adjunta imagen "resultado-t6-parte2.4.png" en `docs/assets/`
+- Se adjunta imagen "resultado-t6-parte2.5.png" en `docs/assets/`
+- Se adjunta imagen "resultado-t6-parte2.6.png" en `docs/assets/`
+- Se adjunta imagen "resultado-t6-parte2.7.png" en `docs/assets/`
+- Se adjunta imagen "resultado-t6-parte3.1.png" en `docs/assets/`
+- Se adjunta imagen "resultado-t6-parte3.2.png" en `docs/assets/`
+- Se adjunta imagen "resultado-t6-parte3.3.png" en `docs/assets/`
+- Se adjunta imagen "resultado-t6-parte3.4.png" en `docs/assets/`
+- Se adjunta imagen "resultado-t6-parte4.1.png" en `docs/assets/`
+- Se adjunta imagen "resultado-t6-parte4.2.png" en `docs/assets/`
 
 ## Reflexión
 
@@ -415,12 +432,665 @@ En esta parte buscamos iniciar la normalización del dataset.
 
 ## Parte 2: Código
 ```python
+# === IMPORTAR HERRAMIENTAS DE NORMALIZACIÓN ===
+from sklearn.preprocessing import MinMaxScaler, StandardScaler, RobustScaler
 
+print("BATALLA DE NORMALIZACIÓN: MinMax vs Standard vs Robust")
+print("Objetivo: Encontrar el mejor scaler para nuestros datos")
+
+# Recordar por qué es importante
+print(f"\nESCALAS ACTUALES (problema):")
+for col in X_raw.columns:
+    min_val, max_val = X_raw[col].min(), X_raw[col].max()
+    print(f"   {col}: {min_val:.1f} - {max_val:.1f} (rango: {max_val-min_val:.1f})")
+
+print("\nLas escalas son MUY diferentes - normalización es crítica!")
 
 ```
 
-#### Resultados: análisis de estadísticas
-<!-- ![Tabla comparativa](../assets/resultado-t6-parte2.1.png) -->
+#### Resultados: normalización
+![Tabla comparativa](../assets/resultado-t6-parte2.1.png)
+
+En este análisis se revisaron los valores mínimos y máximos de cada variable y se vio que están en escalas muy distintas, por ejemplo, la edad llega hasta 70, los ingresos superan los 100 y las variables de género solo van de 0 a 1. Esta diferencia hace que unas variables tengan mucho más peso que otras en los cálculos, por lo que es fundamental normalizar los datos para que todas esten en igualdad de condiciones a la hora de modelar.
+
+```python
+# === CREAR Y APLICAR LOS 3 SCALERS ===
+scalers = {
+    'MinMax': MinMaxScaler(),        # Escala a rango [0,1]
+    'Standard': StandardScaler(),    # Media=0, std=1  
+    'Robust': RobustScaler()         # Usa mediana y IQR, robusto a outliers
+}
+
+# Aplicar cada scaler
+X_scaled = {}
+for name, scaler in scalers.items():
+    X_scaled[name] = scaler.fit_transform(X_raw)  # Método para entrenar y transformar
+    print(f"{name}Scaler aplicado: {X_scaled[name].shape}")
+
+print(f"\nTenemos 3 versiones escaladas de los datos para comparar")
+
+```
+
+Aquí la idea es aplicar 3 métodos de normalización a los mismos registros para obtener 3 versiones paralelas del dataset, y de esta manera comprar cuál funciona mejor en los siguientes análisis.
+
+```python
+# === COMPARACIÓN VISUAL CON BOXPLOTS ===
+fig, axes = plt.subplots(1, 4, figsize=(16, 4))
+fig.suptitle('Comparación de Scalers - Boxplots', fontsize=14, fontweight='bold')
+
+# Datos originales
+axes[0].boxplot([X_raw[col] for col in X_raw.columns], labels=X_raw.columns)
+axes[0].set_title('Original')
+axes[0].tick_params(axis='x', rotation=45)
+
+# Datos escalados
+for i, (name, X_scaled_data) in enumerate(X_scaled.items(), 1):
+    axes[i].boxplot([X_scaled_data[:, j] for j in range(X_scaled_data.shape[1])], 
+                    labels=X_raw.columns)
+    axes[i].set_title(f'{name}')
+    axes[i].tick_params(axis='x', rotation=45)
+
+plt.tight_layout()
+plt.show()
+
+print("Observa cómo cada scaler ajusta las escalas de forma diferente")
+
+```
+
+#### Resultados
+![Tabla comparativa](../assets/resultado-t6-parte2.2.png)
+
+Aquí se usó boxplots para comparar visualmente el efecto de cada método de normalización frente a los datos originales. El gráfico muestra cómo las variables tenían rangos muy distintos al inicio y al aplicar cada scaler, quedan ajustadas a escalas más comparables. Con MinMax todas las variables se llevan entre 0 y 1, con Standard se centran en media 0 con dispersión ajustada a la desviación estándar y con Robust se ve un ajuste similar pero afecta diferente a los xtremos ya que son menores que el anterior.
+
+```python
+# === COMPARAR DISTRIBUCIONES DE UNA VARIABLE ===
+# Vamos a analizar 'Annual Income (k$)' en detalle
+income_col_idx = 1  # Posición de Annual Income
+
+fig, axes = plt.subplots(1, 4, figsize=(16, 4))
+fig.suptitle('Annual Income: Original vs Scalers', fontsize=14, fontweight='bold')
+
+# Original
+axes[0].hist(X_raw.iloc[:, income_col_idx], bins=20, alpha=0.7, color='gray', edgecolor='black')
+axes[0].set_title('Original')
+axes[0].set_xlabel('Annual Income (k$)')
+
+# Escalados
+colors = ['#FF6B6B', '#4ECDC4', '#45B7D1']
+for i, ((name, X_scaled_data), color) in enumerate(zip(X_scaled.items(), colors), 1):
+    axes[i].hist(X_scaled_data[:, income_col_idx], bins=20, alpha=0.7, color=color, edgecolor='black')
+    axes[i].set_title(f'{name}')
+    axes[i].set_xlabel('Annual Income (escalado)')
+
+plt.tight_layout()
+plt.show()
+
+print("¿Notas cómo cambia la forma de la distribución?")
+```
+
+#### Resultados
+![Tabla comparativa](../assets/resultado-t6-parte2.3.png)
+
+Aquí se comparó la variable Annual Income en su forma original y después de aplicar los tres métodos de normalización. Se puede apreciar en los histogramas que la forma de la distribución se mantiene en todos los casos, pero cambia la escala en que se representa, con MinMax entre 0 y 1, con Standard entre -2 y 3, y con Robust entre -1 y 2 aprox.
+
+```python
+# === ESTADÍSTICAS DESPUÉS DEL SCALING ===
+print("ESTADÍSTICAS POST-SCALING (Annual Income):")
+
+# Original
+income_original = X_raw['Annual Income (k$)']
+print(f"\n   Original:")
+print(f"      Media: {income_original.mean():.1f}")
+print(f"      Std:   {income_original.std():.1f}")
+print(f"      Min:   {income_original.min():.1f}")
+print(f"      Max:   {income_original.max():.1f}")
+
+# Escalados
+for name, X_scaled_data in X_scaled.items():
+    income_scaled = X_scaled_data[:, income_col_idx]
+    print(f"\n   {name}:")
+    print(f"      Media: {income_scaled.mean():.3f}")
+    print(f"      Std:   {income_scaled.std():.3f}")
+    print(f"      Min:   {income_scaled.min():.3f}")
+    print(f"      Max:   {income_scaled.max():.3f}")
+
+print(f"\nOBSERVACIONES:")
+print(f"   MinMaxScaler → Rango [0,1]")
+print(f"   StandardScaler → Media=0, Std=1")
+print(f"   RobustScaler → Menos afectado por outliers")
+```
+
+#### Resultados
+![Tabla comparativa](../assets/resultado-t6-parte2.4.png)
+
+Se calcula para Annual Income las estadísticas antes y después de las normalizaciones; la media, la desviación estándar, el valor mínimo y el máximo en la escala original, y después nuevamente pero tras aplicar cada scaler.
+
+```python
+# === IMPORT PARA CLUSTERING TEST ===
+from sklearn.cluster import KMeans
+from sklearn.metrics import silhouette_score
+
+# === QUICK TEST: ¿Qué scaler funciona mejor para clustering? ===
+print("QUICK TEST: Impacto en Clustering (K=4)")
+
+clustering_results = {}
+for name, X_scaled_data in X_scaled.items():
+    # Aplicar K-Means con K=4
+    kmeans = KMeans(n_clusters=4, random_state=42, n_init=10)  # Completar
+    labels = kmeans.fit_predict(X_scaled_data)  # Método para obtener clusters
+
+    # Calcular silhouette score
+    silhouette = silhouette_score(X_scaled_data, labels)  # Métrica de calidad
+    clustering_results[name] = silhouette
+
+    print(f"   {name:>10}: Silhouette Score = {silhouette:.3f}")
+
+# Encontrar el mejor
+best_scaler = max(clustering_results, key=clustering_results.get)
+best_score = clustering_results[best_scaler]
+
+print(f"\nGANADOR: {best_scaler} (Score: {best_score:.3f})")
+```
+
+#### Resultados
+![Tabla comparativa](../assets/resultado-t6-parte2.5.png)
+
+El test de clustering muestra que al usar K-Means con 4 clusters, el MinMaxScaler produjo el mejor score con 0.364, seguido por Standard 0.332 y Robust 0.298. Esto indica que para este dataset en particular, llevar todas las variables al rango 0..1 permite que el algoritmo identifique más claramente los clusters.
+
+```python
+# === TOMAR DECISIÓN BASADA EN RESULTADOS ===
+print("DECISIÓN FINAL DEL SCALER:")
+
+print(f"\nCOMPLETE TU ANÁLISIS:")
+print(f"   Mejor scaler según silhouette: {best_scaler}")
+print(f"   ¿Por qué crees que funcionó mejor? Porque MinMax ajusta todas las variables al mismo rango 0..1, lo que ayuda a que K-Means mida mejor las distancias y detecte clusters más claros.")
+print(f"   ¿Algún scaler tuvo problemas obvios? RobustScaler tuvo menor score, probablemente porque suaviza los outliers y reduce la diferencia de rangos.")
+
+# Implementar decisión
+selected_scaler_name = best_scaler  # O elige manualmente: 'MinMax', 'Standard', 'Robust'
+selected_scaler = scalers[selected_scaler_name]
+
+# Aplicar scaler elegido
+X_preprocessed = X_scaled[selected_scaler_name]
+feature_names_scaled = [f"{col}_scaled" for col in X_raw.columns]
+
+print(f"\nSCALER SELECCIONADO: {selected_scaler_name}")
+print(f"Datos preparados: {X_preprocessed.shape}")
+print(f"Listo para PCA y Feature Selection")
+
+```
+
+Afirmamos que MinMax fue el mejor porque pone todas las variables en la misma escala, y que RobustScaler es el que tuvo más problemas.
+
+```python
+from sklearn.decomposition import PCA
+
+# === OPERACIÓN: DIMENSION COLLAPSE ===
+print("PCA: Reduciendo dimensiones sin perder la esencia")
+print("   Objetivo: De 5D → 2D para visualización + análisis de varianza")
+
+# 1. Aplicar PCA completo para análisis de varianza
+pca_full = PCA()
+X_pca_full = pca_full.fit_transform(X_preprocessed)
+
+# 2. ANÁLISIS DE VARIANZA EXPLICADA
+explained_variance_ratio = pca_full.explained_variance_ratio_
+cumulative_variance = np.cumsum(explained_variance_ratio)
+
+print(f"\n📊 ANÁLISIS DE VARIANZA EXPLICADA:")
+for i, (var, cum_var) in enumerate(zip(explained_variance_ratio, cumulative_variance)):
+    print(f"   PC{i+1}: {var:.3f} ({var*100:.1f}%) | Acumulada: {cum_var:.3f} ({cum_var*100:.1f}%)")
+
+# 3. VISUALIZACIÓN DE VARIANZA EXPLICADA
+fig, axes = plt.subplots(1, 2, figsize=(15, 6))
+
+# Scree plot
+axes[0].bar(range(1, len(explained_variance_ratio) + 1), explained_variance_ratio, 
+           alpha=0.7, color='#FF6B6B')
+axes[0].set_xlabel('Componentes Principales')
+axes[0].set_ylabel('Varianza Explicada')
+axes[0].set_title('📊 Scree Plot - Varianza por Componente')
+axes[0].set_xticks(range(1, len(explained_variance_ratio) + 1))
+
+# Cumulative variance
+axes[1].plot(range(1, len(cumulative_variance) + 1), cumulative_variance, 
+            marker='o', linewidth=2, markersize=8, color='#4ECDC4')
+axes[1].axhline(y=0.95, color='red', linestyle='--', alpha=0.7, label='95% threshold')
+axes[1].axhline(y=0.90, color='orange', linestyle='--', alpha=0.7, label='90% threshold')
+axes[1].set_xlabel('Número de Componentes')
+axes[1].set_ylabel('Varianza Acumulada')
+axes[1].set_title('📈 Varianza Acumulada')
+axes[1].legend()
+axes[1].grid(True, alpha=0.3)
+axes[1].set_xticks(range(1, len(cumulative_variance) + 1))
+
+plt.tight_layout()
+plt.show()
+
+# 4. DECISIÓN SOBRE NÚMERO DE COMPONENTES
+print(f"\n🎯 DECISIÓN DE COMPONENTES:")
+n_components_90 = np.argmax(cumulative_variance >= 0.90) + 1
+n_components_95 = np.argmax(cumulative_variance >= 0.95) + 1
+
+print(f"   📊 Para retener 90% varianza: {n_components_90} componentes")
+print(f"   📊 Para retener 95% varianza: {n_components_95} componentes")
+print(f"   🎯 Para visualización: 2 componentes ({cumulative_variance[1]*100:.1f}% varianza)")
+
+# 5. APLICAR PCA CON 2 COMPONENTES PARA VISUALIZACIÓN
+pca_2d = PCA(n_components=2, random_state=42)
+X_pca_2d = pca_2d.fit_transform(X_preprocessed)
+
+print(f"\nPCA aplicado:")
+print(f"   📊 Dimensiones: {X_preprocessed.shape} → {X_pca_2d.shape}")
+print(f"   📈 Varianza explicada: {pca_2d.explained_variance_ratio_.sum()*100:.1f}%")
+
+# 6. ANÁLISIS DE COMPONENTES PRINCIPALES
+print(f"\n🔍 INTERPRETACIÓN DE COMPONENTES:")
+feature_names = ['Age', 'Annual Income (k$)', 'Spending Score (1-100)', 'Genre_Female', 'Genre_Male']
+
+for i, pc in enumerate(['PC1', 'PC2']):
+    print(f"\n   {pc} (varianza: {pca_2d.explained_variance_ratio_[i]*100:.1f}%):")
+    # Obtener los loadings (pesos de cada feature original en el componente)
+    loadings = pca_2d.components_[i]
+    for j, (feature, loading) in enumerate(zip(feature_names, loadings)):
+        direction = "↑" if loading > 0 else "↓"
+        print(f"     {feature:>15}: {loading:>7.3f} {direction}")
+
+# 7. VISUALIZACIÓN EN 2D
+plt.figure(figsize=(12, 8))
+plt.scatter(X_pca_2d[:, 0], X_pca_2d[:, 1], alpha=0.6, s=50, color='#96CEB4')
+plt.xlabel(f'PC1 ({pca_2d.explained_variance_ratio_[0]*100:.1f}% varianza)')
+plt.ylabel(f'PC2 ({pca_2d.explained_variance_ratio_[1]*100:.1f}% varianza)')
+plt.title('Mall Customers en Espacio PCA 2D')
+plt.grid(True, alpha=0.3)
+plt.axhline(y=0, color='black', linestyle='-', alpha=0.3)
+plt.axvline(x=0, color='black', linestyle='-', alpha=0.3)
+plt.tight_layout()
+plt.show()
+
+print(f"\n💡 INTERPRETACIÓN DE NEGOCIO:")
+print(f"   🎯 PC1 parece representar: diferenciación de género, hombres vs mujeres dentro del dataset.")
+print(f"   🎯 PC2 parece representar: age vs spending score, es decir, cómo el comportamiento de compra cambia segpun la edad.")
+print(f"   📊 Los clusters visibles sugieren: grupos marcados como jóvenes con gasto alto, adultos con gasto bajo y diferenciados por género, mujeres con gastos más altos que los hombres.")
+```
+
+#### Resultados: PCA
+![Tabla comparativa](../assets/resultado-t6-parte2.6.png)
+
+![Tabla comparativa](../assets/resultado-t6-parte2.7.png)
+
+El PCA nos ayudó a simplificar el dataset de 5 variables a 2 componentes claves que mantienen más del 85% de la información. Esto nos muestra patrones importantes en el dataset, por ejemplo, el género es un factor muy dominante, seguido por la relación edad–gasto, lo que ayudaría a pensar en estrategias de marketing más personalizadas.
+
+## Parte 3: Descripción
+Se definirá la configuración básica para poder probar qué subconjunto de características aporta más valor al modelo. La idea es reducir el número de variables sin perder información importante, lo que hace que el modelo sea más simple, interpretable y eficiente.
+
+## Parte 3: Setup inicial
+
+```python
+# === IMPORTS PARA FEATURE SELECTION ===
+from sklearn.feature_selection import SequentialFeatureSelector  # Para Forward/Backward Selection
+
+# === OPERACIÓN: FEATURE SELECTION SHOWDOWN ===
+print("🎯 FEATURE SELECTION vs PCA: ¿Seleccionar o Transformar?")
+print("   🎯 Objetivo: Comparar Forward/Backward Selection vs PCA")
+
+print(f"\n📊 FEATURE SELECTION: Forward vs Backward vs PCA")
+print(f"   Dataset: {X_preprocessed.shape[0]} muestras, {X_preprocessed.shape[1]} features")
+
+# Setup: Función para evaluar features en clustering
+def evaluate_features_for_clustering(X, n_clusters=4):
+    """Evalúa qué tan buenas son las features para clustering usando Silhouette Score"""
+    kmeans = KMeans(n_clusters=n_clusters, random_state=42, n_init=10)
+    labels = kmeans.fit_predict(X)
+    return silhouette_score(X, labels)
+
+# === IMPORTS PARA ESTIMADORES PERSONALIZADOS ===
+from sklearn.base import BaseEstimator, ClassifierMixin  # Clases base necesarias
+
+# CLASE AUXILIAR: Estimador basado en KMeans para SequentialFeatureSelector
+class ClusteringEstimator(BaseEstimator, ClassifierMixin):
+    """Estimador que usa KMeans y Silhouette Score para feature selection"""
+    def __init__(self, n_clusters=4):
+        self.n_clusters = n_clusters
+
+    def fit(self, X, y=None):
+        self.kmeans_ = KMeans(n_clusters=self.n_clusters, random_state=42, n_init=10)
+        self.labels_ = self.kmeans_.fit_predict(X)
+        return self
+
+    def score(self, X, y=None):
+        # SequentialFeatureSelector llama a score() para evaluar features
+        kmeans = KMeans(n_clusters=self.n_clusters, random_state=42, n_init=10)
+        labels = kmeans.fit_predict(X)
+        return silhouette_score(X, labels)
+
+    def predict(self, X):
+        # Método requerido por ClassifierMixin
+        if hasattr(self, 'kmeans_'):
+            return self.kmeans_.predict(X)
+        else:
+            # Si no está entrenado, entrenar primero
+            kmeans = KMeans(n_clusters=self.n_clusters, random_state=42, n_init=10)
+            return kmeans.fit_predict(X)
+
+print("✅ Setup completado - Funciones de evaluación listas")
+```
+
+En este análisis comparamos Feature Selection y PCA: en la primera buscamos elegir las variables originales más relevantes (Forward o Backward), mientras que en la segunda creamos nuevas variables transformadas que concentran la varianza. La idea es ver qué técnica resulta más útil para simplificar un dataset de 200 muestras con 5 características.
+
+## Parte 3: Código
+
+```python
+# BASELINE: Todas las features
+baseline_score = evaluate_features_for_clustering(X_preprocessed)
+print(f"\n📊 BASELINE (todas las features): Silhouette = {baseline_score:.3f}")
+print(f"   Este es el score con las {X_preprocessed.shape[1]} features originales")
+print(f"   ¿Podremos mejorar seleccionando solo las mejores 3?")
+
+# === FORWARD SELECTION (sklearn oficial) ===
+print(f"\n🔄 FORWARD SELECTION (sklearn oficial):")
+print(f"   Estrategia: Empezar con 0 features, agregar la mejor en cada paso")
+
+forward_selector = SequentialFeatureSelector(
+    estimator=ClusteringEstimator(n_clusters=4),  # Estimador que implementa fit() y score()
+    n_features_to_select=3,
+    direction='forward',  # Para Forward Selection
+    cv=3,
+    n_jobs=-1
+)
+
+forward_selector.fit(X_preprocessed)  # Método para entrenar
+forward_mask = forward_selector.get_support()  # Método para obtener máscara booleana
+X_forward = X_preprocessed[:, forward_mask]
+forward_features = np.array(feature_columns)[forward_mask]
+forward_score = evaluate_features_for_clustering(X_forward)
+
+print(f"   Features seleccionadas: {list(forward_features)}")
+print(f"   📊 Silhouette Score: {forward_score:.3f}")
+print(f"   {'✅ Mejora!' if forward_score > baseline_score else '❌ Sin mejora'}")
+
+# === BACKWARD ELIMINATION (sklearn oficial) ===
+print(f"\n🔄 BACKWARD ELIMINATION (sklearn oficial):")
+print(f"   Estrategia: Empezar con todas las features, eliminar la peor en cada paso")
+
+backward_selector = SequentialFeatureSelector(
+    estimator=ClusteringEstimator(n_clusters=4),  # Mismo estimador que Forward
+    n_features_to_select=3,
+    direction='backward',  # Para Backward Selection
+    cv=3,
+    n_jobs=-1
+)
+
+backward_selector.fit(X_preprocessed)  # Método para entrenar
+backward_mask = backward_selector.get_support()  # Método para obtener máscara
+X_backward = X_preprocessed[:, backward_mask]
+backward_features = np.array(feature_columns)[backward_mask]
+backward_score = evaluate_features_for_clustering(X_backward)
+
+print(f"   Features seleccionadas: {list(backward_features)}")
+print(f"   📊 Silhouette Score: {backward_score:.3f}")
+print(f"   {'✅ Mejora!' if backward_score > baseline_score else '❌ Sin mejora'}")
+
+```
+
+En este bloque de código buscamos simplificar el dataset para mejorar el clustering. PCA transforma las variables originales en nuevas combinaciones, mientras que Forward Selection empieza sin features y va agregando progresivamente las más útiles, y Backward Elimination empieza con todas y va quitando las menos relevantes. En cada caso lo que buscamos es quedarnos sólo con la información más relevante, de manera que permita identificar mejor los grupos de clientes.
+
+```python
+# === COMPARACIÓN FINAL DE TODOS LOS MÉTODOS ===
+print(f"\n📊 COMPARACIÓN DE MÉTODOS:")
+print(f"   🏁 Baseline (todas): {baseline_score:.3f}")
+print(f"   🔄 Forward Selection: {forward_score:.3f}")
+print(f"   🔙 Backward Elimination: {backward_score:.3f}")
+
+# Comparar con PCA (ya calculado anteriormente)
+pca_score = evaluate_features_for_clustering(X_pca_2d)
+print(f"   📐 PCA (2D): {pca_score:.3f}")
+
+# Encontrar el mejor método
+methods = {
+    'Baseline (todas)': baseline_score,
+    'Forward Selection': forward_score, 
+    'Backward Elimination': backward_score,
+    'PCA (2D)': pca_score
+}
+
+best_method = max(methods, key=methods.get)
+best_score = methods[best_method]
+
+print(f"\n🏆 GANADOR: {best_method} con score = {best_score:.3f}")
+
+# Análisis de diferencias
+print(f"\n🔍 ANÁLISIS:")
+for method, score in sorted(methods.items(), key=lambda x: x[1], reverse=True):
+    improvement = ((score - baseline_score) / baseline_score) * 100
+    print(f"   {method}: {score:.3f} ({improvement:+.1f}% vs baseline)")
+```
+
+#### Resultados
+![Tabla comparativa](../assets/resultado-t6-parte3.1.png)
+
+En esta comparación final vemos cómo distintos métodos de simplificación de variables impactan el clustering. Usanndo todas las features da un baseline de 0.364, y tanto Forward Selection como Backward Elimination mejoran el score a 0.573, +57,3%. Sin embargo, PCA 2D logra el mejor resultado ya que con 0.686, +68%, transforma las variables en componentes que mejora la estructura de los datos. En definitiva, transformarlas con PCA demostró ser la estrategia más efectiva para separar grupos de clientes.
+
+```python
+# === VISUALIZACIÓN DE COMPARACIÓN ===
+methods_names = ['Baseline', 'Forward', 'Backward', 'PCA 2D'] 
+scores_values = [baseline_score, forward_score, backward_score, pca_score]
+colors = ['#FF6B6B', '#4ECDC4', '#45B7D1', '#96CEB4']
+
+plt.figure(figsize=(12, 6))
+bars = plt.bar(methods_names, scores_values, color=colors, alpha=0.7)
+plt.ylabel('Silhouette Score')
+plt.title('Comparación de Métodos de Feature Selection')
+plt.axhline(y=0.5, color='red', linestyle='--', alpha=0.5, label='Threshold Aceptable (0.5)')
+plt.axhline(y=0.7, color='green', linestyle='--', alpha=0.5, label='Threshold Muy Bueno (0.7)')
+plt.legend()
+plt.grid(True, alpha=0.3, axis='y')
+
+# Añadir valores en las barras
+for bar, score in zip(bars, scores_values):
+    plt.text(bar.get_x() + bar.get_width()/2, bar.get_height() + 0.01, 
+             f'{score:.3f}', ha='center', va='bottom', fontweight='bold')
+
+plt.tight_layout()
+plt.show()
+```
+
+#### Resultados
+![Tabla comparativa](../assets/resultado-t6-parte3.2.png)
+
+```python
+# === ANÁLISIS DE RESULTADOS ===
+print(f"\n🎯 ANÁLISIS DE RESULTADOS:")
+
+# Comparar features seleccionadas
+print(f"\n🔍 FEATURES SELECCIONADAS POR CADA MÉTODO:")
+print(f"   🔄 Forward Selection: {list(forward_features)}")
+print(f"   🔙 Backward Elimination: {list(backward_features)}")
+
+# Análisis de coincidencias
+forward_set = set(forward_features)
+backward_set = set(backward_features)
+
+common_forward_backward = forward_set & backward_set
+
+print(f"\n🤝 COINCIDENCIAS:")
+print(f"   Forward ∩ Backward: {list(common_forward_backward)}")
+print(f"   ¿Seleccionaron las mismas features? {'Sí' if forward_set == backward_set else 'No'}")
+
+# FILL-IN-THE-BLANKS: Preguntas de análisis
+print(f"\n❓ PREGUNTAS DE ANÁLISIS (completa):")
+print(f"   💡 Método con mejor score: PCA 2D")  # Respuesta en base a los resultados
+print(f"   📊 ¿Forward y Backward seleccionaron exactamente las mismas features? No")
+print(f"   🤔 ¿PCA con 2 componentes es competitivo? Sí, fue el que obtuvo mayor Silhouette Score") 
+print(f"   🎯 ¿Algún método superó el threshold de 0.5? Sí, Forward, Backward y PCA")
+print(f"   📈 ¿La reducción de dimensionalidad mejoró el clustering? Sí, especialmente PCA")
+
+```
+#### Resultados
+![Tabla comparativa](../assets/resultado-t6-parte3.3.png)
+
+```python
+# === DECISIÓN PARA EL ANÁLISIS FINAL ===
+print(f"\n🏢 DECISIÓN PARA EL ANÁLISIS:")
+
+# Decidir método basado en resultados
+if best_score == pca_score:
+    selected_method = "PCA"
+    selected_data = X_pca_2d
+    print(f"   🎯 SELECCIONADO: PCA (2D) - Score: {pca_score:.3f}")
+    print(f"   ✅ RAZÓN: Mejor balance entre reducción dimensional y performance")
+elif best_score == forward_score:
+    selected_method = "Forward Selection" 
+    selected_data = X_forward
+    print(f"   🎯 SELECCIONADO: Forward Selection - Score: {forward_score:.3f}")
+    print(f"   ✅ RAZÓN: Mejor score con features interpretables")
+elif best_score == backward_score:
+    selected_method = "Backward Elimination"
+    selected_data = X_backward  
+    print(f"   🎯 SELECCIONADO: Backward Elimination - Score: {backward_score:.3f}")
+    print(f"   ✅ RAZÓN: Mejor score eliminando features redundantes")
+else:
+    # Fallback to baseline if needed
+    selected_method = "Baseline (todas las features)"
+    selected_data = X_preprocessed
+    print(f"   🎯 SELECCIONADO: Baseline - Score: {baseline_score:.3f}")
+    print(f"   ✅ RAZÓN: Ningún método de reducción mejoró el clustering")
+
+# Guardar para clustering final
+X_final_for_clustering = selected_data
+final_method_name = selected_method
+
+print(f"\n📊 PREPARADO PARA CLUSTERING:")
+print(f"   Método: {final_method_name}")
+print(f"   Dimensiones: {X_final_for_clustering.shape}")
+print(f"   Silhouette Score: {best_score:.3f}")
+```
+
+#### Resultados
+![Tabla comparativa](../assets/resultado-t6-parte3.4.png)
+
+Se decidió usar PCA con 2 componentes para el análisis de clustering, ya que ofreció el mejor balance entre reducir dimensionalidad y mantener un buen desempeño, con un Silhouette Score de 0.686.
 
 
+## Parte 4: Descripción
+En esta fase vamos a crear los grupos de clientes a partir de los datos que preprocesamos. Vamos a usar K-Means para encontrar los clusters naturales y ver cómo se agrupan los clientes, con el objetivo de entender mejor sus comportamientos y poder pensar en estrategias de marketing más dirigidas.
+
+## Parte 4: Código
+```python
+# === OPERACIÓN: CUSTOMER SEGMENTATION DISCOVERY ===
+print("K-MEANS CLUSTERING: Descubriendo segmentos de clientes")
+print(f"   Dataset: {X_final_for_clustering.shape} usando método '{final_method_name}'")
+
+# 1. BÚSQUEDA DEL K ÓPTIMO - Elbow Method + Silhouette
+print(f"\n📈 BÚSQUEDA DEL K ÓPTIMO:")
+
+k_range = range(2, 9)
+inertias = []
+silhouette_scores = []
+
+for k in k_range:
+    # Aplicar K-Means
+    kmeans = KMeans(n_clusters=k, random_state=42, n_init=10)
+    labels = kmeans.fit_predict(X_final_for_clustering)
+
+    # Calcular métricas
+    inertias.append(kmeans.inertia_)
+    sil_score = silhouette_score(X_final_for_clustering, labels)
+    silhouette_scores.append(sil_score)
+
+    print(f"   K={k}: Inertia={kmeans.inertia_:.2f}, Silhouette={sil_score:.3f}")
+
+# 2. VISUALIZACIÓN ELBOW METHOD + SILHOUETTE
+fig, axes = plt.subplots(1, 2, figsize=(15, 6))
+
+# Elbow Method
+axes[0].plot(k_range, inertias, marker='o', linewidth=2, markersize=8, color='#FF6B6B')
+axes[0].set_xlabel('Número de Clusters (K)')
+axes[0].set_ylabel('Inertia (WCSS)')
+axes[0].set_title('📈 Elbow Method')
+axes[0].grid(True, alpha=0.3)
+axes[0].set_xticks(k_range)
+
+# Silhouette Scores
+axes[1].plot(k_range, silhouette_scores, marker='s', linewidth=2, markersize=8, color='#4ECDC4')
+axes[1].axhline(y=0.5, color='orange', linestyle='--', alpha=0.7, label='Aceptable (0.5)')
+axes[1].axhline(y=0.7, color='green', linestyle='--', alpha=0.7, label='Muy Bueno (0.7)')
+axes[1].set_xlabel('Número de Clusters (K)')
+axes[1].set_ylabel('Silhouette Score')
+axes[1].set_title('📊 Silhouette Analysis')
+axes[1].legend()
+axes[1].grid(True, alpha=0.3)
+axes[1].set_xticks(k_range)
+
+plt.tight_layout()
+plt.show()
+
+# 3. ANÁLISIS DEL ELBOW METHOD
+print(f"\n🧠 ELBOW METHOD - DEEP DIVE ANALYSIS:")
+print(f"\n📉 **¿Qué es exactamente 'el codo'?**")
+print(f"   - **Matemáticamente:** Punto donde la segunda derivada de WCSS vs K cambia más dramáticamente")
+print(f"   - **Visualmente:** Donde la curva pasa de 'caída empinada' a 'caída suave'")
+print(f"   - **Conceptualmente:** Balance entre simplicidad (menos clusters) y precisión (menor error)")
+
+# Calcular diferencias para encontrar el codo
+differences = np.diff(inertias)
+second_differences = np.diff(differences)
+elbow_candidate = k_range[np.argmin(second_differences) + 2]  # +2 por los dos diff()
+
+print(f"\n📊 **Análisis cuantitativo del codo:**")
+for i, k in enumerate(k_range[:-2]):
+    print(f"   K={k}: Δ Inertia={differences[i]:.2f}, Δ²={second_differences[i]:.2f}")
+
+print(f"\n🎯 **Candidato por Elbow Method:** K={elbow_candidate}")
+
+# 4. DECISIÓN FINAL DE K
+best_k_silhouette = k_range[np.argmax(silhouette_scores)]
+print(f"🎯 **Candidato por Silhouette:** K={best_k_silhouette} (score={max(silhouette_scores):.3f})")
+
+print(f"\n🤝 **DECISIÓN FINAL:**")
+if elbow_candidate == best_k_silhouette:
+    optimal_k = elbow_candidate
+    print(f"   Ambos métodos coinciden: K = {optimal_k}")
+else:
+    print(f"   ⚖️  Elbow sugiere K={elbow_candidate}, Silhouette sugiere K={best_k_silhouette}")
+    print(f"   💼 Considerando el contexto de negocio (3-5 segmentos esperados)...")
+    # Elegir basado en contexto de negocio y calidad
+    if 3 <= best_k_silhouette <= 5 and max(silhouette_scores) > 0.4:
+        optimal_k = best_k_silhouette
+        print(f"   Elegimos K = {optimal_k} (mejor silhouette + contexto negocio)")
+    else:
+        optimal_k = elbow_candidate if 3 <= elbow_candidate <= 5 else 4
+        print(f"   Elegimos K = {optimal_k} (balance elbow + contexto negocio)")
+
+# 5. MODELO FINAL CON K ÓPTIMO
+print(f"\n🎯 ENTRENANDO MODELO FINAL CON K={optimal_k}")
+
+final_kmeans = KMeans(n_clusters=optimal_k, random_state=42, n_init=20)
+final_labels = final_kmeans.fit_predict(X_final_for_clustering)
+final_silhouette = silhouette_score(X_final_for_clustering, final_labels)
+
+print(f"Modelo entrenado:")
+print(f"   📊 Silhouette Score: {final_silhouette:.3f}")
+print(f"   🎯 Clusters encontrados: {optimal_k}")
+print(f"   📈 Inertia final: {final_kmeans.inertia_:.2f}")
+
+# 6. DISTRIBUCIÓN DE CLIENTES POR CLUSTER
+cluster_counts = pd.Series(final_labels).value_counts().sort_index()
+print(f"\n👥 DISTRIBUCIÓN DE CLIENTES:")
+for cluster_id, count in cluster_counts.items():
+    percentage = (count / len(final_labels)) * 100
+    print(f"   Cluster {cluster_id}: {count:,} clientes ({percentage:.1f}%)")
+
+# 7. AGREGAR CLUSTERS AL DATAFRAME ORIGINAL
+df_customers['cluster'] = final_labels
+df_customers['cluster_name'] = df_customers['cluster'].map({
+    i: f"Cluster_{i}" for i in range(optimal_k)
+})
+
+print(f"\nClusters asignados al dataset original")
+```
+#### Resultados
+![Tabla comparativa](../assets/resultado-t6-parte4.1.png)
+
+![Tabla comparativa](../assets/resultado-t6-parte4.2.png)
 
