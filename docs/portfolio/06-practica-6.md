@@ -23,7 +23,7 @@ En esta práctica número 6 del curso tenemos la siguiente problemática: Los ce
 - Diseño del github pages (200min)
 
 ## Desarrollo
-
+En esta práctica trabajamos en segmentar clientes usando clustering y PCA. Primero exploramos y entendimos el dataset, viendo qué variables eran más relevantes y codificando las categóricas. Después aplicamos distintos escaladores y PCA para reducir dimensiones, comparando con Feature Selection, y vimos que PCA daba mejores resultados. Con K-Means, y usando Elbow Method y Silhouette Score, identificamos 4 clusters que tenían sentido para el negocio, diferenciando perfiles como jóvenes gastadores y clientes mayores más conservadores.
 
 ## Evidencias
 - Se adjunta imagen "resultado-t6-parte1.1.png" en `docs/assets/`
@@ -49,9 +49,14 @@ En esta práctica número 6 del curso tenemos la siguiente problemática: Los ce
 - Se adjunta imagen "resultado-t6-parte3.4.png" en `docs/assets/`
 - Se adjunta imagen "resultado-t6-parte4.1.png" en `docs/assets/`
 - Se adjunta imagen "resultado-t6-parte4.2.png" en `docs/assets/`
+- Se adjunta imagen "resultado-t6-parte5.1.png" en `docs/assets/`
+- Se adjunta imagen "resultado-t6-parte5.2.png" en `docs/assets/`
+- Se adjunta imagen "resultado-t6-parte5.3.png" en `docs/assets/`
+- Se adjunta imagen "resultado-t6-parte5.4.png" en `docs/assets/`
+- Se adjunta imagen "resultado-t6-parte5.5.png" en `docs/assets/`
 
 ## Reflexión
-
+Lo más desafiante fue preparar los datos sin perder información relevante, pero la práctica mostró la importancia de combinar comprensión del negocio con técnicas de análisis. Los clusters permiten pensar en estrategias de marketing más personalizadas, aunque hay limitaciones por el tamaño y simplificación del dataset. En general, se reforzó cómo la preparación de datos y la elección correcta de métodos impactan directamente en la calidad y utilidad de los resultados.
 ---
 
 # Machine Learning Clásico: Clustering y PCA - Mall Customer Segmentation
@@ -1093,4 +1098,254 @@ print(f"\nClusters asignados al dataset original")
 ![Tabla comparativa](../assets/resultado-t6-parte4.1.png)
 
 ![Tabla comparativa](../assets/resultado-t6-parte4.2.png)
+
+En este paso aplicamos K-Means para probar distintos valores de K y después evaluar cuál era el más adecuado usando dos técnicas, Elbow Method y Silhouette Score. Con esto vimos que, aunque K=2 tenía la mayor separación, K=4 daba un mejor equilibrio entre la calidad de los grupos y la utilidad práctica para segmentar a los clientes. Esto permitió identificar cuántos clusters usar y confirmar que 4 grupos era la mejor opción para seguir adelante.
+
+## Parte 5: Descripción
+En esta fase vamos a crear los grupos de clientes a partir de los datos que preprocesamos. Vamos a usar K-Means para encontrar los clusters naturales y ver cómo se agrupan los clientes, con el objetivo de entender mejor sus comportamientos y poder pensar en estrategias de marketing más dirigidas.
+
+## Parte 5: Código
+```python
+# === OPERACIÓN: INTELLIGENCE REPORT ===
+print("ANALISIS DE SEGMENTOS DE CLIENTES - REPORTE EJECUTIVO")
+
+# 1. PERFILES DE CLUSTERS
+print(f"\nPERFILES DETALLADOS POR CLUSTER:")
+
+for cluster_id in sorted(df_customers['cluster'].unique()):
+    cluster_data = df_customers[df_customers['cluster'] == cluster_id]
+    cluster_size = len(cluster_data)
+
+    print(f"\n**CLUSTER {cluster_id}** ({cluster_size} clientes, {cluster_size/len(df_customers)*100:.1f}%)")
+
+    # Estadísticas usando las columnas CORRECTAS del Mall Customer Dataset
+    avg_age = cluster_data['Age'].mean()
+    avg_income = cluster_data['Annual Income (k$)'].mean()
+    avg_spending = cluster_data['Spending Score (1-100)'].mean()
+
+    # Distribución por género
+    genre_counts = cluster_data['Genre'].value_counts()
+
+    print(f"   **Perfil Demográfico:**")
+    print(f"      Edad promedio: {avg_age:.1f} años")
+    print(f"      Distribución género: {dict(genre_counts)}")
+
+    print(f"   **Perfil Financiero:**")
+    print(f"      Ingreso anual: ${avg_income:.1f}k")
+    print(f"      Spending Score: {avg_spending:.1f}/100")
+
+    # Comparar con ground truth si está disponible
+    if 'true_segment' in df_customers.columns:
+        true_segments_in_cluster = cluster_data['true_segment'].value_counts()
+        dominant_segment = true_segments_in_cluster.index[0]
+        purity = true_segments_in_cluster.iloc[0] / cluster_size
+        print(f"   🎯 **Ground Truth:** {dominant_segment} ({purity*100:.1f}% purity)")
+
+# 2. MATRIZ DE CONFUSIÓN CON GROUND TRUTH
+if 'true_segment' in df_customers.columns:
+    print(f"\n🎯 VALIDACIÓN CON GROUND TRUTH:")
+    confusion_matrix = pd.crosstab(df_customers['true_segment'], df_customers['cluster'], 
+                                  margins=True, margins_name="Total")
+    print(confusion_matrix)
+
+    # Calcular pureza de clusters
+    cluster_purities = []
+    for cluster_id in sorted(df_customers['cluster'].unique()):
+        cluster_data = df_customers[df_customers['cluster'] == cluster_id]
+        dominant_true_segment = cluster_data['true_segment'].mode().iloc[0]
+        purity = (cluster_data['true_segment'] == dominant_true_segment).mean()
+        cluster_purities.append(purity)
+
+    average_purity = np.mean(cluster_purities)
+    print(f"\n📊 Pureza promedio de clusters: {average_purity:.3f}")
+
+# 3. VISUALIZACIÓN DE CLUSTERS
+if final_method_name == 'PCA':  # Si usamos PCA, podemos visualizar en 2D
+    plt.figure(figsize=(15, 10))
+
+    # Subplot 1: Clusters encontrados
+    plt.subplot(2, 2, 1)
+    colors = ['#FF6B6B', '#4ECDC4', '#45B7D1', '#96CEB4', '#FFEAA7']
+    for cluster_id in sorted(df_customers['cluster'].unique()):
+        cluster_mask = final_labels == cluster_id
+        plt.scatter(X_pca_2d[cluster_mask, 0], X_pca_2d[cluster_mask, 1], 
+                   c=colors[cluster_id % len(colors)], label=f'Cluster {cluster_id}',
+                   alpha=0.7, s=50)
+
+    # Plotear centroides
+    if final_method_name == 'PCA':
+        centroids_pca = final_kmeans.cluster_centers_
+        plt.scatter(centroids_pca[:, 0], centroids_pca[:, 1], 
+                   c='red', marker='X', s=200, linewidths=3, label='Centroides')
+
+    plt.xlabel('PC1')
+    plt.ylabel('PC2')
+    plt.title('Clusters Descubiertos (PCA 2D)')
+    plt.legend()
+    plt.grid(True, alpha=0.3)
+
+    # Subplot 2: Ground truth (si disponible)
+    if 'true_segment' in df_customers.columns:
+        plt.subplot(2, 2, 2)
+        true_segment_colors = {'VIP': '#FF6B6B', 'Regular': '#4ECDC4', 
+                              'Occasional': '#45B7D1', 'At_Risk': '#96CEB4'}
+        for segment, color in true_segment_colors.items():
+            segment_mask = df_customers['true_segment'] == segment
+            segment_indices = df_customers[segment_mask].index
+            plt.scatter(X_pca_2d[segment_indices, 0], X_pca_2d[segment_indices, 1], 
+                       c=color, label=segment, alpha=0.7, s=50)
+
+        plt.xlabel('PC1')
+        plt.ylabel('PC2')
+        plt.title('Ground Truth Segments')
+        plt.legend()
+        plt.grid(True, alpha=0.3)
+
+    # Subplot 3: Feature distribution by cluster
+    plt.subplot(2, 2, 3)
+    # Usar las columnas correctas del Mall Customer Dataset
+    cluster_means = df_customers.groupby('cluster')[['Age', 'Annual Income (k$)', 'Spending Score (1-100)']].mean()
+    cluster_means.plot(kind='bar', ax=plt.gca(), color=['#FF6B6B', '#4ECDC4', '#45B7D1'])
+    plt.title('Perfil Promedio por Cluster')
+    plt.ylabel('Valor Promedio')
+    plt.legend(title='Características', bbox_to_anchor=(1.05, 1), loc='upper left')
+    plt.xticks(rotation=0)
+
+    # Subplot 4: Cluster sizes
+    plt.subplot(2, 2, 4)
+    cluster_sizes = df_customers['cluster'].value_counts().sort_index()
+    colors_subset = [colors[i] for i in cluster_sizes.index]
+    bars = plt.bar(cluster_sizes.index, cluster_sizes.values, color=colors_subset, alpha=0.7)
+    plt.xlabel('Cluster ID')
+    plt.ylabel('Número de Clientes')
+    plt.title('Distribución de Clientes por Cluster')
+
+    # Añadir etiquetas en las barras
+    for bar, size in zip(bars, cluster_sizes.values):
+        plt.text(bar.get_x() + bar.get_width()/2, bar.get_height() + 10, 
+                f'{size}\n({size/len(df_customers)*100:.1f}%)', 
+                ha='center', va='bottom')
+
+plt.tight_layout()
+plt.show()
+```
+#### Resultados
+![Tabla comparativa](../assets/resultado-t6-parte5.1.png)
+
+![Tabla comparativa](../assets/resultado-t6-parte5.2.png)
+
+Los 4 clusters muestran patrones marcados, tenemos dos grupos jóvenes (Clusters 0 y 3, aprox 28 años) con alto Spending Score de entre 68..70 pero divididos por género (0 para las mujeres y 3 para hombres), y dos grupos de mayores (Clusters 1 y 2, aprox entre 48 y 50 años) con gasto bajo entre 30..35, también separados por género (1 para hombres, 2 para mujeres). Los ingresos medios son parecidos entre clusters 59..62k, por lo tanto la diferencia principal viene de la edad, el gasto y el género.
+
+```python
+# === ANÁLISIS SILHOUETTE POR CLUSTER ===
+print(f"\n📊 ANÁLISIS SILHOUETTE DETALLADO:")
+
+from sklearn.metrics import silhouette_samples  # Función para silhouette por muestra individual
+
+# Calcular silhouette score por muestra
+sample_silhouette_values = silhouette_samples(X_final_for_clustering, final_labels)
+
+# Estadísticas por cluster
+print(f"   🎯 Silhouette Score General: {final_silhouette:.3f}")
+for cluster_id in sorted(df_customers['cluster'].unique()):
+    cluster_silhouette_values = sample_silhouette_values[final_labels == cluster_id]
+    cluster_avg_silhouette = cluster_silhouette_values.mean()
+    cluster_min_silhouette = cluster_silhouette_values.min()
+
+    print(f"   Cluster {cluster_id}: μ={cluster_avg_silhouette:.3f}, "
+          f"min={cluster_min_silhouette:.3f}, "
+          f"samples={len(cluster_silhouette_values)}")
+
+```
+#### Resultados
+![Tabla comparativa](../assets/resultado-t6-parte5.3.png)
+
+El análisis de silhouette dio un score general de 0.686, lo que significa que los grupos quedaron bastante bien formados. El Cluster 3 es el más fuerte (μ=0.759), aunque tiene algunos clientes medio descolgados. Los Clusters 0 y 2 andan parejos con valores cercanos a 0.67, mientras que el Cluster 1 es el más flojo (μ=0.659). En resumen, la segmentación salió bien, pero hay unos pocos casos que no encajan del todo en su grupo.
+
+```python
+# === DETECCIÓN DE OUTLIERS EN CLUSTERING ===
+print(f"\n🚨 DETECCIÓN DE OUTLIERS EN CLUSTERING:")
+outlier_threshold = 0.0  # Silhouette negativo = mal asignado
+
+for cluster_id in sorted(df_customers['cluster'].unique()):
+    cluster_mask = final_labels == cluster_id
+    cluster_silhouette = sample_silhouette_values[cluster_mask]
+    outliers = np.sum(cluster_silhouette < outlier_threshold)
+
+    if outliers > 0:
+        print(f"   ⚠️  Cluster {cluster_id}: {outliers} posibles outliers (silhouette < 0)")
+else:
+        print(f"   ✅ Cluster {cluster_id}: Sin outliers detectados")
+
+```
+#### Resultados
+![Tabla comparativa](../assets/resultado-t6-parte5.4.png)
+
+En la detección de outliers se revisó si había clientes con silhouette negativo, es decir, mal asignados a su grupo. El resultado mostró que en el Cluster 3 no se encontraron outliers, lo que indica que todos los clientes en ese grupo están bien representados y encajan con el perfil del cluster.
+
+```python
+# === ANÁLISIS DE PERFILES POR CLUSTER ===
+print(f"\nANALISIS DE SEGMENTOS DE CLIENTES - REPORTE EJECUTIVO")
+print(f"\nPERFILES DETALLADOS POR CLUSTER:")
+
+# Análisis por cluster usando las columnas REALES del dataset
+for cluster_id in sorted(df_customers['cluster'].unique()):
+    cluster_data = df_customers[df_customers['cluster'] == cluster_id]
+    cluster_size = len(cluster_data)
+    cluster_pct = (cluster_size / len(df_customers)) * 100
+
+    # Estadísticas usando las columnas CORRECTAS del Mall Customer Dataset
+    avg_age = cluster_data['Age'].mean()
+    avg_income = cluster_data['Annual Income (k$)'].mean()
+    avg_spending = cluster_data['Spending Score (1-100)'].mean()
+
+    # Distribución por género
+    genre_counts = cluster_data['Genre'].value_counts()
+
+    print(f"\n🏷️  **CLUSTER {cluster_id}** ({cluster_size} clientes, {cluster_pct:.1f}%)")
+    print(f"   📊 **Perfil Demográfico:**")
+    print(f"      👤 Edad promedio: {avg_age:.1f} años")
+    print(f"      👥 Distribución género: {dict(genre_counts)}")
+
+    print(f"   💰 **Perfil Financiero:**")
+    print(f"      💵 Ingreso anual: ${avg_income:.1f}k")
+    print(f"      🛍️  Spending Score: {avg_spending:.1f}/100")
+```
+#### Resultados
+![Tabla comparativa](../assets/resultado-t6-parte5.5.png)
+
+Este análisis de perfiles por cluster muestra cuatro segmentos bien diferenciados de clientes. El Cluster 0 esta conformado por mujeres jóvenes con ingresos medios y alto nivel de gasto, el Cluster 1 son hombres mayores con ingresos altos pero bajo gasto, el Cluster 2 incluye mujeres adultas con ingresos medios y un gasto más controlado, y por ultimo el Cluster 3 se compone de hombres jóvenes con ingresos altos y propenso al consumo. Con esto se entiende mejor cómo se comportan distintos grupos y sirve como base para diseñar estrategias de marketing personalizadas.
+
+## 📝 Reflexiones de Data Detective
+
+🔍 Metodología CRISP-DM:
+#### ¿Qué fase fue más desafiante y por qué?
+##### Data preparation, porque implicó probar distintos escaladores y reducir dimensionalidad sin perder información.
+#### ¿Cómo el entendimiento del negocio influyó en tus decisiones técnicas?
+##### Me ayudó a priorizar técnicas que generaran segmentos útiles para marketing, no solo buenos scores.
+
+🧹 Data Preparation:
+#### ¿Qué scaler funcionó mejor y por qué?
+##### PCA con datos escalados dio el mejor rendimiento, mostrando que la normalización ayudaba a comparar variables en la misma escala.
+#### ¿PCA o Feature Selection fue más efectivo para tu caso?
+##### PCA fue más efectivo porque logró un mejor Silhouette Score.
+#### ¿Cómo balanceaste interpretabilidad vs performance?
+##### Elegí PCA por performance, aunque con menor interpretabilidad en las variables originales.
+
+🧩 Clustering:
+#### ¿El Elbow Method y Silhouette coincidieron en el K óptimo?
+##### Sí, ambos señalaron que 4 clusters era una buena elección.
+#### ¿Los clusters encontrados coinciden con la intuición de negocio?
+##### Sí, reflejan perfiles de clientes diferenciados (jóvenes gastadores, mayores conservadores, etc.).
+#### ¿Qué harías diferente si fueras a repetir el análisis?
+##### Probaría otros algoritmos de clustering como DBSCAN o jerárquico para comparar resultados.
+
+💼 Aplicación Práctica:
+#### ¿Cómo presentarías estos resultados en un contexto empresarial?
+##### Con gráficos simples y perfiles claros de clientes para que sea entendible por marketing.
+#### ¿Qué valor aportan estas segmentaciones?
+##### Permiten diseñar estrategias personalizadas y optimizar campañas.
+#### ¿Qué limitaciones tiene este análisis?
+##### El dataset es pequeño y simplificado, en la práctica se necesitarían más variables y datos reales.
+
 
