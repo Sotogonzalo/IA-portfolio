@@ -57,6 +57,7 @@ En esta práctica trabajamos en segmentar clientes usando clustering y PCA. Prim
 
 ## Reflexión
 Lo más desafiante fue preparar los datos sin perder información relevante, pero la práctica mostró la importancia de combinar comprensión del negocio con técnicas de análisis. Los clusters permiten pensar en estrategias de marketing más personalizadas, aunque hay limitaciones por el tamaño y simplificación del dataset. En general, se reforzó cómo la preparación de datos y la elección correcta de métodos impactan directamente en la calidad y utilidad de los resultados.
+
 ---
 
 # Machine Learning Clásico: Clustering y PCA - Mall Customer Segmentation
