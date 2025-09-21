@@ -23,8 +23,8 @@ En esta práctica número 6 del curso tenemos la siguiente problemática: Los ce
 - Challenge 1 (50min)
 - Challenge 2 (20min)
 - Challenge 3 (60min)
-- Challenge 4 ()
-- Challenge 5 ()
+- Challenge 4 (30min)
+- Challenge 5 (20min)
 - Diseño del github pages (200min)
 
 ## Desarrollo
@@ -67,6 +67,10 @@ En esta práctica trabajamos en segmentar clientes usando clustering y PCA. Prim
 - Se adjunta imagen "resultado-t6-reto3.1.png" en `docs/assets/`
 - Se adjunta imagen "resultado-t6-reto3.2.png" en `docs/assets/`
 - Se adjunta imagen "resultado-t6-reto3.3.png" en `docs/assets/`
+- Se adjunta imagen "resultado-t6-reto4.1.png" en `docs/assets/`
+- Se adjunta imagen "resultado-t6-reto4.2.png" en `docs/assets/`
+- Se adjunta imagen "resultado-t6-reto4.3.png" en `docs/assets/`
+- Se adjunta imagen "resultado-t6-reto5.png" en `docs/assets/`
 
 ## Reflexión
 Lo más desafiante fue preparar los datos sin perder información relevante, pero la práctica mostró la importancia de combinar comprensión del negocio con técnicas de análisis. Los clusters permiten pensar en estrategias de marketing más personalizadas, aunque hay limitaciones por el tamaño y simplificación del dataset. En general, se reforzó cómo la preparación de datos y la elección correcta de métodos impactan directamente en la calidad y utilidad de los resultados.
