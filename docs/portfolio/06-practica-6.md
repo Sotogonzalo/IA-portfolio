@@ -20,6 +20,11 @@ En esta práctica número 6 del curso tenemos la siguiente problemática: Los ce
 - Parte 2 (150min)
 - Parte 3 (30min)
 - Parte 4 (15min)
+- Challenge 1 (50min)
+- Challenge 2 (20min)
+- Challenge 3 (60min)
+- Challenge 4 ()
+- Challenge 5 ()
 - Diseño del github pages (200min)
 
 ## Desarrollo
@@ -54,6 +59,14 @@ En esta práctica trabajamos en segmentar clientes usando clustering y PCA. Prim
 - Se adjunta imagen "resultado-t6-parte5.3.png" en `docs/assets/`
 - Se adjunta imagen "resultado-t6-parte5.4.png" en `docs/assets/`
 - Se adjunta imagen "resultado-t6-parte5.5.png" en `docs/assets/`
+- Se adjunta imagen "resultado-t6-reto1.1.png" en `docs/assets/`
+- Se adjunta imagen "resultado-t6-reto1.2.png" en `docs/assets/`
+- Se adjunta imagen "resultado-t6-reto1.3.png" en `docs/assets/`
+- Se adjunta imagen "resultado-t6-reto1.4.png" en `docs/assets/`
+- Se adjunta imagen "resultado-t6-reto2.png" en `docs/assets/`
+- Se adjunta imagen "resultado-t6-reto3.1.png" en `docs/assets/`
+- Se adjunta imagen "resultado-t6-reto3.2.png" en `docs/assets/`
+- Se adjunta imagen "resultado-t6-reto3.3.png" en `docs/assets/`
 
 ## Reflexión
 Lo más desafiante fue preparar los datos sin perder información relevante, pero la práctica mostró la importancia de combinar comprensión del negocio con técnicas de análisis. Los clusters permiten pensar en estrategias de marketing más personalizadas, aunque hay limitaciones por el tamaño y simplificación del dataset. En general, se reforzó cómo la preparación de datos y la elección correcta de métodos impactan directamente en la calidad y utilidad de los resultados.
@@ -1350,3 +1363,392 @@ Este análisis de perfiles por cluster muestra cuatro segmentos bien diferenciad
 ##### El dataset es pequeño y simplificado, en la práctica se necesitarían más variables y datos reales.
 
 
+## 🧬 Challenge 1: Algoritmos de Clustering Alternativos
+En este challenge usamos diferentes algoritmos de clustering más allá de K-Means, la idea es comprender cómo se comportan frente a estructuras de datos complejas. El objetivo es usar DBSCAN, HDBSCAN, Gaussian Mixture Models, Agglomerative Clustering y Spectral Clustering, comparando su capacidad para identificar grupos, manejar ruido y adaptarse a distintos patrones.
+
+## Challenge 1: Código
+```python
+# === DBSCAN: Encuentra clusters de densidad arbitraria ===
+from sklearn.cluster import DBSCAN
+from sklearn.neighbors import NearestNeighbors
+
+print("DBSCAN: Clustering basado en densidad")
+
+# 1. Encontrar parámetros óptimos
+def find_optimal_eps(X, min_samples=5):
+    """Encuentra eps óptimo usando k-distance graph"""
+    nbrs = NearestNeighbors(n_neighbors=min_samples).fit(X)
+    distances, indices = nbrs.kneighbors(X)
+    distances = np.sort(distances[:, min_samples-1], axis=0)
+
+    # Plotear k-distance graph
+    plt.figure(figsize=(8, 5))
+    plt.plot(distances)
+    plt.xlabel('Data Points sorted by distance')
+    plt.ylabel(f'{min_samples}-NN distance')
+    plt.title('K-distance Graph for DBSCAN eps selection')
+    plt.grid(True, alpha=0.3)
+    plt.show()
+
+    return distances
+
+# Encontrar eps
+distances = find_optimal_eps(X_final_for_clustering)
+optimal_eps = 0.5 # ¿Qué valor elegirías del gráfico?
+
+# Aplicar DBSCAN
+dbscan = DBSCAN(eps=optimal_eps, min_samples=5)
+dbscan_labels = dbscan.fit_predict(X_final_for_clustering)
+
+# Análisis de resultados
+n_clusters_dbscan = len(set(dbscan_labels)) - (1 if -1 in dbscan_labels else 0)
+n_noise_points = list(dbscan_labels).count(-1)
+
+print(f"Clusters encontrados: {n_clusters_dbscan}")
+print(f"Puntos de ruido: {n_noise_points}")
+print(f"Porcentaje de ruido: {n_noise_points/len(dbscan_labels)*100:.1f}%")
+```
+
+#### Resultados
+![Tabla comparativa](../assets/resultado-t6-reto1.1.png)
+
+Se detectó 2 clusters bien definidos y no clasificó ningún punto como ruido, lo que indica que la densidad de los datos estaba distribuida de manera clara. A diferencia de K-Means, aquí los grupos no fueron impuestos por un número fijo de K, sino que emergieron de la estructura de los datos.
+
+```python
+# === HDBSCAN: Versión jerárquica de DBSCAN ===
+# !pip install hdbscan  # Instalar si no está disponible
+
+import hdbscan
+
+print("HDBSCAN: Clustering jerárquico basado en densidad")
+
+# Aplicar HDBSCAN
+hdbscan_clusterer = hdbscan.HDBSCAN(min_cluster_size=5,  # Tamaño mínimo de cluster
+                                   min_samples=5,        # Muestras mínimas por cluster
+                                   metric='euclidean')
+
+hdbscan_labels = hdbscan_clusterer.fit_predict(X_final_for_clustering)
+
+# Visualización del árbol de clustering
+hdbscan_clusterer.condensed_tree_.plot(select_clusters=True)
+plt.title('HDBSCAN Condensed Tree')
+plt.show()
+
+print(f"Clusters HDBSCAN: {hdbscan_clusterer.labels_.max() + 1}")
+print(f"Cluster persistence: {hdbscan_clusterer.cluster_persistence_}")
+```
+
+#### Resultados
+![Tabla comparativa](../assets/resultado-t6-reto1.2.png)
+
+Este modelo detectó 10 clusters en los datos, cada uno con diferentes niveles de persistencia. Los valores muestran qué tan estables son los clusters, por ejemplo, unos tienen una consistencia buena, 0.44 o 0.36, pero otros tienen muy baja estabilidad, 0.002 o 0.027, lo que indicaría que podrían ser ruido.
+
+```python
+# === GMM: Clustering probabilístico ===
+from sklearn.mixture import GaussianMixture
+
+print("Gaussian Mixture Models: Clustering probabilístico")
+
+# Encontrar número óptimo de componentes
+n_components_range = range(2, 8)
+aic_scores = []
+bic_scores = []
+
+for n_components in n_components_range:
+    gmm = GaussianMixture(n_components=n_components, random_state=42)
+    gmm.fit(X_final_for_clustering)
+    aic_scores.append(gmm.aic(X_final_for_clustering))
+    bic_scores.append(gmm.bic(X_final_for_clustering))
+
+# Plot AIC/BIC
+plt.figure(figsize=(10, 5))
+plt.plot(n_components_range, aic_scores, 'o-', label='AIC')
+plt.plot(n_components_range, bic_scores, 's-', label='BIC')
+plt.xlabel('Number of components')
+plt.ylabel('Information Criterion')
+plt.title('GMM Model Selection: AIC vs BIC')
+plt.legend()
+plt.grid(True, alpha=0.3)
+plt.show()
+
+# Aplicar GMM óptimo
+optimal_n_components = n_components_range[np.argmin(bic_scores)]
+gmm = GaussianMixture(n_components=optimal_n_components, random_state=42)
+gmm_labels = gmm.fit_predict(X_final_for_clustering)
+gmm_probabilities = gmm.predict_proba(X_final_for_clustering)
+
+print(f"Componentes óptimos (BIC): {optimal_n_components}")
+print(f"Log-likelihood: {gmm.score(X_final_for_clustering):.3f}")
+```
+
+#### Resultados
+![Tabla comparativa](../assets/resultado-t6-reto1.3.png)
+
+El GMM dió que lo mejor era usar 4 componentes según el BIC, es decir, que los datos se entienden mejor si los pensamos como cuatro grupos gaussianos distintos. Además, el log-likelihood salió 3.307, lo que básicamente quiere decir que el modelo se adaptó bastante bien a cómo están distribuidos los datos.
+
+
+```python
+# === SPECTRAL CLUSTERING: Clustering en espacio espectral ===
+from sklearn.cluster import SpectralClustering, AgglomerativeClustering
+
+print("Spectral Clustering: Clustering en espacio transformado")
+
+spectral = SpectralClustering(n_clusters=optimal_k, 
+                             affinity='rbf',  # ¿rbf, nearest_neighbors, o precomputed?
+                             random_state=42)
+
+spectral_labels = spectral.fit_predict(X_final_for_clustering)
+print(f"Spectral clustering completado con {optimal_k} clusters")
+
+# === AGGLOMERATIVE CLUSTERING ===
+agglomerative = AgglomerativeClustering(n_clusters=optimal_k,
+                                       linkage='ward')  # ward, complete, average, single
+
+agglo_labels = agglomerative.fit_predict(X_final_for_clustering)
+print(f"Agglomerative clustering completado con {optimal_k} clusters")
+```
+
+#### Resultados
+![Tabla comparativa](../assets/resultado-t6-reto1.4.png)
+
+Probamos Spectral y Agglomerative Clustering para ver los grupos desde enfoques distintos. Los dos dieron 4 clusters, igual que otros métodos, lo que confirma que los grupos que encontramos son bastante consistentes y confiables.
+
+## 🔄 Challenge 2: Recursive Feature Elimination (RFE)
+En este challenge usamos RFE (Recursive Feature Elimination) para encontrar cuáles features realmente aportan a separar bien los clusters. La idea es ir probando de a poco, sacando features menos relevantes y viendo cómo afecta a la calidad de los grupos con K-Means y el Silhouette Score. Básicamente, es como depurar las variables hasta quedarnos solo con las que hacen que los clusters se vean más claros y definidos.
+
+## Challenge 2: Código
+```python
+# === RFE: Feature Selection Recursivo ===
+from sklearn.feature_selection import RFE
+from sklearn.base import BaseEstimator, ClassifierMixin
+
+print("RECURSIVE FEATURE ELIMINATION: Selección iterativa de features")
+
+# Clase auxiliar para RFE con clustering
+class RFEClusteringEstimator(BaseEstimator, ClassifierMixin):
+    """Estimador para RFE que usa KMeans + Silhouette"""
+    def __init__(self, n_clusters=4):
+        self.n_clusters = n_clusters
+
+    def fit(self, X, y=None):
+        self.kmeans_ = KMeans(n_clusters=self.n_clusters, random_state=42, n_init=10)
+        self.labels_ = self.kmeans_.fit_predict(X)
+        # RFE requiere feature_importances_ o coef_
+        self.feature_importances_ = self._calculate_feature_importance(X)
+        return self
+
+    def _calculate_feature_importance(self, X):
+        """Calcula importancia usando varianza intra-cluster vs inter-cluster"""
+        importances = []
+        for i in range(X.shape[1]):
+            feature_values = X[:, i]
+
+            # Varianza total
+            total_var = np.var(feature_values)
+
+            # Varianza intra-cluster (promedio ponderado)
+            intra_cluster_var = 0
+            for cluster_id in range(self.n_clusters):
+                cluster_mask = self.labels_ == cluster_id
+                if np.sum(cluster_mask) > 1:  # Al menos 2 puntos en el cluster
+                    cluster_var = np.var(feature_values[cluster_mask])
+                    cluster_weight = np.sum(cluster_mask) / len(feature_values)
+                    intra_cluster_var += cluster_var * cluster_weight
+
+            # Importancia: ratio de separación entre clusters
+            if total_var > 0:
+                importance = 1 - (intra_cluster_var / total_var)
+            else:
+                importance = 0
+
+            importances.append(max(0, importance))  # No negativo
+
+        return np.array(importances)
+
+    def score(self, X, y=None):
+        kmeans = KMeans(n_clusters=self.n_clusters, random_state=42, n_init=10)
+        labels = kmeans.fit_predict(X)
+        return silhouette_score(X, labels)
+
+    def predict(self, X):
+        if hasattr(self, 'kmeans_'):
+            return self.kmeans_.predict(X)
+        else:
+            kmeans = KMeans(n_clusters=self.n_clusters, random_state=42, n_init=10)
+            return kmeans.fit_predict(X)
+
+# Aplicar RFE
+print("Aplicando RFE para encontrar las mejores features...")
+
+rfe_estimator = RFEClusteringEstimator(n_clusters=4)
+rfe = RFE(estimator=rfe_estimator, 
+          n_features_to_select=3,  # Seleccionar top 3 features
+          step=1)  # Eliminar 1 feature por iteración
+
+y_dummy = np.zeros(X_preprocessed.shape[0])
+rfe.fit(X_preprocessed, y=y_dummy)
+X_rfe = rfe.transform(X_preprocessed)
+rfe_features = np.array(feature_names)[rfe.support_]
+rfe_score = evaluate_features_for_clustering(X_rfe)
+
+print(f"Features seleccionadas por RFE: {list(rfe_features)}")
+print(f"Silhouette Score RFE: {rfe_score:.3f}")
+print(f"Ranking de features: {dict(zip(feature_names, rfe.ranking_))}")
+```
+
+#### Resultados
+![Tabla comparativa](../assets/resultado-t6-reto2.png)
+
+RFE encontró que las tres features más importantes para separar bien los clusters eran Age, Genre_Female y Genre_Male. El Silhouette Score quedó en 0.637, así que los clusters se ven bastante definidos y no están demasiado mezclados. El ranking nos muestra que Annual Income y Spending Score ayudan, pero no tanto como la edad y el género, así que principalmente estas tres son las principales para simplificar el análisis sin perder mucha info.
+
+## 📊 Challenge 3: Datasets Alternativos
+En este challenge probamos nuestro pipeline de clustering con tres datasets distintos para ver cómo se comporta con datos reales y sintéticos.
+
+## Challenge 3: Código
+```python
+# === IRIS DATASET ===
+from sklearn.datasets import load_iris
+
+print("IRIS DATASET: El clásico dataset de flores")
+
+iris = load_iris()
+X_iris = iris.data
+y_iris_true = iris.target  # Ground truth para validación
+
+print(f"Iris shape: {X_iris.shape}")
+print(f"Features: {iris.feature_names}")
+print(f"Especies: {iris.target_names}")
+
+# Aplicar pipeline completo en Iris
+scaler_iris = StandardScaler()
+X_iris_scaled = scaler_iris.fit_transform(X_iris)
+
+pca_iris = PCA(n_components=2)
+X_iris_pca = pca_iris.fit_transform(X_iris_scaled)
+
+# Clustering en Iris
+kmeans_iris = KMeans(n_clusters=3, random_state=42)
+iris_clusters = kmeans_iris.fit_predict(X_iris_pca)
+
+# Comparación con ground truth
+from sklearn.metrics import adjusted_rand_score  # Adjusted Rand Index
+ari_score = adjusted_rand_score(y_iris_true, iris_clusters)
+print(f"Adjusted Rand Index vs ground truth: {ari_score:.3f}")
+```
+
+#### Resultados
+![Tabla comparativa](../assets/resultado-t6-reto3.1.png)
+
+El clustering en Iris quedó decente: con un ARI de 0.433 separó más o menos bien las especies, pero todavía hay mezcla entre versicolor y virginica. Básicamente K-Means captó cierta estructura, aunque no es perfecto, habría que probar otros métodos o features para levantar el score.
+
+
+```python
+# === WINE DATASET ===
+from sklearn.datasets import load_wine
+
+wine = load_wine()
+X_wine = wine.data
+y_wine_true = wine.target
+
+print(f"Wine Dataset shape: {X_wine.shape}")
+print(f"Features: {wine.feature_names[:5]}...")  # Primeras 5 features
+print(f"Clases de vino: {wine.target_names}")
+
+# Tu análisis completo aca...
+
+from sklearn.preprocessing import StandardScaler
+from sklearn.decomposition import PCA
+from sklearn.cluster import KMeans
+from sklearn.metrics import adjusted_rand_score
+
+# Escalar datos
+scaler = StandardScaler()
+X_wine_scaled = scaler.fit_transform(X_wine)
+
+# Reducir a 2 componentes principales para ver mejor
+pca = PCA(n_components=2)
+X_wine_pca = pca.fit_transform(X_wine_scaled)
+print(f"Varianza explicada con 2 PCs: {pca.explained_variance_ratio_.sum():.3f}")
+
+# KMeans clustering
+kmeans = KMeans(n_clusters=3, random_state=42, n_init=10)
+wine_clusters = kmeans.fit_predict(X_wine_pca)
+
+# Comparar con etiquetas reales
+ari_score = adjusted_rand_score(y_wine_true, wine_clusters)
+print(f"ARI KMeans vs ground truth: {ari_score:.3f}")
+```
+
+![Tabla comparativa](../assets/resultado-t6-reto3.2.png)
+
+El dataset de vinos tiene 178 muestras con 13 características químicas. Al reducir la dimensionalidad con PCA a 2 componentes, logramos explicar un 55% de la varianza, lo cual ya nos da una buena idea de cómo se distribuyen los datos. Después de aplicar KMeans con 3 clusters, el ARI dio 0.895, lo que significa que el clustering se ajustó bastante bien con las clases reales de vino. En definitiva, las features químicas sí diferencian bastante bien los tipos de vino.
+
+```python
+# === SYNTHETIC BLOBS ===
+from sklearn.datasets import make_blobs
+
+# Generar datos sintéticos con características conocidas
+X_blobs, y_blobs_true = make_blobs(n_samples=300, 
+                                  centers=4, 
+                                  n_features=2,  # ¿Cuántas dimensiones?
+                                  cluster_std=1.0,  # ¿Qué dispersión?
+                                  random_state=42)
+
+print(f"Synthetic blobs shape: {X_blobs.shape}")
+
+# ¿Puede tu pipeline detectar los 4 clusters correctamente?
+
+from sklearn.preprocessing import StandardScaler
+from sklearn.decomposition import PCA
+from sklearn.cluster import KMeans
+from sklearn.metrics import adjusted_rand_score
+
+# Escalar
+scaler = StandardScaler()
+X_blobs_scaled = scaler.fit_transform(X_blobs)
+
+# PCA a 2D (ya son 2D, pero mantenemos el formato)
+pca = PCA(n_components=2)
+X_blobs_pca = pca.fit_transform(X_blobs_scaled)
+
+# Clustering
+kmeans = KMeans(n_clusters=4, random_state=42, n_init=10)
+blobs_clusters = kmeans.fit_predict(X_blobs_pca)
+
+# Comparación con ground truth
+ari_score = adjusted_rand_score(y_blobs_true, blobs_clusters)
+print(f"ARI KMeans vs ground truth (blobs): {ari_score:.3f}")
+```
+
+![Tabla comparativa](../assets/resultado-t6-reto3.3.png)
+
+Para los Synthetic Blobs generamos un dataset controlado con 4 clusters bien separados y 2 dimensiones. El objetivo probar si nuestro pipeline de clustering podía reconocerlos sin complicaciones, y después de escalar y aplicar PCA, KMeans detectó los clusters y comparando con la “verdad” del dataset, el ARI dio 0.991, casi perfecto. Básicamente casi todos los puntos quedaron en el cluster correcto.
+
+
+## 🎨 Challenge 4: Visualización Avanzada
+
+
+## Challenge 4: Código
+```python
+
+```
+
+#### Resultados
+![Tabla comparativa](../assets/resultado-t6-reto4.1.png)
+
+![Tabla comparativa](../assets/resultado-t6-reto4.2.png)
+
+![Tabla comparativa](../assets/resultado-t6-reto4.3.png)
+
+
+
+## 📈 Challenge 5: Comparación Masiva de Algoritmos
+
+
+## Challenge 5: Código
+```python
+
+```
+
+#### Resultados
+![Tabla comparativa](../assets/resultado-t6-reto5.png)
