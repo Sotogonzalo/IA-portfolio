@@ -1726,29 +1726,165 @@ Para los Synthetic Blobs generamos un dataset controlado con 4 clusters bien sep
 
 
 ## 🎨 Challenge 4: Visualización Avanzada
-
+Para el Challenge 4 nos metemos en la visualización avanzada de datos de alta dimensión. La idea es poder ver cómo se agrupan nuestros clusters de manera más “visual” y menos matemática.
 
 ## Challenge 4: Código
 ```python
+# === t-SNE ===
+from sklearn.manifold import TSNE
 
+print("t-SNE: Visualización no lineal de alta dimensión")
+
+tsne = TSNE(n_components=2, 
+           perplexity=30, # Típicamente 5-50
+           random_state=42)
+
+X_tsne = tsne.fit_transform(X_final_for_clustering)
+
+# Plot t-SNE con clusters
+plt.figure(figsize=(12, 5))
+
+plt.subplot(1, 2, 1)
+plt.scatter(X_tsne[:, 0], X_tsne[:, 1], c=final_labels, cmap='viridis', alpha=0.7)
+plt.title('t-SNE: Clusters Encontrados')
+plt.xlabel('t-SNE Component 1')
+plt.ylabel('t-SNE Component 2')
+plt.colorbar()
+
+plt.subplot(1, 2, 2)
+# Comparar con PCA
+plt.scatter(X_pca_2d[:, 0], X_pca_2d[:, 1], c=final_labels, cmap='viridis', alpha=0.7)
+plt.title('PCA: Clusters Encontrados')
+plt.xlabel('PC1')
+plt.ylabel('PC2')
+plt.colorbar()
+
+plt.tight_layout()
+plt.show()
 ```
 
-#### Resultados
+#### Resultado t-SNE
 ![Tabla comparativa](../assets/resultado-t6-reto4.1.png)
 
+En el plot de la izquierda tenemos el t-SNE, que es para ver los clusters aunque los datos estén en alta dimensión. Se nota que los clusters se separan bien, incluso en formas raras o no lineales, lo que t-SNE maneja bien.
+A la derecha está el PCA, que también reduce a 2D pero de forma lineal. Acá los clusters se ven más apretados y menos “distintos” que con t-SNE, porque PCA no puede manejar bien relaciones complejas entre las features.
+
+```python
+# === UMAP ===
+# !pip install umap-learn
+import umap.umap_ as umap
+
+reducer = umap.UMAP(n_components=2, random_state=42)
+X_umap = reducer.fit_transform(X_final_for_clustering)
+
+# Visualización UMAP
+plt.figure(figsize=(8, 6))
+plt.scatter(X_umap[:, 0], X_umap[:, 1], c=final_labels, cmap='viridis', alpha=0.7)
+plt.title('UMAP: Reducción de Dimensionalidad')
+plt.xlabel('UMAP 1')
+plt.ylabel('UMAP 2')
+plt.colorbar()
+plt.show()
+```
+
+#### Resultado UMAP
 ![Tabla comparativa](../assets/resultado-t6-reto4.2.png)
 
+Lo que muestra el gráfico es el resultado de aplicar UMAP para reducir la dimensionalidad de los datos y proyectarlos en 2D. Cada puntito representa una observación, y los colores indican a qué cluster pertenece según la clasificación.
+
+```python
+# === HEATMAP DETALLADO ===
+import seaborn as sns
+
+# Crear matriz de características por cluster
+cluster_profiles = df_customers.groupby('cluster')[['Age', 'Annual Income (k$)', 'Spending Score (1-100)']].mean()
+
+plt.figure(figsize=(10, 6))
+sns.heatmap(cluster_profiles.T, 
+           annot=True, 
+           cmap='RdYlBu_r',
+           center=cluster_profiles.values.mean(),
+           cbar_kws={'label': 'Valor Promedio'})
+plt.title('Perfil de Características por Cluster')
+plt.ylabel('Características')
+plt.xlabel('Cluster ID')
+plt.show()
+```
+
+#### Resultado HEATMAP
 ![Tabla comparativa](../assets/resultado-t6-reto4.3.png)
 
-
+El heatmap ayuda a ver que los clusters no solo se diferencian en la edad, sino sobre todo en el patrón de gasto vs ingreso, lo cual ayuda mucho si lo que buscás es segmentar clientes para, por ejemplo, campañas de marketing.
 
 ## 📈 Challenge 5: Comparación Masiva de Algoritmos
 
 
 ## Challenge 5: Código
 ```python
+# === BENCHMARK DE TODOS LOS ALGORITMOS ===
+algorithms = {
+    'K-Means': KMeans(n_clusters=optimal_k, random_state=42),
+    'DBSCAN': DBSCAN(eps=0.5, min_samples=5),
+    'Spectral': SpectralClustering(n_clusters=optimal_k, random_state=42),
+    'AgglomerativeClustering': AgglomerativeClustering(n_clusters=optimal_k),
+    # 'HDBSCAN': hdbscan.HDBSCAN(min_cluster_size=20),  # Descomenta si tienes hdbscan
+}
 
+results = {}
+
+for name, algorithm in algorithms.items():
+    try:
+        labels = algorithm.fit_predict(X_final_for_clustering)
+
+        # Solo calcular silhouette si tenemos más de 1 cluster
+        n_clusters = len(set(labels)) - (1 if -1 in labels else 0)
+        if n_clusters > 1:
+            score = silhouette_score(X_final_for_clustering, labels)
+        else:
+            score = -1  # Score inválido
+
+        results[name] = {
+            'silhouette': score,
+            'n_clusters': n_clusters,
+            'n_noise': list(labels).count(-1) if -1 in labels else 0
+        }
+
+        print(f"{name}: Silhouette={score:.3f}, Clusters={n_clusters}, Noise={results[name]['n_noise']}")
+
+    except Exception as e:
+        print(f"{name}: ERROR - {str(e)}")
+
+# Visualización comparativa
+algorithms_names = list(results.keys())
+silhouette_scores = [results[name]['silhouette'] for name in algorithms_names]
+
+plt.figure(figsize=(12, 6))
+bars = plt.bar(algorithms_names, silhouette_scores, alpha=0.7)
+plt.ylabel('Silhouette Score')
+plt.title('Comparación de Algoritmos de Clustering')
+plt.xticks(rotation=45)
+
+# Colorear barras según rendimiento
+for i, (bar, score) in enumerate(zip(bars, silhouette_scores)):
+    if score >= 0.5:
+        bar.set_color('green')
+    elif score >= 0.25:
+        bar.set_color('orange')
+    else:
+        bar.set_color('red')
+
+    plt.text(bar.get_x() + bar.get_width()/2, bar.get_height() + 0.01, 
+             f'{score:.3f}', ha='center', va='bottom')
+
+plt.tight_layout()
+plt.show()
 ```
 
 #### Resultados
 ![Tabla comparativa](../assets/resultado-t6-reto5.png)
+
+ - K-Means dio un Silhouette de 0.687 con 4 clusters. Osea, separa bastante bien los grupos.
+ - DBSCAN nos dio un Silhouette de 0.762, el mejor puntaje, pero ojo igualmente solo formó 2 clusters. Es decir, encuentra una división muy clara, pero menos detallada.
+ - Spectral Clustering dio Silhouette de 0.686 con 4 clusters, muy similar a K-Means en desempeño.
+ - Agglomerative Clustering dio Silhouette de 0.687 con 4 clusters, también casi igual a K-Means.
+Podemos observar que DBSCAN dio la mejor calidad de agrupamiento (0.762), pero con menos clusters, mientras que los otros tres métodos ofrecen un equilibrio entre cantidad de clusters (4) y buena separación (aprox. 0.686 a 0.687).
