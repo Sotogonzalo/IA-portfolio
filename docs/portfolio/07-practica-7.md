@@ -111,6 +111,7 @@ for i, (x1, x2) in enumerate(datos):
 graficar_perceptron(w1, w2, bias, datos, resultados_and, "Perceptrón AND")
 ```
 #### Resultados: solución AND
+<!-- ![Tabla comparativa](../assets/resultado-t7-parte1.1.png) -->
 
 
 
@@ -139,5 +140,6 @@ for i, (x1, x2) in enumerate(datos):
 graficar_perceptron(w1, w2, bias, datos, resultados_or, "Perceptrón OR")
 ```
 #### Resultados: solución OR
+<!-- ![Tabla comparativa](../assets/resultado-t7-parte1.1.png) -->
 
 
