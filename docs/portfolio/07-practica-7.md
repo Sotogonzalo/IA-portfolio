@@ -16,6 +16,7 @@ En esta práctica número 7 del curso, empezamos con los principios de Deep Lear
 
 ## Actividades (con tiempos estimados)
 - Parte 1 (40min)
+- 
 
 ## Desarrollo
 
@@ -110,7 +111,7 @@ for i, (x1, x2) in enumerate(datos):
 graficar_perceptron(w1, w2, bias, datos, resultados_and, "Perceptrón AND")
 ```
 #### Resultados: solución AND
-;; ![Tabla comparativa](../assets/resultado-t7-parte1.1.png)
+
 
 
 ```python
@@ -138,5 +139,5 @@ for i, (x1, x2) in enumerate(datos):
 graficar_perceptron(w1, w2, bias, datos, resultados_or, "Perceptrón OR")
 ```
 #### Resultados: solución OR
-;; ![Tabla comparativa](../assets/resultado-t7-parte1.1.png)
+
 
