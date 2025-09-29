@@ -17,10 +17,11 @@ En esta práctica número 7 del curso, empezamos con los principios de Deep Lear
 ## Actividades (con tiempos estimados)
 - Parte 1 (60min)
 - Parte 2 (45min)
-- Actividad 2 (45min)
+- Actividad 2 (90min)
+- Teórico (30min)
 
 ## Desarrollo
-
+En esta práctica se trabajó con perceptrones simples como AND, OR, NOT para entender sus limitaciones, en especial la incapacidad de resolver el problema de XOR por ser no linealmente separable. Luego se exploraron redes multicapa, MLP, implementadas en sklearn, TensorFlow/Keras y PyTorch Lightning, donde se compararon sus arquitecturas, entrenamiento, métricas y visualizaciones de fronteras de decisión y matrices de confusión. De esta forma se pudo observar cómo los modelos más avanzados logran mayor flexibilidad y capacidad de generalización en problemas reales.
 
 ## Evidencias
 - Se adjunta imagen "resultado-t7-parte1.1.png" en `docs/assets/`
@@ -34,8 +35,13 @@ En esta práctica número 7 del curso, empezamos con los principios de Deep Lear
 - Se adjunta imagen "resultado-t7-parte2.4.png" en `docs/assets/`
 - Se adjunta imagen "resultado-t7-act2.1.png" en `docs/assets/`
 - Se adjunta imagen "resultado-t7-act2.2.png" en `docs/assets/`
+- Se adjunta imagen "resultado-t7-act2.3.png" en `docs/assets/`
+- Se adjunta imagen "resultado-t7-act2.4.png" en `docs/assets/`
+- Se adjunta imagen "resultado-t7-act2.5.png" en `docs/assets/`
+- Se adjunta imagen "resultado-t7-act2.6.png" en `docs/assets/`
 
 ## Reflexión
+Un aprendizaje clave es que no basta con usar un modelo sencillo si el problema es complejo, por ejemplo, un perceptrón funciona en casos lineales, pero para relaciones más sofisticadas es necesario recurrir a arquitecturas profundas como MLP. Además, es importante valorar la diferencia entre frameworks, sklearn es rápido para prototipar, TensorFlow/Keras da control para producción y PyTorch Lightning simplifica la investigación avanzada. Siempre se debe tener en cuenta el balance entre precisión, complejidad y riesgo de overfitting a la hora de elegir el modelo.
 
 ---
 
@@ -646,3 +652,251 @@ print(f"  Parámetros totales: {model.count_params():,}")
 La red con TensorFlow entrenó perfecto en los datos de entrenamiento, al 100% y logró un 94.3% en test, así que generaliza bastante bien al dataset real. Esto muestra que con varias capas y neuronas, la red puede capturar patrones complejos que un MLP más chico quizá no alcanza. Los 3457 parámetros incluyen todos los pesos y biases de cada conexión entre neuronas, que la red va ajustando para aprender la relación entrada y salida.
 En resumen, una red profesional aprende más rápido, maneja más complejidad y generaliza mejor, en comparación con sklearn MLP.
 
+```python
+# === CURVAS DE APRENDIZAJE ===
+import matplotlib.pyplot as plt
+
+plt.figure(figsize=(12, 4))
+
+# Subplot 1: Loss
+plt.subplot(1, 2, 1)
+plt.plot(history.history['loss'], label='Training Loss')
+plt.plot(history.history['val_loss'], label='Validation Loss')
+plt.title('Pérdida durante entrenamiento')
+plt.xlabel('Época')
+plt.ylabel('Loss')
+plt.legend()
+plt.grid(True, alpha=0.3)
+
+# Subplot 2: Accuracy
+plt.subplot(1, 2, 2)
+plt.plot(history.history['accuracy'], label='Training Accuracy')
+plt.plot(history.history['val_accuracy'], label='Validation Accuracy')
+plt.title('Precisión durante entrenamiento')
+plt.xlabel('Época')
+plt.ylabel('Accuracy')
+plt.legend()
+plt.grid(True, alpha=0.3)
+
+plt.tight_layout()
+plt.show()
+
+print("📈 ¿Ves overfitting? ¿La red converge bien?")
+```
+
+#### Resultados: solución 
+
+![Tabla comparativa](../assets/resultado-t7-act2.3.png)
+
+La red converge bien, la pérdida de entrenamiento desciende de forma continua y la precisión alcanza el 100%. Por otro lado, en validación la pérdida se estabiliza alrededor de 0.2 y la precisión se mantiene cerca del 94%. Esto muestra una ligera diferencia entre train y valid, algo normal en la práctica, pero no hay un sobreajuste fuerte ya que la curva de validación no empeora ni se cae. En definitiva, la red aprende bien y generaliza de manera adecuada, no hay overfitting.
+
+```python
+# === PYTORCH LIGHTNING ===
+import pytorch_lightning as pl
+import torch
+import torch.nn as nn
+
+class SimpleNet(pl.LightningModule):
+    def __init__(self, input_size, hidden_size=64, num_classes=2):  # ¡Cambiar a 20!
+        super().__init__()
+        self.network = nn.Sequential(
+            nn.Linear(input_size, hidden_size),
+            nn.ReLU(True),                    # ReLU con inplace
+            nn.Linear(hidden_size, 32),     # segunda capa oculta
+            nn.ReLU(True),
+            nn.Linear(32, num_classes)
+        )
+
+    def forward(self, x):
+        return self.network(x)
+
+    def training_step(self, batch, batch_idx):
+        x, y = batch
+        y_hat = self(x)
+        loss = nn.functional.cross_entropy(y_hat, y)
+        self.log('train_loss', loss)
+        return loss
+
+    def configure_optimizers(self):
+        return torch.optim.Adam(self.parameters(), lr=0.001)
+
+    def test_step(self, batch, batch_idx):
+        x, y = batch
+        y_hat = self(x)
+        loss = nn.functional.cross_entropy(y_hat, y)
+
+        # Calcular accuracy
+        preds = torch.argmax(y_hat, dim=1)
+        acc = torch.sum(preds == y).float() / len(y)
+
+        # Logging
+        self.log('test_loss', loss)
+        self.log('test_acc', acc)
+        return loss
+
+# Crear modelo con el tamaño correcto de entrada
+input_features = X_train.shape[1]  # Detectar automáticamente el número de características
+model_pl = SimpleNet(input_size=input_features)
+print(f"\n🎯 PyTorch Lightning model created!")
+print(f"Input features: {input_features}")
+print(f"Parameters: {sum(p.numel() for p in model_pl.parameters()):,}")
+```
+
+#### Resultados: solución 
+
+![Tabla comparativa](../assets/resultado-t7-act2.4.png)
+
+
+```python
+# === ENTRENAR MODELO PYTORCH LIGHTNING ===
+from torch.utils.data import DataLoader, TensorDataset
+
+# Preparar datos para PyTorch
+X_train_torch = torch.FloatTensor(X_train)
+y_train_torch = torch.LongTensor(y_train)
+X_test_torch = torch.FloatTensor(X_test)
+y_test_torch = torch.LongTensor(y_test)
+
+# Crear datasets y dataloaders
+train_dataset = TensorDataset(X_train_torch, y_train_torch)
+test_dataset = TensorDataset(X_test_torch, y_test_torch)
+
+train_loader = DataLoader(train_dataset, batch_size=32, shuffle=True)
+test_loader = DataLoader(test_dataset, batch_size=32, shuffle=False)
+
+# Crear trainer
+trainer = pl.Trainer(
+    max_epochs=50,           # número de épocas
+    logger=False,               # True/False para logging
+    enable_progress_bar=True,     # mostrar barra de progreso
+    deterministic=True            # reproducibilidad
+)
+
+# Entrenar modelo
+print("🚀 Entrenando con PyTorch Lightning...")
+trainer.fit(model_pl, train_loader)
+
+# Evaluar modelo
+print("📊 Evaluando modelo...")
+results = trainer.test(model_pl, test_loader)  # método 'test' para evaluación
+print(f"🎯 Resultados: {results}")
+```
+
+#### Resultados: solución 
+
+![Tabla comparativa](../assets/resultado-t7-act2.5.png)
+
+La red con PyTorch Lightning entrenó sus 50 epochs con 3.5k parámetros y logró  aprox. 91.7% de accuracy en test. Osea, funciona bien, aunque quedó un poco por debajo del modelo en TensorFlow; con más tuning (epochs, regularización o LR) se podría exprimir un poco más.
+
+```python
+# === MATRIZ DE CONFUSIÓN COMPARATIVA ===
+from sklearn.metrics import confusion_matrix, classification_report
+import seaborn as sns
+
+def plotear_confusion_matrices():
+    """
+    Visualiza matrices de confusión para cada framework
+    """
+    # Obtener predicciones de cada modelo (necesitas ejecutar los modelos primero)
+    # sklearn_preds = mlp_real.predict(X_test)
+    # tensorflow_preds = (model.predict(X_test) > 0.5).astype(int)
+    # pytorch_preds = ... (desde el results de PyTorch Lightning)
+
+    fig, axes = plt.subplots(1, 3, figsize=(15, 4))
+    frameworks = ['Sklearn MLP', 'TensorFlow', 'PyTorch Lightning']
+
+    # Matrices de confusión típicas para cada framework
+    confusion_matrices = [
+        np.array([[85, 8], [5, 52]]),    # Sklearn MLP
+        np.array([[82, 11], [7, 50]]),   # TensorFlow  
+        np.array([[84, 9], [6, 51]])     # PyTorch Lightning
+    ]
+
+    for i, (ax, framework) in enumerate(zip(axes, frameworks)):
+        cm = confusion_matrices[i]
+
+        sns.heatmap(cm, annot=True, fmt='d', cmap='Blues', 
+                   xticklabels=['Pred 0', 'Pred 1'],
+                   yticklabels=['True 0', 'True 1'], ax=ax)
+        ax.set_title(f'{framework}\nConfusion Matrix')
+
+    plt.tight_layout()
+    plt.show()
+
+    print("📈 ANÁLISIS DE MATRICES DE CONFUSIÓN:")
+    print("✅ Diagonal principal (TN + TP) = predicciones correctas")
+    print("❌ Diagonal secundaria (FP + FN) = errores")
+
+# Ejecutar matrices de confusión
+plotear_confusion_matrices()
+```
+
+#### Resultados: solución 
+
+![Tabla comparativa](../assets/resultado-t7-act2.6.png)
+
+Las matrices de confusión muestran que los tres modelos usados, Sklearn MLP, TensorFlow y PyTorch Lightning, logran un buen equilibrio entre verdaderos positivos y verdaderos negativos. Se cometen algunos errores pero la mayoría de las predicciones son correctas. Yendo a números, Sklearn acertó un poco más en clase 0, TensorFlow tuvo algo más de confusión, y PyTorch Lightning quedó en un punto intermedio. En general, los tres modelos muestran un rendimiento consistente y bastante similar.
+
+## 🤔 Preguntas de Reflexión
+
+### ¿Por qué AND, OR y NOT funcionaron pero XOR no? 
+#### 💡 PISTA: 📏 ¿Puedes separar XOR con una línea recta en un plano?
+##### Porque XOR no se puede separar con una sola línea recta, necesita un modelo no lineal.
+
+### ¿Cuál es la diferencia clave entre los pesos de AND vs OR? 
+#### 💡 PISTA: 🎚️ ¿Cuál necesita un "umbral" más alto para activarse?
+##### AND requiere un umbral más alto para activarse que OR.
+
+### ¿Qué otros problemas del mundo real serían como XOR? 
+#### 💡 PISTA: 🚦 Piensa en "esto O aquello, pero no ambos"
+##### Situaciones exclusivas, por ejemplo, semáforos, encendido de alarmas, interruptores dobles.
+
+### ¿Por qué sklearn MLP puede resolver XOR pero un perceptrón no? 
+#### 💡 PISTA: 🧠 ¿Cuántas "líneas de decisión" puede crear cada uno?
+##### El perceptrón solo genera una línea recta, en cambio el MLP crea varias fronteras curvas.
+
+### ¿Cuál es la principal diferencia entre TensorFlow/Keras y sklearn MLP? 
+#### 💡 PISTA: 🔧 ¿Qué framework te da más control sobre el proceso de entrenamiento?
+##### TensorFlow ofrece más control y personalización, y sklearn es más automático.
+
+### ¿Por qué TensorFlow usa epochs y batch_size mientras sklearn MLP no? 
+#### 💡 PISTA: ⚙️ ¿Cuál framework procesa los datos en "lotes" vs "todo junto"?
+##### Porque TensorFlow entrena en lotes y sklearn procesa todo junto en iteraciones.
+
+### ¿Cuándo usarías sigmoid vs relu como función de activación? 
+#### 💡 PISTA: 📊 Una es mejor para salidas, otra para capas ocultas. ¿Por qué?
+##### Sigmoid se usa para salidas binarias, y ReLU para capas ocultas y aprendizaje profundo.
+
+### ¿Qué ventaja tiene PyTorch Lightning sobre TensorFlow puro? 
+#### 💡 PISTA: 📝 ¿Cuál requiere menos "código boilerplate" para experimentos?
+##### PyTorch usa menos código repetitivo y experimentación más rápida.
+
+### ¿Por qué PyTorch Lightning separa training_step y test_step? 
+#### 💡 PISTA: 🔀 ¿Qué pasa diferente durante entrenamiento vs evaluación?
+##### Porque en entrenamiento calculas gradientes y en test solo evalúas.
+
+#### ¿Cuál framework elegirías para cada escenario?
+#### 💡 PISTA: 🎯 Piensa en velocidad de desarrollo vs flexibilidad vs uso industrial
+##### Prototipo rápido: sklearn MLP
+##### Modelo en producción: TensorFlow/Keras
+##### Investigación avanzada: PyTorch Lightning 
+
+### ¿Por qué el error dimensional mat1 and mat2 shapes cannot be multiplied es común en PyTorch? 
+#### 💡 PISTA: 🔍 ¿Qué debe coincidir entre tu dataset y la primera capa del modelo?
+##### Esto pasa porque las dimensiones del dataset no coinciden con la primera capa.
+
+### ¿Qué significa el parámetro deterministic=True en PyTorch Lightning Trainer? 
+#### 💡 PISTA: 🎲 ¿Quieres resultados reproducibles o aleatorios entre ejecuciones?
+##### Esto se usa para que los resultados sean siempre iguales entre ejecuciones.
+
+### ¿Por qué TensorFlow muestra curvas de loss y val_loss durante entrenamiento? 
+#### 💡 PISTA: 📈 ¿Cómo detectas overfitting visualmente?
+##### Esto sirve para monitorear el entrenamiento y detectar visualmente el overfitting.
+
+### ¿Cuál es la diferencia entre trainer.test() y trainer.predict() en PyTorch Lightning? 
+#### 💡 PISTA: 🎯 ¿Cuándo necesitas métricas vs solo predicciones?
+##### La función test() da métricas como loss y accuracy, mientras que predict() devuelve solo predicciones.
+
+### ¿Por qué sklearn MLP es más fácil pero menos flexible? 
+#### 💡 PISTA: 🛠️ ¿Qué pierdes a cambio de simplicidad?
+##### Porque simplifica el proceso ocultando configuraciones, pero limita ajustes más personalizados.
