@@ -23,5 +23,5 @@ Bienvenido a las entradas del portafolio. Usá la plantilla para crear nuevas p�
 ### UT2
 - Práctica 7: [07-practica-7.md](07-practica-7.md)
 - Práctica 8: [08-practica-8.md](08-practica-8.md)
-- Práctica 9: [08-practica-9.md](09-practica-9.md)
+- Práctica 9: [09-practica-9.md](09-practica-9.md)
 
