@@ -61,7 +61,7 @@ ROOT_LOGDIR = "tb_logs"
 os.makedirs(ROOT_LOGDIR, exist_ok=True)
 ```
 
-## Setup inicial
+## Preparación del Dataset CIFAR-10
 ```python
 (x_train, y_train), (x_test, y_test) = keras.datasets.cifar10.load_data()
 y_train = y_train.flatten(); y_test = y_test.flatten()
