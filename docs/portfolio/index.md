@@ -13,7 +13,7 @@ Bienvenido a las entradas del portafolio. Usá la plantilla para crear nuevas p�
 
 ## Prácticas
 ### UT1
-- Práctica 1: [01-practica-1.md](01-practica-1.md)
+- Práctica 1: [01-practica-1.md](01-practica-1.md) Introducción a IA, ML y DL, exploración y análisis de datos: EDA del Titanic
 - Práctica 2: [02-practica-2.md](02-practica-2.md)
 - Práctica 3: Publicación y setup del Github Pages.
 - Práctica 4: [04-practica-4.md](04-practica-4.md)
