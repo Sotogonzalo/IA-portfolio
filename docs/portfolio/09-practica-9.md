@@ -4,6 +4,7 @@ date: 2025-09-30
 ---
 
 # Práctica 9
+## 📚 CNNs y Transfer Learning
 
 ## Contexto
 En esta práctica número 9 del curso...

@@ -4,6 +4,7 @@ date: 2025-08-26
 ---
 
 # Práctica 2
+## 📊 Feature Engineering, Modelo base y Baseline
 
 ## Contexto
 Práctica número 2 de la primer unidad del curso. En esta práctica buscamos aprender a usar la libreria scikit-learn, vemos los tipos de modelos que ofrece, y aprendemos a crear nuevos parámetros a partir de los existentes.

@@ -4,6 +4,7 @@ date: 2025-08-26
 ---
 
 # Práctica 5
+## 📝 Validación y Selección de Modelos
 
 ## Contexto
 Práctica número 5 de la primer unidad del curso. Aquí se hacen comparativas de modelos, analisis de datos y toma de desiciones basado en variables generales de cada problema.

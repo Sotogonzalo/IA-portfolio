@@ -4,6 +4,7 @@ date: 2025-09-09
 ---
 
 # Práctica 6
+## 🔍 Clustering y PCA
 
 ## Contexto
 En esta práctica número 6 del curso tenemos la siguiente problemática: Los centros comerciales buscan conocer mejor a sus clientes, pero el problema a resolver es la segmentación de clientes, es decir, agruparlos según sus características y comportamientos para poder diseñar campañas de marketing más personalizadas, ofrecer promociones específicas, invertir mejor en publicidad y comprender cómo compran los distintos tipos de clientes.

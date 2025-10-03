@@ -4,6 +4,7 @@ date: 2025-08-24
 ---
 
 # Práctica 4
+## 📝 Regresión Lineal y Logística
 
 ## Contexto
 Práctica número 4 del curso, se busca entender los primeros pasos de modelos reales entrenados con regresión líneal vs regresión logística.

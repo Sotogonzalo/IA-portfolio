@@ -4,7 +4,7 @@ date: 2025-08-26
 ---
 
 # Práctica 1
-## 💻 Introducción a IA, ML y DL, exploración y análisis de datos: EDA del Titanic.
+## 💻 Introducción a IA, ML y DL, exploración y análisis de datos: EDA del Titanic
 
 ## Contexto
 Práctica número 1 de la primer unidad del curso. Aquí se dan los primeros pasos del curso, trabajamos con dataset con información del accidente famoso "Titanic".

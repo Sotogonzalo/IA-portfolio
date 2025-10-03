@@ -4,6 +4,7 @@ date: 2025-09-23
 ---
 
 # Práctica 8
+## ⚡ Backpropagation y Optimizadores
 
 ## Contexto
 En esta práctica número 8 del curso probaremos distintas técnicas para mejorar el entrenamiento del modelo.

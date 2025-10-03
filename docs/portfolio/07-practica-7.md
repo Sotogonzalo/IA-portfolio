@@ -4,6 +4,7 @@ date: 2025-09-16
 ---
 
 # Práctica 7
+## 🧠 De Perceptrón a Redes Neuronales
 
 ## Contexto
 En esta práctica número 7 del curso, empezamos con los principios de Deep Learning.
