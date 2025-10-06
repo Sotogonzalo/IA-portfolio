@@ -11,8 +11,8 @@ En esta práctica continuamos el trabajo previo de exploración y modelado, apli
 
 ## Actividades (con tiempos estimados)
 - Preparar markdown (40min)
-- Implementar pipelines (MLP + CNN) y callbacks (60min)
-- Ejecutar experimentos y guardar resultados (80min)
+- Implementar pipelines (MLP) y callbacks (60min)
+- Ejecutar experimentos y guardar resultados (40min)
 - Documentar hallazgos y generar evidencias (40min)
 
 ## Desarrollo
@@ -73,7 +73,7 @@ Por último, se separa un 10 % del conjunto de entrenamiento para validación (x
 - x_val: 6 000 imágenes para validar (ver si el modelo generaliza bien)
 - x_test: 10 000 imágenes para evaluar al final
 
-Con esto ya queda todo el dataset listo para empezar a experimentar con distintos modelos (MLP, CNN, etc.).
+Con esto ya queda todo el dataset listo para empezar a experimentar.
 
 ## Experimento MLP (igual que CIFAR: aplanar y MLP)
 ```python
