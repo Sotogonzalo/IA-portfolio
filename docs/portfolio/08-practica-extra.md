@@ -3,14 +3,14 @@ title: "Práctica 8 - MNIST"
 date: 2025-09-23
 ---
 
-# Práctica 8
-## ⚡ Backpropagation y Optimizadores (versión MNIST)
+# Práctica 8 - Extra
+## ⚡ Backpropagation y Optimizadores (versión dataset MNIST)
 
 ## Contexto
-En esta práctica adaptamos el flujo que usamos para CIFAR-10 al dataset MNIST. Construimos dos pipelines paralelos para comparar, primero MLP (igual metodología que en CIFAR para comparar efectos de preprocesado y regularización) y segundo CNN. Aplicamos normalización, augmentación, inicializadores, BatchNorm, Dropout, L2 y callbacks para evaluar su impacto.
+En esta práctica continuamos el trabajo previo de exploración y modelado, aplicando ahora la misma metodología al dataset MNIST, un conjunto clásico de imágenes de dígitos escritos a mano. La idea es reproducir el flujo de entrenamiento utilizado anteriormente (como en CIFAR-10), pero adaptandolo a este nuevo.
 
 ## Actividades (con tiempos estimados)
-- Preparar markdown (40 min)
+- Preparar markdown (40min)
 - Implementar pipelines (MLP + CNN) y callbacks (60min)
 - Ejecutar experimentos y guardar resultados (80min)
 - Documentar hallazgos y generar evidencias (40min)
@@ -20,10 +20,11 @@ Se entrenó una red MLP sobre el dataset MNIST, a partir de imágenes 28×28 apl
 El entrenamiento se controló con callbacks como EarlyStopping y ReduceLROnPlateau para lograr un ajuste más fino del modelo.
 
 ## Evidencias
-- Se adjunta imagen "resultado-t8-1.png" en `docs/assets/`
+- Se adjunta imagen "resultado-t8-extra-1.png" en `docs/assets/`
+- Se adjunta imagen "resultado-t8-extra-2.png" en `docs/assets/`
 
 ## Reflexión
-
+El modelo MLP demostró un muy buen rendimiento en MNIST, donde alcanzó una precisión alta sin caer en un overfitting grave. Esto muestra que, con una buena normalización y regularización, incluso una arquitectura simple puede aprender de forma efectiva y generalizar bien a nuevos datos.
 
 ---
 
