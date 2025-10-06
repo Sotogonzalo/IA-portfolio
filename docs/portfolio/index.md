@@ -30,6 +30,8 @@ Bienvenido a las entradas del portafolio. Usá la plantilla para crear nuevas p�
 - Práctica 7: [07-practica-7.md](07-practica-7.md)
 #### Backpropagation y Optimizadores
 - Práctica 8: [08-practica-8.md](08-practica-8.md)
+#### Backpropagation y Optimizadores: Extra con MNIST dataset
+- Práctica 8 - Extra: [08-practica-extra.md](08-practica-extra.md)
 
 ### UT3
 #### CNNs y Transfer Learning con TensorFlow/Keras
