@@ -36,4 +36,6 @@ Bienvenido a las entradas del portafolio. Usá la plantilla para crear nuevas p�
 ### UT3
 #### CNNs y Transfer Learning con TensorFlow/Keras
 - Práctica 9: [09-practica-9.md](09-practica-9.md)
+#### CNNs y Transfer Learning con TensorFlow/Keras: Extra con 
+- Práctica 9: [09-practica-9.md](09-practica-9.md)
 
