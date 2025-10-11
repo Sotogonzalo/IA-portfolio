@@ -7,7 +7,8 @@ date: 2025-09-30
 ## 📚 CNNs y Transfer Learning: Probamos nuevos datasets
 
 ## Contexto
-En esta práctica extra extendemos el trabajo realizado en la práctica anterior con CNNs y Transfer Learning, pero aplicándolo a tres nuevos datasets de imágenes más variados y complejos.
+En esta práctica extra extendemos el trabajo realizado en la práctica anterior con CNNs y Transfer Learning, pero aplicándolo a tres nuevos datasets de imágenes más variados y complejos. 
+
 - **PlantVillage** 🌱 (clasificación de enfermedades en plantas)  
 - **Cats vs Dogs** 🐱🐶 (clasificación binaria de animales)  
 - **Food-101** 🍔 (clasificación multiclase de alimentos)
@@ -15,8 +16,7 @@ En esta práctica extra extendemos el trabajo realizado en la práctica anterior
 ## Objetivos
 - Reforzar el uso de **redes convolucionales (CNNs)** en diferentes contextos de visión computacional.  
 - Aplicar **Transfer Learning** con modelos preentrenados como MobileNetV2.  
-- Analizar cómo el rendimiento cambia entre datasets **simples, binarios y multiclase**.  
-- Comparar resultados y discutir los factores que afectan la precisión del modelo.
+- Analizar cómo el rendimiento cambia entre datasets **simples, binarios y multiclase**.
 
 ## Actividades (con tiempos estimados)
 - Parte 1 (min)
@@ -24,10 +24,11 @@ En esta práctica extra extendemos el trabajo realizado en la práctica anterior
 
 ## Desarrollo
 Para cada dataset se repitió la misma estructura base:
+
 1. **Carga y preprocesamiento de imágenes** usando `ImageDataGenerator`, con normalización y separación entre entrenamiento, validación y prueba.  
 2. **Modelo CNN simple**, construido desde cero con dos capas convolucionales y una densa final.  
 3. **Modelo con Transfer Learning** basado en MobileNetV2 (preentrenada en ImageNet), congelando las capas base y ajustando solo la parte superior.  
-4. **Entrenamiento por 10 épocas** con `Adam` y `categorical_crossentropy` (o `binary_crossentropy` en el caso binario).  
+4. **Entrenamiento por 10 epochs** con `Adam` y `categorical_crossentropy` (o `binary_crossentropy` en el caso binario).  
 5. **Evaluación final** sobre el conjunto de prueba y comparación de precisión entre ambos enfoques.
 
 
@@ -39,7 +40,6 @@ Para cada dataset se repitió la misma estructura base:
 ---
 
 # CNNs y Transfer Learning con TensorFlow/Keras
-
 ## Setup inicial
 
 Preparamos todo para empezar a trabajar sobre el dataset CIFAR-10 que vimos en prácticas anteriores.

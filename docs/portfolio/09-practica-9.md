@@ -40,7 +40,6 @@ Esta práctica ayudó a entender las ventajas y límites de cada enfoque. Entren
 ---
 
 # CNNs y Transfer Learning con TensorFlow/Keras
-
 ## Setup inicial
 
 Preparamos todo para empezar a trabajar sobre el dataset CIFAR-10 que vimos en prácticas anteriores.
