@@ -1,9 +1,9 @@
 ---
-title: "Práctica 9"
+title: "Práctica 9 Extra"
 date: 2025-09-30
 ---
 
-# Práctica 9
+# Práctica 9 Extra
 ## 📚 CNNs y Transfer Learning: Probamos nuevos datasets
 
 ## Contexto
