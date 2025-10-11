@@ -4,23 +4,31 @@ date: 2025-09-30
 ---
 
 # Práctica 9
-## 📚 CNNs y Transfer Learning
+## 📚 CNNs y Transfer Learning: Probamos nuevos datasets
 
 ## Contexto
-En esta práctica número 9 del curso...
+En esta práctica extra extendemos el trabajo realizado en la práctica anterior con CNNs y Transfer Learning, pero aplicándolo a tres nuevos datasets de imágenes más variados y complejos.
+- **PlantVillage** 🌱 (clasificación de enfermedades en plantas)  
+- **Cats vs Dogs** 🐱🐶 (clasificación binaria de animales)  
+- **Food-101** 🍔 (clasificación multiclase de alimentos)
 
 ## Objetivos
-- Implementar CNNs usando TensorFlow/Keras para clasificación de imágenes
-- Aplicar Transfer Learning con modelos pre-entrenados de Keras Applications
-- Procesar datasets de imágenes con ImageDataGenerator
-- Evaluar modelos usando métricas de clasificación
-- Comparar arquitecturas CNN vs Transfer Learning
+- Reforzar el uso de **redes convolucionales (CNNs)** en diferentes contextos de visión computacional.  
+- Aplicar **Transfer Learning** con modelos preentrenados como MobileNetV2.  
+- Analizar cómo el rendimiento cambia entre datasets **simples, binarios y multiclase**.  
+- Comparar resultados y discutir los factores que afectan la precisión del modelo.
 
 ## Actividades (con tiempos estimados)
 - Parte 1 (min)
 - 
 
 ## Desarrollo
+Para cada dataset se repitió la misma estructura base:
+1. **Carga y preprocesamiento de imágenes** usando `ImageDataGenerator`, con normalización y separación entre entrenamiento, validación y prueba.  
+2. **Modelo CNN simple**, construido desde cero con dos capas convolucionales y una densa final.  
+3. **Modelo con Transfer Learning** basado en MobileNetV2 (preentrenada en ImageNet), congelando las capas base y ajustando solo la parte superior.  
+4. **Entrenamiento por 10 épocas** con `Adam` y `categorical_crossentropy` (o `binary_crossentropy` en el caso binario).  
+5. **Evaluación final** sobre el conjunto de prueba y comparación de precisión entre ambos enfoques.
 
 
 ## Evidencias
