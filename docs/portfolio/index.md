@@ -38,4 +38,6 @@ Bienvenido a las entradas del portafolio. Usá la plantilla para crear nuevas p�
 - Práctica 9: [09-practica-9.md](09-practica-9.md)
 #### CNNs y Transfer Learning con TensorFlow/Keras: Pruebas con nuevos datasets
 - Práctica 9 - Extra: [09-practica-extra.md](09-practica-extra.md)
+#### Data Augmentation Avanzado
+- Práctica 10: [10-practica.md](10-practica.md)
 
