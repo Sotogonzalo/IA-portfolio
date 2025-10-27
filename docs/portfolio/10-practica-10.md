@@ -7,7 +7,7 @@ date: 2025-10-14
 ## 📚 Data Augmentation Avanzado
 
 ## Contexto
-En esta práctica trabajamos con redes neuronales convolucionales (CNNs) y Transfer Learning usando TensorFlow/Keras. La idea es comparar un modelo creado desde cero con otro preentrenado (MobileNetV2) para clasificar imágenes del dataset CIFAR-10. Esto nos permite entender mejor cómo funcionan las CNNs y cómo aprovechar modelos ya entrenados para ahorrar tiempo y recursos.
+En esta práctica trabajamos con el dataset Flowers102, que contiene imágenes de flores de alta resolución y gran variabilidad entre clases. El objetivo fue aplicar diferentes técnicas de data augmentation (básicas y avanzadas como Mixup y CutMix) para mejorar la robustez del modelo, y posteriormente usar GradCAM e Integrated Gradients para analizar los resultados.
 
 ## Objetivos
 - Trabajar con datasets complejos de imágenes de alta resolución (Flowers102)
@@ -19,20 +19,38 @@ En esta práctica trabajamos con redes neuronales convolucionales (CNNs) y Trans
 - Comparar modelos augmentados vs baseline
 
 ## Actividades (con tiempos estimados)
-- 
+- Parte 1 (10 min): Creación del pipeline base con EfficientNet y preparación del dataset.
+- Parte 2 (30 min): Análisis, completitud y visualización de data augmentation clásico (rotación, zoom, flip, etc.).
+- Parte 3 (60 min): Implementación y visualización de técnicas avanzadas (Mixup y CutMix).
+- Parte 4 (30 min): Entrenamiento y evaluación del modelo baseline y modelo augmentado.
+- Parte 5 (20 min): Analizar aplicación de GradCAM e Integrated Gradients.
+- Parte 6 (40 min): Análisis de resultados generales, errores del modelo y reflexión final.
 
 ## Desarrollo
+Primero se usó un pipeline baseline usando EfficientNetB0 con un preprocesamiento básico y sin augmentation. Luego se incorporaron distintas capas de data augmentation, comparando cómo afectaban las imágenes y el entrenamiento.
+Más adelante se probaron las técnicas Mixup y CutMix, que combinan imágenes y etiquetas para aumentar la variedad de los datos. Se generaron visualizaciones para verificar su funcionamiento. Finalmente, se aplicaron GradCAM e Integrated Gradients para observar qué partes de las imágenes activaban el modelo y evaluar si realmente estaba mirando la flor. Los resultados mostraron una baja accuracy general y activaciones difusas, lo que indica que el modelo aún no logra captar bien los patrones visuales correctos.
 
 ## Evidencias
 - Se adjunta imagen "resultado-t10-1.png" en `docs/assets/`
+- Se adjunta imagen "resultado-t10-2.png" en `docs/assets/`
+- Se adjunta imagen "resultado-t10-3.png" en `docs/assets/`
+- Se adjunta imagen "resultado-t10-4.png" en `docs/assets/`
+- Se adjunta imagen "resultado-t10-5.png" en `docs/assets/`
+- Se adjunta imagen "resultado-t10-6.png" en `docs/assets/`
+- Se adjunta imagen "resultado-t10-7.png" en `docs/assets/`
+- Se adjunta imagen "resultado-t10-8.png" en `docs/assets/`
+- Se adjunta imagen "resultado-t10-9.png" en `docs/assets/`
 
 ## Reflexión
+La práctica mostró que el data augmentation y las técnicas avanzadas como Mixup y CutMix no lograron mejorar la accuracy, aunque ayudaron a generar mayor variabilidad visual. GradCAM e Integrated Gradients sirvieron para entender que el modelo todavía no presta atención a las regiones correctas, lo que explica sus errores. En general, la práctica ayudó a entender la importancia del aumento de datos y la explicabilidad en modelos de visión, y cómo un modelo potente necesita un entrenamiento más profundo y una mejor preparación del dataset para rendir bien.
 
 ---
 
 # Data Augmentation Avanzado & Explicabilidad
 
-##💻 Parte 1: Setup inicial
+## 💻 Parte 1: Setup inicial
+
+En esta parte se instalan e importan las librerías necesarias para trabajar con redes neuronales y aumentación de datos, usando TensorFlow, TensorFlow Datasets y Albumentations. También se configura el entorno y se fijan semillas para que los resultados sean reproducibles.
 
 ```python
 # === INSTALACIÓN DE DEPENDENCIAS ===
@@ -126,8 +144,11 @@ print(f"   Rango de píxeles: [0, 255] (antes de normalización)")
 ```
 
 #### Resultados
+![Tabla comparativa](../assets/resultado-t10-1.png)
 
-💻 Parte 2: Pipelines de Data Augmentation
+El dataset de flores se descargó correctamente y quedó listo para usar. Tiene 102 clases distintas y un total de más de 7000 imágenes, que dividimos en entrenamiento y prueba. En la práctica usamos todo el dataset y 1000 para testear.
+
+## 💻 Parte 2: Pipelines de Data Augmentation
 ## Paso 3: Pipeline Baseline
 
 ```python
@@ -161,6 +182,8 @@ test_baseline = create_baseline_pipeline(ds_test_prepared, batch_size=64, traini
 
 print("✅ Pipeline Baseline creado (con normalización EfficientNet)")
 ```
+
+En esta parte se crea el pipeline baseline, que básicamente es el flujo de datos que se va a usar para entrenar el modelo sin aplicar todavía ninguna aumentación de imágenes.
 
 ## Paso 4: Pipeline con Augmentation avanzada
 
@@ -222,6 +245,8 @@ train_augmented = create_augmented_pipeline(ds_train_prepared, batch_size=BATCH_
 print("✅ Pipeline Avanzado creado con Keras layers + normalización")
 ```
 
+En esta parte se crea un pipeline más completo, que además de preparar los datos, aplica aumentación (data augmentation) para generar más variedad de imágenes a partir del mismo dataset. La idea es que el modelo vea distintas versiones de las mismas flores, como por ejemplo, rotadas, volteadas, con cambios de brillo o zoom, etc, y aprenda a generalizar mejor en lugar de memorizar y caer en el overfitting.
+
 ## Paso 5: Visualizar Augmentations
 
 ```python
@@ -261,10 +286,87 @@ print("   Nota: Visualización usa imágenes [0, 255] ANTES de normalización")
 visualize_augmentations(ds_train_prepared)
 ```
 
+#### Resultados: visualización
+![Tabla comparativa](../assets/resultado-t10-2.png)
+
+Vemos cómo una misma imagen original fue transformada de distintas formas gracias al pipeline de augmentación avanzada.
+Cada versión represnta variaciones en rotación, brillo, contraste, zoom y traslación, simulando diferentes condiciones de la misma imágen.
+De esta forma, el modelo durante el entrenamiento aprende a reconocer la clase más allá de los cambios visuales, mejorando su capacidad de generalización y reduciendo el overfitting.
+
 ## 💻 Parte 3 (OPCIONAL): Explorar Mixup/CutMix
 
+Tomamos imágenes del dataset, se elige dos al azar y genera dos combinaciones. La primera para Mixup, que mezcla suavemente ambas imágenes, y una segunda para CutMix, que inserta un recorte de una imagen sobre la otra. Luego mostramos en una fila la imagen original, la versión Mixup y la versión CutMix, para poder visualizar de forma clara cómo se combinan las imágenes antes del entrenamiento.
+
 ```python
+# 🎨 MIXUP Y CUTMIX
+import tensorflow as tf
+import numpy as np
+import matplotlib.pyplot as plt
+
+def mixup(img1, img2, alpha=0.4):
+    lam = np.random.beta(alpha, alpha)
+    img_mix = lam * img1 + (1 - lam) * img2
+    return img_mix
+
+def cutmix(img1, img2, alpha=0.4):
+    lam = np.random.beta(alpha, alpha)
+    h, w, _ = img1.shape
+    cut_h = int(h * np.sqrt(1 - lam))
+    cut_w = int(w * np.sqrt(1 - lam))
+    cy = np.random.randint(h)
+    cx = np.random.randint(w)
+    y1 = np.clip(cy - cut_h // 2, 0, h)
+    y2 = np.clip(cy + cut_h // 2, 0, h)
+    x1 = np.clip(cx - cut_w // 2, 0, w)
+    x2 = np.clip(cx + cut_w // 2, 0, w)
+
+    img = img1.copy()
+    img[y1:y2, x1:x2, :] = img2[y1:y2, x1:x2, :]
+    return img
+
+def visualize_mixup_cutmix(dataset, n_examples=3):
+    """
+    Muestra ejemplos visuales de Mixup y CutMix usando imágenes del dataset.
+    """
+    # Tomamos un batch pequeño
+    images, labels = next(iter(dataset.batch(8)))
+    images = images.numpy().astype(np.float32)
+    
+    fig, axes = plt.subplots(n_examples, 3, figsize=(12, 4 * n_examples))
+    fig.suptitle("🧪 Ejemplos de Mixup y CutMix", fontsize=18, fontweight='bold')
+
+    for i in range(n_examples):
+        # Selecciono dos imágenes distintas
+        idx1, idx2 = np.random.choice(len(images), 2, replace=False)
+        img1, img2 = images[idx1], images[idx2]
+
+        # Aplicamos Mixup y CutMix
+        img_mix = mixup(img1, img2)
+        img_cut = cutmix(img1, img2)
+
+        # Mostramos las imágenes nuevas
+        axes[i, 0].imshow(img1.astype("uint8"))
+        axes[i, 0].set_title("Imagen A")
+        axes[i, 0].axis("off")
+
+        axes[i, 1].imshow(img_mix.astype("uint8"))
+        axes[i, 1].set_title("Mixup")
+        axes[i, 1].axis("off")
+
+        axes[i, 2].imshow(img_cut.astype("uint8"))
+        axes[i, 2].set_title("CutMix")
+        axes[i, 2].axis("off")
+
+    plt.tight_layout()
+    plt.show()
+
+print("🧪 Visualizando ejemplos de Mixup y CutMix...")
+visualize_mixup_cutmix(ds_train_prepared)
+
 ```
+
+#### Resultados: visualización de MixUp y CutMix
+![Tabla comparativa](../assets/resultado-t10-3.png)
 
 ## 💻 Parte 4: Entrenar tu Modelo
 
@@ -329,7 +431,10 @@ print("✅ Modelo creado")
 print(f"   Parámetros: {model.count_params():,}")
 ```
 
-##Resultados
+#### Resultados: creación del modelo
+![Tabla comparativa](../assets/resultado-t10-4.png)
+
+Creamos el modelo utilizando MobileNetV2 como base, generando 2.3m de parámetros para el entrenamiento.
 
 
 ```python
@@ -355,7 +460,10 @@ print(f"   📊 Mejor accuracy: {final_acc*100:.2f}%")
 model.save('mi_modelo_flores.h5')
 ```
 
-##Resultados: Entrenamiento
+#### Resultados: Entrenamiento
+![Tabla comparativa](../assets/resultado-t10-5.png)
+
+Estos resultados muestran que el modelo aprendió bien en el training set (llegando a más del 95% de accuracy), pero no generaliza nada al validation set, donde la precisión se quedó alrededor del 9%. Eso indica que hay un overfitting fuerte, es decir, la red memorizó el entrenamiento pero no aprendió patrones útiles. Puede deberse a poca regularización, pocas imágenes, o que el learning rate y las augmentaciones no se ajustaron bien. El modelo se sobreajustó y no logra predecir bien datos nuevos.
 
 ## Evaluación
 ```python
@@ -394,10 +502,16 @@ plt.tight_layout()
 plt.show()
 ```
 
-## Resultados: Evaluación
+#### Resultados: Evaluación
+![Tabla comparativa](../assets/resultado-t10-6.png)
+
+Se ve claro en las gráficas que el modelo se sobreajustó exageradamente.
+En el gráfico de accuracy, la curva azul de train sube rapidísimo y llega casi al 100%, mientras que la naranja de validation se mantiene bajísima y muy inestable, lo que significa que el modelo no aprendió a generalizar.
+En el gráfico de loss pasa lo mismo, la pérdida de entrenamiento baja, pero la de validación sube cada vez más.
+En resumen, el modelo memorizó el conjunto de entrenamiento y falló al predecir datos nuevos, mostrando un overfitting fuerte y una capacidad de generalización prácticamente nula.
 
 
-##💻 Parte 5: Explicabilidad con GradCAM
+## 💻 Parte 5: Explicabilidad con GradCAM
 ##  Paso 11: GradCAM
 
 ```python
@@ -561,7 +675,12 @@ print("   - Si el modelo acierta pero mira partes incorrectas = ⚠️ Problema"
 print("   - GradCAM ayuda a confiar en las predicciones del modelo")
 ```
 
-## Resultados: GradCAM
+#### Resultados: GradCAM
+![Tabla comparativa](../assets/resultado-t10-7.png)
+
+![Tabla comparativa](../assets/resultado-t10-8.png)
+
+Al aplicar GradCAM sobre una imagen del conjunto de test, se puede ver que el modelo centra su atención en zonas que no corresponden claramente al objeto principal, en este caso la flor. Esto tiene sentido considerando que la accuracy fue bajísima, aprox. 2%, lo que indica que el modelo no logró aprender patrones útiles. En este caso, el mapa de calor muestra activaciones dispersas o mal enfocadas, lo que confirma que el modelo no está interpretando correctamente las características visuales. En resumen, GradCAM nos ayuda a ver que el modelo “no sabe qué mirar”, reforzando la conclusión de que el entrenamiento no fue exitoso y que habría que mejorar la generalización o el preprocesado.
 
 ## 💻 Parte 6: Integrated Gradients
 
@@ -661,24 +780,29 @@ attribution = apply_integrated_gradients(
 visualize_integrated_gradients(test_image, attribution, predicted_class, test_label)
 ```
 
-## Resultados: Integrated Gradients
+#### Resultados: Integrated Gradients
+![Tabla comparativa](../assets/resultado-t10-9.png)
 
+El método de Integrated Gradients muestra que el modelo intenta enfocar su atención en algunas zonas del centro de la flor, pero la activación es muy dispersa y débil, lo que indica que no está captando bien los patrones relevantes de la imagen. Además, como la predicción fue totalmente incorrecta, se predijo 12 vs el real que es 95, se confirma que el modelo no aprendió a diferenciar correctamente las clases.
 
+## 🎯 Reflexión Final
+## 💭 Preguntas para responder en tu notebook
+### 1. Data Augmentation
+#### ¿Cómo afectó el data augmentation a tu modelo? ¿Mejoró la accuracy? ¿Por qué crees que funciona (o no)?
+##### El data augmentation no mejoró la accuracy, el modelo siguió teniendo un rendimiento muy bajo. Probablemente esto se deba a que el dataset es complejo y el modelo no logró generalizar bien las variaciones. Aunque el aumento de datos suele ayudar a evitar el sobreajuste, en este caso no alcanzó porque el modelo todavía no aprende los patrones visuales correctos.
 
-🎯 Reflexión Final
-💭 Preguntas para responder en tu notebook
-1. Data Augmentation
-¿Cómo afectó el data augmentation a tu modelo? ¿Mejoró la accuracy? ¿Por qué crees que funciona (o no)?
+### 2. GradCAM
+#### Mira 3-5 ejemplos de GradCAM. ¿El modelo está mirando las partes correctas de las imágenes? ¿Te sorprendió algo?
+##### En los ejemplos de GradCAM, el modelo no está mirando las partes correctas. Las activaciones aparecen muy dispersas o en zonas del fondo, en lugar de centrarse en los pétalos o en la flor misma. Esto muestra que el modelo todavía no entiende bien qué características son importantes para clasificar correctamente. No me sorprendió mucho porque el entrenamiento ya mostraba una accuracy muy baja.
 
-2. GradCAM
-Mira 3-5 ejemplos de GradCAM. ¿El modelo está mirando las partes correctas de las imágenes? ¿Te sorprendió algo?
+### 3. Errores del Modelo
+#### Encuentra un ejemplo donde el modelo se equivocó. Usando GradCAM, ¿puedes explicar por qué se equivocó?
+##### En el ejemplo analizado, el modelo predijo una clase completamente distinta. GradCAM muestra que prestó atención a zonas irrelevantes, como las hojas o el borde de la imagen, lo que explica su error. Básicamente, el modelo “mira mal” y toma decisiones basadas en regiones que no tienen que ver con la flor principal.
 
-3. Errores del Modelo
-Encuentra un ejemplo donde el modelo se equivocó. Usando GradCAM, ¿puedes explicar por qué se equivocó?
+### 4. Aplicación Práctica
+#### En el caso de la app de identificación de flores, ¿por qué es importante poder explicar las predicciones del modelo? ¿Qué riesgos hay si el modelo da predicciones sin explicación?
+##### En una app de identificación de flores, es clave explicar las predicciones para ganar confianza del usuario. Si el modelo da resultados sin explicación, puede generar errores graves, especialmente si se usa en contextos educativos o científicos. Con GradCAM se puede ver si realmente el modelo está mirando la flor o si está clasificando por el fondo.
 
-4. Aplicación Práctica
-En el caso de la app de identificación de flores, ¿por qué es importante poder explicar las predicciones del modelo? ¿Qué riesgos hay si el modelo da predicciones sin explicación?
-
-5. Mejoras
-Si tuvieras más tiempo, ¿qué harías para mejorar este modelo? (ejemplos: más datos, más epochs, diferentes arquitecturas, etc.)
-
+### 5. Mejoras
+#### Si tuvieras más tiempo, ¿qué harías para mejorar este modelo? (ejemplos: más datos, más epochs, diferentes arquitecturas, etc.)
+##### Probaría entrenar más epochs, usar una arquitectura más robusta (como EfficientNet o ResNet), y aplicar un mejor balanceo o limpieza del dataset. También podría probar técnicas como fine-tuning completo del modelo base o usar más imágenes por clase para que aprenda patrones más consistentes.
