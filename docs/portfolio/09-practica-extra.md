@@ -104,4 +104,4 @@ normalization_layer = layers.Rescaling(1./255)
 ```
 
 #### Resultados
-![Tabla comparativa](../assets/resultado-t9-extra-1.png)
+<!-- ![Tabla comparativa](../assets/resultado-t9-extra-1.png) -->
