@@ -37,5 +37,5 @@ date: 2025-10-21
 ```
 
 #### Resultados
-![Tabla comparativa](../assets/resultado-t11-1.png)
+<!-- ![Tabla comparativa](../assets/resultado-t11-1.png) -->
 
