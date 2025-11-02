@@ -134,7 +134,7 @@ else:
 ```
 
 #### Resultados: Test de imágen
-![Tabla comparativa](../assets/resultado-t11-1.png)
+<!-- ![Tabla comparativa](../assets/resultado-t11-1.png) -->
 
 Con el modelo COCO detecta cosas solo por forma y color, por eso en este caso, etiquetó la naranja como orange con confianza baja, 0.367, pero no reconoce otras frutas ni productos específicos del supermercado. Esto ocurre porque COCO tiene clases genéricas, así que cualquier objeto que se parezca a una clase conocida puede ser detectado de manera aproximada.
 
@@ -180,7 +180,7 @@ print("\n📊 Estadísticas:")
 ```
 
 #### Resultados: Dataset de frutas
-![Tabla comparativa](../assets/resultado-t11-2.png)
+<!-- ![Tabla comparativa](../assets/resultado-t11-2.png) -->
 
 El dataset se bajó y descomprimió sin problemas, tenemos unas 8479 imágenes en Fruits-detection listas para entrenar, así que ya podemos usarlo para hacer fine-tuning de YOLOv8n, de manera que el modelo pueda reconocer exitosamente las frutas.
 
@@ -286,6 +286,6 @@ print(f"   Path del data.yaml: {yaml_path_str}")
 ```
 
 #### Resultados: verificación
-![Tabla comparativa](../assets/resultado-t11-1.png)
+<!-- ![Tabla comparativa](../assets/resultado-t11-1.png) -->
 
 Se encontró el data.yaml y todo parece listo con 6 clases de frutas.
