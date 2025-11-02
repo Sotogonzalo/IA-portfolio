@@ -7,23 +7,45 @@ date: 2025-10-28
 ## SAM Segmentation
 
 ## Contexto
-
+En esta práctica se trabajó con el modelo Segment Anything Model (SAM) para la segmentación de áreas inundadas en imágenes satelitales. Se buscó evaluar su rendimiento en modo zero-shot (sin entrenamiento adicional) y tras un proceso de fine-tuning con un dataset específico de inundaciones, analizando su capacidad para distinguir correctamente zonas de agua.
 
 ## Objetivos
 - Implementar segmentación con Segment Anything Model (SAM).
 - Comparar performance de pretrained SAM zero-shot vs fine-tuned SAM.
 
 ## Actividades (con tiempos estimados)
-- 
+- Exploración del dataset (20 min): revisión de estructura y correspondencia imagen–máscara.
+- Configuración y carga del modelo SAM (30 min): carga del modelo base y checkpoint fine-tuned.
+- Generación de predicciones (40 min): comparación entre resultados zero-shot y fine-tuned.
+- Evaluación visual y registro de resultados (30 min): análisis de calidad de segmentaciones.
+- Reflexión y documentación (80 min).
 
 ## Desarrollo
-
+Se utilizó el dataset Flood Dataset con 290 pares de imágenes y máscaras. Se probó primero el SAM preentrenado, que tuvo dificultades para distinguir el agua de reflejos y sombras. Luego se cargó el modelo fine-tuned, ajustado en las capas del mask decoder y prompt encoder, manteniendo congelado el image encoder para aprovechar sus características generales.
+El modelo ajustado mostró mejoras destacables, en contornos más definidos, menor cantidad de falsos positivos y mejor reconocimiento en zonas complejas.
 
 ## Evidencias
 - Se adjunta imagen "resultado-t12-1.png" en `docs/assets/`
+- Se adjunta imagen "resultado-t12-2.png" en `docs/assets/`
+- Se adjunta imagen "resultado-t12-3.png" en `docs/assets/`
+- Se adjunta imagen "resultado-t12-4.png" en `docs/assets/`
+- Se adjunta imagen "resultado-t12-5.png" en `docs/assets/`
+- Se adjunta imagen "resultado-t12-6.png" en `docs/assets/`
+- Se adjunta imagen "resultado-t12-7.png" en `docs/assets/`
+- Se adjunta imagen "resultado-t12-8.png" en `docs/assets/`
+- Se adjunta imagen "resultado-t12-9.png" en `docs/assets/`
+- Se adjunta imagen "resultado-t12-10.png" en `docs/assets/`
+- Se adjunta imagen "resultado-t12-11.png" en `docs/assets/`
+- Se adjunta imagen "resultado-t12-12.png" en `docs/assets/`
+- Se adjunta imagen "resultado-t12-13.png" en `docs/assets/`
+- Se adjunta imagen "resultado-t12-14.png" en `docs/assets/`
+- Se adjunta imagen "resultado-t12-15.png" en `docs/assets/`
+- Se adjunta imagen "resultado-t12-16.png" en `docs/assets/`
+- Se adjunta imagen "resultado-t12-17.png" en `docs/assets/`
+- Se adjunta imagen "resultado-t12-18.png" en `docs/assets/`
 
 ## Reflexión
-
+El fine-tuning permitió adaptar SAM a un contexto muy distinto de su entrenamiento original, logrando una segmentación más precisa del agua. Aun así, el sistema no está listo para uso real ya que faltan pruebas con distintos tipos de terreno, condiciones climáticas y cámaras. Si se contara con más datos, podría entrenarse un modelo más robusto y generalizable.
 
 ---
 
@@ -137,6 +159,10 @@ for root, dirs, files in os.walk('flood_dataset'):
 
 print("\n✅ Dataset listo para usar!")
 ```
+#### Resultados
+![Tabla comparativa](../assets/resultado-t12-1.png)
+
+Se bajó el dataset desde Kaggle, se descomprimió y dejó todo ordenado en carpetas separadas para imágenes y máscaras, además se limpió el zip para no ocupar espacio. Y el dataset ya está listo para arrancar con el entrenamiento sin complicaciones.
 
 ### Exploramos dataset
 
@@ -161,6 +187,8 @@ print("\n💡 Basándote en la estructura de arriba, identifica:")
 print("   - ¿Dónde están las imágenes? (deberías ver carpeta 'Image')")
 print("   - ¿Dónde están las máscaras? (deberías ver carpeta 'Mask')")
 ```
+
+La estructura quedó perfecta, se aprecia que las imágenes están todas en la carpeta Image y las máscaras correspondientes en Mask, con la misma cantidad de archivos en ambas, así que está todo bien emparejado para usar en segmentación. Además, el metadata.csv probablemente tenga info adicional útil para referencias o análisis, así que el dataset está completo y bien organizado.
 
 ```python
 # Cargar y visualizar muestras del dataset
@@ -301,6 +329,11 @@ plt.tight_layout()
 plt.show()
 ```
 
+#### Resultados
+![Tabla comparativa](../assets/resultado-t12-2.png)
+
+Se cargó las 100 imágenes sin problemas y todas tienen sus máscaras asociadas, lo que ya es una buena señal de que el dataset está bien emparejado. Se nota que las imágenes vienen en varios tamaños (81 distintos), así que habría que normalizarlas antes de entrenar. El promedio del 42.8 % de píxeles de agua también está interesante, muestra que el dataset está bastante equilibrado entre zonas inundadas y no inundadas, lo cual es ideal para segmentación. En resumen, carga exitosa, datos limpios y métricas razonables para seguir con el preprocesamiento.
+
 ## Parte 2: Pretrained SAM Inference
 
 ### Carga del modelo SAM
@@ -320,6 +353,8 @@ print(f"✅ SAM model cargado: {model_type}")
 print(f"   Device: {device}")
 ```
 
+Bajamos y cargamos el modelo SAM (Segment Anything Model), usando el checkpoint preentrenado sam_vit_b_01ec64.pth, que básicamente contiene los pesos del modelo ya entrenado por Meta. Después se manda al CPU para poder usarlo.
+
 ### Creamos predictor SAM
 ```python
 # Crear predictor para inference
@@ -328,6 +363,8 @@ predictor.model.to(device)
 
 print("✅ SAM Predictor creado")
 ```
+
+Se crea el predictor, que es como una interfaz que permite hacer inferencias con el modelo, o sea, pasarle imágenes y obtener las segmentaciones directamente.
 
 ### Predicción con Point Prompts
 ```python
@@ -421,6 +458,11 @@ axes[3].axis('off')
 plt.tight_layout()
 plt.show()
 ```
+
+#### Resultados
+![Tabla comparativa](../assets/resultado-t12-3.png)
+
+El modelo SAM respondió muy bien al prompt, de hecho con solo un punto indicado, generó una máscara con un score de confianza alta, de 0.965, lo que significa que el modelo está bastante seguro de la segmentación hecha.
 
 ### Predicción con Box Prompts
 ```python
@@ -518,6 +560,11 @@ if test_box is not None:
     plt.tight_layout()
     plt.show()
 ```
+
+#### Resultados
+![Tabla comparativa](../assets/resultado-t12-4.png)
+
+El modelo trabajó muy bien con el box prompt, dio una predicción con confianza altísima, de 0.989, usando solo la caja que rodea la zona inundada. Eso muestra que SAM capta muy bien los límites del área a segmentar cuando le das una referencia espacial más grande, como un bounding box. En general, este tipo de prompt suele funcionar incluso mejor que un punto porque le da más contexto al modelo, y acá se nota, la segmentación fue muy precisa y casi calca la ground truth.
 
 ### Evaluación de métricas
 ```python
@@ -626,6 +673,11 @@ if test_box is not None:
     print(f"\n=== COMPARACIÓN ===")
     print(f"Box prompt better: {iou_box > iou_point}")
 ```
+
+#### Resultados
+![Tabla comparativa](../assets/resultado-t12-5.png)
+
+Los resultados están bastante parejos, pero el point prompt terminó rindiendo un poco mejor en general, con un IoU y un Dice apenas más altos. Ambos tienen precisiones muy altas (casi 97–98%), lo que muestra que el modelo casi no marca zonas de agua donde no las hay, aunque el recall es un poco más bajo, o sea que se le escapan algunas partes reales del área inundada.
 
 ### Evaluación en todo el dataset
 ```python
@@ -752,6 +804,11 @@ plt.tight_layout()
 plt.show()
 ```
 
+#### Resultados
+![Tabla comparativa](../assets/resultado-t12-6.png)
+
+Acá se ve clarísimo que el SAM preentrenado responde mucho mejor cuando le das una caja (box prompt) que cuando solo usás un punto (point prompt). Con las boxes, el IoU y el Dice suben bastante, de 0.52 a 0.72 y de 0.62 a 0.81 respectivamente, lo que muestra que el modelo acierta mucho más en la forma y área real del objeto. Además, el recall mejora un montón, o sea, detecta más partes del área inundada y se le escapan menos zonas. En resumen, darle más contexto espacial al SAM le ayuda a segmentar con mucha más precisión y consistencia en comparación con el punto, que queda más ambiguo y variable según dónde caiga.
+
 ## Parte 3: Fine-tuning SAM
 
 ### Creamos clase FloodSegmentationDataset
@@ -848,6 +905,11 @@ val_dataset = FloodSegmentationDataset(val_images, val_masks, transform=None, pr
 print(f"✅ Datasets creados")
 ```
 
+#### Resultados
+![Tabla comparativa](../assets/resultado-t12-7.png)
+
+Se armó todo el setup del dataset para entrenar el modelo, y el resultado muestra que se dividieron bien las 100 imágenes, 80 para entrenamiento y 20 para validación.
+
 ### Creamos DataLoaders
 ```python
 # Crear DataLoaders
@@ -897,6 +959,11 @@ print(f"  Images shape: {sample_batch['images'].shape}")
 print(f"  Masks shape: {sample_batch['masks'].shape}")
 print(f"  Prompts: {len(sample_batch['prompts'])} items")
 ```
+
+#### Resultados
+![Tabla comparativa](../assets/resultado-t12-8.png)
+
+Los dataloaders quedaron bien configurados, se están generando 27 batches para entrenamiento y 7 para validación con un batch size de 3, lo cual cuadra perfecto con la cantidad total de imágenes.
 
 ### Definimos función de pérdida
 ```python
@@ -959,6 +1026,11 @@ test_loss = combined_loss(test_pred, test_target)
 print(f"Test loss: {test_loss.item():.4f}")
 ```
 
+#### Resultados
+![Tabla comparativa](../assets/resultado-t12-9.png)
+
+Las funciones de pérdida se definieron bien y están funcionando como se esperaba. El valor de test loss aprox. 0.65 tiene sentido para datos aleatorios, ya que las predicciones no tienen ninguna relación con las máscaras reales.
+
 ### Configuramos fine-tuning
 ```python
 # Preparar modelo para fine-tuning
@@ -1002,6 +1074,11 @@ print(f"\nOptimizer: Adam")
 print(f"Learning rate: {learning_rate}")
 print(f"Scheduler: StepLR (decay every 5 epochs by 0.5)")
 ```
+
+#### Resultados
+![Tabla comparativa](../assets/resultado-t12-10.png)
+
+El modelo quedó configurado para entrenar solo el mask decoder, representando un 4.33% de los parámetros totales. Se usa Adam con una tasa de aprendizaje de 1e-4 y un scheduler que reduce el valor cada 5 épocas, una configuración eficiente para el fine-tuning.
 
 ### Definimos funciones de entrenamiento y validación
 ```python
@@ -1162,6 +1239,9 @@ def validate(model, dataloader, loss_fn, device):
 print("✅ Training functions definidas")
 ```
 
+Aquí se implementan las funciones de entrenamiento y validación, donde el modelo procesa cada imagen individualmente junto a su prompt (punto o caja), calcula las pérdidas con BCE+Dice y mide IoU. Además, se mantiene congelado el image encoder, entrenando solo el mask decoder, lo que permite ajustar SAM al dataset.
+
+
 ### Entrenamos el modelo
 ```python
 # Entrenar modelo
@@ -1240,6 +1320,11 @@ plt.tight_layout()
 plt.show()
 ```
 
+#### Resultados: entrenamiento
+![Tabla comparativa](../assets/resultado-t12-11.png)
+
+El entrenamiento mostró una mejora sostenida tanto en la pérdida como en la métrica IoU, alcanzando un desempeño final bueno con un IoU de validación de 0.78, lo que refleja una segmentación precisa y estable. El modelo en múltiples ocasiones superó su mejor desempeño anterior, y las curvas de pérdida e IoU indican una buena convergencia sin overfitting.
+
 ## Parte 4: Evaluación del modelo fine-tuned
 
 ### Carga del modelo fine-tuned
@@ -1256,6 +1341,8 @@ print("✅ Fine-tuned model cargado")
 # Crear predictor para fine-tuned model
 predictor_finetuned = SamPredictor(sam_finetuned)
 ```
+
+Se carga el mejor modelo fine-tuneado desde el checkpoint guardado y se crea el predictor.
 
 ### Evaluación comparativa
 ```python
@@ -1330,6 +1417,15 @@ for bars in [bars1, bars2]:
 plt.tight_layout()
 plt.show()
 ```
+
+#### Resultados
+![Tabla comparativa](../assets/resultado-t12-12.png)
+
+El fine-tuning mejoró claramente el rendimiento del modelo. En todas las métricas se ven incrementos buenos, especialmente en IoU y Recall, lo que indica que el modelo ajustado es mucho mejor identificando correctamente las regiones de los objetos y capturando más píxeles verdaderos positivos. En los histogramas se ve esta mejora, ya que las distribuciones del modelo fine-tuneado se concentran más hacia valores altos, mientras que el preentrenado presenta más dispersión y muchos casos con bajo rendimiento.
+
+![Tabla comparativa](../assets/resultado-t12-13.png)
+
+El gráfico de barras muestra claramente que el modelo fine-tuneado supera ampliamente al preentrenado en todas las métricas. El fine-tuning hizo que el SAM se adaptara mejor al dominio del dataset, produciendo segmentaciones más completas y exactas.
 
 ### Visualización de mejoras
 ```python
@@ -1410,6 +1506,14 @@ for idx in [0, 5, 10, 15, 20]:
         visualize_comparison(idx, val_images, val_masks, predictor, predictor_finetuned)
         print("\n")
 ```
+
+#### Resultados
+![Tabla comparativa](../assets/resultado-t12-14.png)
+![Tabla comparativa](../assets/resultado-t12-15.png)
+![Tabla comparativa](../assets/resultado-t12-16.png)
+![Tabla comparativa](../assets/resultado-t12-17.png)
+
+Los ejemplos muestran claramente cómo el modelo fine-tuneado logra segmentaciones mucho más precisas en la mayoría de los casos. En imágenes como la 0 y la 5, el salto es enorme, el IoU sube de valores casi nulos o medios a más de 0.7 y 0.8, lo que evidencia que el modelo adaptado aprendió a distinguir correctamente los objetos del dominio específico. En cambio, en imágenes como la 10, donde el modelo preentrenado ya funcionaba bien, las mejoras son mínimas, e incluso en la 15, el fine-tuned pierde algo de rendimiento, lo que sugiere cierta variabilidad según el tipo de imagen. En definitiva, el fine-tuning elevó la consistencia y calidad de las predicciones, aunque aún puede refinarse para casos más complejos o atípicos.
 
 ### Analisis de fallos
 ```python
@@ -1509,31 +1613,33 @@ print(f"Fine-tuned failures: {len(failures_finetuned)}")
 print(f"Reduction: {len(failures_pretrained) - len(failures_finetuned)} ({(1 - len(failures_finetuned)/len(failures_pretrained))*100:.1f}%)")
 ```
 
+#### Resultados
+![Tabla comparativa](../assets/resultado-t12-18.png)
+
+Los resultados del análisis de failure cases muestran una mejora clara tras el fine-tuning.
+El modelo preentrenado presentó 7 fallos, con un IoU promedio muy bajo, 0.09 y áreas de agua muy delgadas, lo que sugiere que tenía dificultades para detectar zonas pequeñas o estrechas.
+Tras el fine-tuning, los errores se redujeron a solo 2 casos, es decir, una disminución del 71 %, manteniendo además IoUs notablemente más altos.
 
 ## Preguntas de Reflexión
 ### Responde las siguientes preguntas basándote en tu implementación:
 
 #### ¿Por qué el pretrained SAM puede fallar en detectar agua en imágenes de inundaciones efectivamente?
-#####Tu respuesta:
+##### Tu respuesta: Porque no fue entrenado con ejemplos de inundaciones. El agua puede parecerse a asfalto mojado o reflejos del cielo, y sus bordes suelen ser irregulares o poco definidos, lo que confunde al modelo.
 
 ####¿Qué componentes de SAM decidiste fine-tunear y por qué? ¿Por qué congelamos el image encoder?
-#####Tu respuesta:
+##### Tu respuesta: Se ajustaron el mask decoder y el prompt encoder. El image encoder se congeló porque ya extrae buenas características visuales y entrenarlo de nuevo requeriría muchos más datos y recursos.
 
 ####¿Cómo se comparan point prompts vs box prompts en este caso de uso de flood segmentation?
-#####Tu respuesta:
+##### Tu respuesta: Los point prompts son rápidos y simples, pero los box prompts suelen funcionar mejor para áreas grandes o con bordes poco claros, como el agua en inundaciones.
 
 ####¿Qué mejoras específicas observaste después del fine-tuning? (boundaries del agua, false positives, reflections, etc.)
-#####Tu respuesta:
+##### Tu respuesta: El modelo segmenta con contornos más precisos, reduce falsos positivos en sombras y mejora en zonas pequeñas o delgadas. También bajó el número de fallos en un 71%.
 
 ####¿Este sistema está listo para deployment en un sistema de respuesta a desastres? ¿Qué falta?
-#####Tu respuesta:
+##### Tu respuesta: Aún no. Necesita validación en imágenes reales, distintas condiciones de luz y optimización para procesar en tiempo real.
 
 ####¿Cómo cambiaría tu approach si tuvieras 10x más datos? ¿Y si tuvieras 10x menos?
-#####Tu respuesta:
+##### Tu respuesta: Con más datos, entrenaría más capas del modelo, y con menos, usaría más data augmentation y datos sintéticos para compensar.
 
 ####¿Qué desafíos específicos presenta la segmentación de agua en inundaciones? (reflections, sombras, objetos flotantes, etc.)
-#####
-
-#### Resultados
-<!-- ![Tabla comparativa](../assets/resultado-t11-1.png) -->
-
+##### Reflejos, sombras, objetos flotantes y variaciones de color hacen que el agua sea visualmente inconsistente, complicando la segmentación precisa.
