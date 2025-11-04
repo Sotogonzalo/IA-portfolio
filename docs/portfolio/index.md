@@ -45,3 +45,7 @@ Bienvenido a las entradas del portafolio. Usá la plantilla para crear nuevas p�
 #### SAM Segmentation
 - Práctica 12: [12-practica-12.md](12-practica-12.md)
 
+### UT4
+#### Fine-tuning de Transformers
+- Práctica 13: [13-practica-13.md](13-practica-13.md)
+
