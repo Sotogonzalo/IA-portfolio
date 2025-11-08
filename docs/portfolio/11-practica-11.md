@@ -192,9 +192,6 @@ print("\n📊 Estadísticas:")
 !find fruit_detection -name "*.jpg" -o -name "*.png" | wc -l | xargs echo "Total de imágenes:"
 ```
 
-#### Resultados: Dataset de frutas
-![Tabla comparativa](../assets/resultado-t11-3.png)
-
 El dataset se bajó y descomprimió sin problemas, tenemos unas 8479 imágenes en Fruits-detection listas para entrenar, así que ya podemos usarlo para hacer fine-tuning de YOLOv8n, de manera que el modelo pueda reconocer exitosamente las frutas.
 
 ### Verificacón de Estructura y data.yaml
