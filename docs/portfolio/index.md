@@ -43,7 +43,7 @@ Bienvenido a las entradas del portafolio. Usá la plantilla para crear nuevas p�
 #### YOLOv8 Fine-tuning & Tracking
 - Práctica 11: [11-practica-11.md](11-practica-11.md)
 #### Comparación de Modelos YOLO
-- Práctica 11: [11-practica-extra.md](11-practica-extra.md)
+- Práctica Extra 11: [11-practica-extra.md](11-practica-extra.md)
 #### SAM Segmentation
 - Práctica 12: [12-practica-12.md](12-practica-12.md)
 
