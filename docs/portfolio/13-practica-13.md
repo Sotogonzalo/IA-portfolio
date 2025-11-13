@@ -4,26 +4,36 @@ date: 2025-11-4
 ---
 
 # Práctica 13
-## 
+## Fine-tuning de Transformers para Clasificación Ofensiva
 
 ## Contexto
+En esta práctica se buscó comparar el rendimiento entre un modelo clásico basado en TF-IDF y regresión logística, y un modelo Transformer moderno, como FinBERT para la clasificación de tweets en tres categorías. El objetivo fue observar cómo cambia la capacidad de entendimiento semántico al pasar de un enfoque puramente estadístico a uno contextualizado.
 
 ## Objetivos
-
+- Analizar y completar el pipeline baseline con TF-IDF + Logistic Regression.
+- Entrenar y evaluar un modelo Transformer (FinBERT) fine-tuneado sobre el mismo dataset.
+- Analizar las métricas y la evolución durante las epochs de entrenamiento.
+- Comparar ambos enfoques y sus limitaciones.
 
 ## Actividades (con tiempos estimados)
-
+- EDA y analisis del dataset (20 min).
+- Entrenamiento baseline TF-IDF+LR (20 min).
+- Fine-tuning de FinBERT (30 min).
+- Visualización y análisis de resultados (30 min).
 
 ## Desarrollo
+Primero se realizó un análisis del texto y distribución de clases. Luego se entrenó con un modelo base TF-IDF + Logistic Regression, que logró buenos resultados generales pero sin captar matices semánticos. Posteriormente se fine-tuneó un modelo FinBERT, con el que se observaron métricas superiores y una mejor separación entre clases.
 
 ## Evidencias
-- Se adjunta imagen "resultado-t12-1.png" en `docs/assets/`
+- Se adjuntan imagenes desde "resultado-t13-1.png" a "resultado-t13-8.png" en `docs/assets/`
+- Gráficos de PCA/UMAP y curvas de métricas durante el fine-tuning.
 
 ## Reflexión
+Esta práctica mostró claramente las ventajas de los modelos Transformer frente a los enfoques clásicos en tareas de clasificación de texto. FinBERT no solo mejoró las métricas, sino que también captó contextos y matices que TF-IDF no logra representar. Aun así, el modelo clásico sigue siendo útil como baseline rápido y explicativo.
 
 ---
 
-# 
+# Fine-tuning de Transformers
 
 ### Carga del dataset
 
@@ -93,6 +103,19 @@ plt.xlabel("# tokens"); plt.ylabel("frecuencia")
 plt.show()
 ```
 
+#### Resultado: dataset
+![Tabla comparativa](../assets/resultado-t13-1.png)
+
+Se cargó exitosamente el dataset y podemos observar que la mayoría de los tweets tienen entre 5 y 20 palabras, con un promedio cerca de 10. Esto muestra que los textos son cortos, algo normal en tweets. Esto sirve para tener una idea del largo típico antes de tokenizar o entrenar el modelo.
+
+## Reflexión
+
+#### ¿Cómo es la distribución de longitudes? ¿Qué implica para el truncation del tokenizer?
+##### La distribución de longitudes muestra que la mayoría de los textos son cortos, con un promedio cercano a las 10 palabras. Esto significa que el truncation del tokenizer no tendrá un impacto grande, ya que casi todos los ejemplos entran dentro del límite máximo de tokens.
+
+#### ¿Las clases están balanceadas? ¿Cómo afectará esto a las métricas y al entrenamiento?
+##### Las clases no están completamente balanceadas, de hecho una de ellas tiene una cantidad mayor de ejemplos que las otras. Este desbalance puede hacer que el modelo tienda a predecir con más frecuencia la clase dominante, subiendo el accuracy pero reduciendo el recall y el F1 en las clases con menos ejemplos.
+
 ### EDA adicional
 
 ```python
@@ -124,6 +147,23 @@ for label_value in sorted(df["label"].unique()):
     wc = WordCloud(width=800, height=400, background_color="white").generate(text_blob)
     plt.figure(figsize=(8,4)); plt.imshow(wc); plt.axis("off"); plt.title(f"WordCloud clase {label_value}"); plt.show()
 ```
+
+#### Resultado: clases
+![Tabla comparativa](../assets/resultado-t13-2.png)
+
+En esta parte se analizaron las tres clases del dataset, 0 para Bearish, 1 para Bullish y 2 para Neutral, esto se hace para ver qué palabras o combinaciones son más frecuentes en cada una.
+
+![Tabla comparativa](../assets/resultado-t13-3.png)
+
+Se puede ver que las clases comparten mucho vocabulario, con términos genéricos como “co”, “https” o “the”. Esto indica que hay muchos enlaces y texto repetitivo típico de tweets financieros, por lo que convendría limpiar las URLs y tokens poco informativos antes de entrenar el modelo.
+
+## Reflexión
+
+#### ¿Qué n‑grams son más frecuentes por clase? ¿Te sorprenden?
+##### Los n-grams más frecuentes son bastante genéricos, como “co”, “https”, “the”, “to”, o “on”, y aparecen en las tres clases. Esto tiene sentido y no me sorprende mucho porque los textos provienen de tweets financieros con muchos enlaces y símbolos de compañías, por lo que el modelo puede tener dificultades para captar matices de sentimiento solo a partir de estas palabras.
+
+#### ¿Qué sesgos/ruido ves en las nubes de palabras?
+##### Las wordclouds reflejan bastante ruido ya que predominan palabras repetitivas, enlaces, tickers de acciones y términos genéricos del ámbito financiero. Esto indica que hay poco vocabulario emocional o de valoración explícita, lo que podría dificultar la detección de sentimiento.
 
 ### Proyecciones TF-IDF y Word2Vec
 
@@ -164,6 +204,23 @@ for probe in ["insulto", "mierda", "idiota", "respeto"]:
         print(w2v.wv.most_similar(probe, topn=8))
 ```
 
+#### Resultado: PCA y UMAP
+![Tabla comparativa](../assets/resultado-t13-4.png)
+
+![Tabla comparativa](../assets/resultado-t13-5.png)
+
+Aquí se redujo la dimensionalidad de las representaciones TF-IDF usando PCA y UMAP para ver si las clases se separan visualmente.
+En ambos casos, las tres clases aparecen bastante mezcladas, lo que va indicando que las diferencias entre clases no son tan claras solo con TF-IDF, y que el modelo necesitará representaciones más exactas y contextuales para identificar mejor la semántica.
+
+## Reflexión
+
+#### ¿Hay separabilidad en PCA/UMAP? Si no, ¿por qué? ¿Datos solapados, ruido, features?
+##### En las proyecciones con PCA y UMAP no se observa una separación clara entre clases, los puntos se solapan bastante. Esto indica que las representaciones TF-IDF no capturan bien los matices semánticos del texto, probablemente por el alto ruido en los tweets y la falta de contexto que tienen los n-grams. 
+
+#### ¿Los vecinos de Word2Vec reflejan semántica financiera?
+##### En general sí porque las palabras tienden a agruparse por temas del mercado, empresas o expresiones comunes del ámbito financiero. Pero también aparecen asociaciones ruidosas o poco relevantes debido a la mezcla de lenguajes y el formato informal de los tweets.
+
+
 ### Baseline TF-IDF + Logistic Regression
 
 ```python
@@ -196,6 +253,22 @@ plt.title("Matriz de confusión — Baseline TF‑IDF+LR")
 plt.xlabel("Pred"); plt.ylabel("True")
 plt.show()
 ```
+
+#### Resultado: TF-IDF y LR
+![Tabla comparativa](../assets/resultado-t13-6.png)
+
+Se armó un modelo base usando TF-IDF con n-gramas (1,2) y Regresión Logística.
+El rendimiento en general fue aceptable, con accuracy de 0.79 aprox, pero se nota un desequilibrio en recall entre clases, por ejemplo, la clase 2 domina y se predice bien, mientras que las clases 0 y 1 tienen más confusión.
+En general, el modelo capta el contenido principal, pero no entiende bien el contexto o el sentido completo de las frases, así que vale la pena probar algo más avanzado.
+
+## Reflexión
+
+#### ¿En qué clases falla más el baseline? ¿Por qué?
+##### El modelo baseline falla principalmente en las clases minoritarias, especialmente en la clase 0 donde el recall fue bastante menor. Esto se da por el desbalance de datos ya que el modelo ve muchos más ejemplos de la clase neutral y termina “jugando seguro” prediciendo esa categoría más a menudo.
+
+#### ¿Qué hiperparámetros probaste y cómo cambiaron los resultados?
+##### Se ajustaron parámetros como max_features del TF-IDF (entre 10000 y 20000), el rango de n-grams ((1,1) y (1,2)), y el número máximo de iteraciones del clasificador. Aumentar las features y permitir bigrams mejoró ligeramente el F1, ya que el modelo empezó a captar expresiones más informativas. Sin embargo, los cambios fueron moderados, y el mayor salto vino con el paso al modelo Transformer, que capturó relaciones semánticas más profundas.
+
 
 ### Fine-tuning de Transformer con Hugging Face
 
@@ -296,6 +369,23 @@ results = trainer.evaluate()
 print(results)
 ```
 
+#### Resultado: entrenamiento BERT
+![Tabla comparativa](../assets/resultado-t13-7.png)
+
+Se entrenó un modelo tipo BERT para clasificación de texto en tres clases, aplicando fine-tuning durante cinco epochs con un learning rate de 2e-5 y batches de 8. 
+El modelo se entrenó sobre los textos tokenizados con padding y truncado automático, y se evaluó en un conjunto de prueba separado. A lo largo del entrenamiento se ve una buena convergencia, pero se puede ver una tendencia al overfitting en las últimas epochs.
+
+Se alcanzó un accuracy de 0.87 y un F1-score de 0.83, superando al entrenamiento base TF-IDF + Regresión Logística de 0.79. Esto muestra que BERT logra captar mejor el contexto y los matices del lenguaje, llegando a distinguir entre expresiones con significados similares o sarcásticos, algo que los métodos basados solo en frecuencia de palabras no logran apreciar.
+
+## Reflexión
+
+#### ¿Cuánto mejora el Transformer al baseline? ¿Dónde empeora?
+##### El modelo Transformer  mejoró mucho respecto al baseline, el accuracy pasó de 0.79 a 0.87 y el F1 de 0.68 a 0.83, mostrando una comprensión mucho más sólida del lenguaje financiero. La mayor ganancia se vio en las clases minoritarias, donde el baseline tenía problemas. Sin embargo, el Transformer tiende a tener overfitting levemente en las últimas epochs.
+
+#### ¿Qué costo de entrenamiento observaste (tiempo/VRAM)?
+##### El entrenamiento fue más pesado que el del modelo clásico, alrededor de 14 minutos en GPU para 5 epochs, consumiendo cerca de 7 GB de VRAM. Esto muestra el típico trade-off de los Transformers porque ofrecen mejor rendimiento y capacidad de generalización, pero a cambio de un costo computacional mucho mayor.
+
+
 ### Análisis de resultados
 
 ```python
@@ -322,3 +412,20 @@ tr_f1 = f1_score(tokenized["test"]["labels"], y_pred_tr, average=("binary" if le
 
 print({"baseline": {"acc": base_acc, "f1": base_f1}, "transformer": {"acc": tr_acc, "f1": tr_f1}})
 ```
+
+#### Resultado: análisis
+![Tabla comparativa](../assets/resultado-t13-8.png)
+
+En la gráfica se puede ver que las rectas muestran un aumento estable en accuracy y F1 durante las primeras epochs, con una tendencia a estabilizarse hacia el final, lo que indica que el modelo alcanzó su punto óptimo sin un overfitting severo.
+Se confirma que el modelo baseline TF-IDF + LR alcanzó un accuracy de 0.79 y un F1 de 0.68, mientras que el modelo Bert logró valores mejores, con un accuracy de 0.87 y un F1 de 0.83, dejando en evidencia una comprensión mucho más profunda y precisa del contenido textual.
+
+## Reflexión
+
+#### ¿Cuál método elegirías para producción y por qué?
+##### Para un entorno de producción elegiría el modelo BERT, ya que logra una precisión y F1 mucho más altos, capturando mejor el contexto financiero y las sutilezas del lenguaje. Sin embargo, si los recursos fueran limitados o se buscara una solución ligera para clasificación en tiempo real, podría optar por el baseline TF-IDF + LR, que es rápido, interpretable y fácil de mantener.
+
+#### ¿Qué siguientes pasos intentarías (data cleaning, RAG, ajuste de clases)?
+##### Probaría un limpieza más profunda del texto sacando URLs, símbolos y stopwords específicas de los dominio, junto con un rebalanceo de clases para mejorar el rendimiento en las categorías con menos ejemplos.
+
+
+En resumen, el fine-tuning del Bert logró una mejora notable en la comprensión contextual y semántica del texto, superando claramente al enfoque basado en frecuencia de palabras. Esto confirma que los modelos preentrenados de lenguaje capturan mejor la intención y tono de los mensajes, algo clave en tareas de clasificación textual compleja.
