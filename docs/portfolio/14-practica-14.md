@@ -3,7 +3,7 @@ title: "Práctica 14"
 date: 2025-11-11
 ---
 
-# Práctica 11
+# Práctica 14
 ## LLMs con LangChain (OpenAI)
 
 ## Contexto

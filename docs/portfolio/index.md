@@ -52,4 +52,6 @@ Bienvenido a las entradas del portafolio. Usá la plantilla para crear nuevas p�
 - Práctica 13: [13-practica-13.md](13-practica-13.md)
 #### LLMs con LangChain (OpenAI)
 - Práctica 14: [14-practica-14.md](14-practica-14.md)
+#### Agentes con LangGraph: RAG, Tools y Memoria Conversacional
+- Práctica 15: [15-practica-15.md](15-practica-15.md)
 
