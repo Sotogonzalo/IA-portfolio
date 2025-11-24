@@ -90,18 +90,18 @@ print(result["messages"][-1].content)
 
 #### Resultado: LLM
 > "¡Perfecto, felicitaciones por tu primer agente LangGraph! :)
-¿Qué te gustaría hacer ahora? Puedo:
-- Revisar o crear un ejemplo mínimo de agente para probar (YAML/JSON/JS).
-- Ayudarte a configurar credenciales, conectores y modelos.
-- Diagnosticar errores: pega logs o mensajes y los reviso.
-- Sugerir pruebas y casos de uso para validar comportamiento.
-Checklist rápida para pruebas:
-1. ¿Tienes la API key / credenciales del modelo configuradas como variable de entorno?
-2. ¿El agente/flow está correctamente definido y activado en LangGraph?
-3. ¿Has conectado el modelo y los conectores (si aplican) en la UI o config?
-4. Ejecuta el flujo de prueba y revisa logs/console para errores.
-5. Si fallan llamadas a la API, verifica límites y permisos.
-Si quieres, pega tu config o dime qué lenguaje/archivo prefieres y te genero un ejemplo funcional para arrancar."
+> ¿Qué te gustaría hacer ahora? Puedo:
+> - Revisar o crear un ejemplo mínimo de agente para probar (YAML/JSON/JS).
+> - Ayudarte a configurar credenciales, conectores y modelos.
+> - Diagnosticar errores: pega logs o mensajes y los reviso.
+> - Sugerir pruebas y casos de uso para validar comportamiento.
+> Checklist rápida para pruebas:
+> 1. ¿Tienes la API key / credenciales del modelo configuradas como variable de entorno?
+> 2. ¿El agente/flow está correctamente definido y activado en LangGraph?
+> 3. ¿Has conectado el modelo y los conectores (si aplican) en la UI o config?
+> 4. Ejecuta el flujo de prueba y revisa logs/console para errores.
+> 5. Si fallan llamadas a la API, verifica límites y permisos.
+> Si quieres, pega tu config o dime qué lenguaje/archivo prefieres y te genero un ejemplo funcional para arrancar."
 
 El agente básicamente se comportó como una llamada normal al modelo, porque el grafo solo tiene un nodo que recibe el mensaje inicial y devuelve la respuesta del LLM sin hacer ningún procesamiento extra.
 
@@ -361,63 +361,63 @@ print("Respuesta 2:", result2["messages"][-1].content)
 ```
 
 #### Pregunta 2
-> "Respuesta 2: RAG = Retrieval-Augmented Generation. En pocas palabras: es una técnica que combina recuperación de documentos relevantes (retrieval) con generación de texto por un modelo de lenguaje (generation) para producir respuestas mejor fundamentadas y actualizadas.
-
-Resumen rápido
-- Objetivo: reducir alucinaciones y dar respuestas ancladas en información externa (documentos, base de conocimiento, web).
-- Componentes clave: repositorio/index de documentos, mecanismo de recuperación (retriever), modelo de embeddings, y el modelo generativo que produce la respuesta usando la evidencia recuperada.
-
-Cómo funciona (flujo típico)
-1. Usuario hace una consulta.
-2. Se convierte la consulta en embedding o se usa búsqueda lexical.
-3. Se recuperan los documentos/chunks más relevantes (top-k) desde un índice vectorial o motor de búsqueda.
-4. (Opcional) se reordenan o filtran los resultados con un re-ranker.
-5. El modelo generador (LLM) recibe la consulta más el contexto (los snippets recuperados) y genera la respuesta, citando o utilizando la evidencia.
-
-Variantes comunes
-- RAG-Generate: el LLM genera texto libremente usando la evidencia como contexto.
-- RAG-Extract (reader): primero extrae pasajes concretos y luego se sintetiza.
-- Hybrid: combina búsqueda lexical (BM25) + búsqueda densa (embeddings) para mejor cobertura.
-
-Tipos de retriever
-- Sparse (BM25, Elasticsearch): buen rendimiento para palabras clave y es barato.
-- Dense (embeddings + ANN, p. ej. FAISS, Pinecone, Weaviate): mejor para intención/semántica.
-- Re-ranking: modelo que ordena los candidatos recuperados para mejorar precisión.
-
-Ventajas
-- Mejor factualidad y fundamento en datos externos.
-- Permite respuestas con información más reciente sin reentrenar el LLM.
-- Reduce necesidad de modelos extremadamente grandes en algunos casos.
-
-Limitaciones y retos
-- Calidad depende de la recuperación (si no recupera la info correcta, LLM seguirá equivocándose).
-- Límite de contexto del LLM: hay que seleccionar/filtrar los snippets.
-- Latencia y coste adicional por búsqueda y embeddings.
-- Privacidad y seguridad de los datos recuperados.
-- Riesgo de “contaminación” si los documentos contienen ruido o información errónea.
-
-Buenas prácticas
-- Chunking: dividir documentos en fragmentos coherentes (200–1,000 tokens) con solapamiento mínimo.
-- Usar embeddings de buena calidad y/o combinar sparse + dense.
-- Re-ranker para mejorar precisión de top-k.
-- Prompt engineering: instruir al LLM a citar fuentes y a abstenerse si no encuentra evidencia.
-- Cachear resultados comunes para reducir latencia.
-- Evaluar con métricas de recuperación (recall@k, MRR) y de generación (F1/EM para QA, o evaluaciones humanas).
-
-Casos de uso típicos
-- Asistentes de atención al cliente con acceso a manuales/product docs.
-- Respuestas a preguntas sobre bases de conocimiento internas.
-- Generación de resúmenes de grandes colecciones de documentos.
-- Agregar información actualizada sin reentrenar el modelo.
-
-Ejemplo muy simple de prompt (conceptual)
-- Contexto: [doc1], [doc2], …  
-- Instrucción: “Usando únicamente la información en los documentos anteriores, responde brevemente a: <pregunta>. Si no hay información suficiente, di ‘No hay información suficiente’”.
-
-Si querés, puedo darte:
-- Un ejemplo técnico de arquitectura (herramientas/stack: embeddings, vector DB, LLM).
-- Un ejemplo de prompt listo para usar.
-- O guiarte para implementar RAG con una librería (LangChain, LlamaIndex, etc.). ¿Qué preferís?"
+> "Respuesta 2: RAG = Retrieval-Augmented Generation. En pocas palabras: es una técnica que combina recuperación de > documentos relevantes (retrieval) con generación de texto por un modelo de lenguaje (generation) para producir respuestas > mejor fundamentadas y actualizadas.
+> 
+> Resumen rápido
+> - Objetivo: reducir alucinaciones y dar respuestas ancladas en información externa (documentos, base de conocimiento, > web).
+> - Componentes clave: repositorio/index de documentos, mecanismo de recuperación (retriever), modelo de embeddings, y el > modelo generativo que produce la respuesta usando la evidencia recuperada.
+> 
+> Cómo funciona (flujo típico)
+> 1. Usuario hace una consulta.
+> 2. Se convierte la consulta en embedding o se usa búsqueda lexical.
+> 3. Se recuperan los documentos/chunks más relevantes (top-k) desde un índice vectorial o motor de búsqueda.
+> 4. (Opcional) se reordenan o filtran los resultados con un re-ranker.
+> 5. El modelo generador (LLM) recibe la consulta más el contexto (los snippets recuperados) y genera la respuesta, citando > o utilizando la evidencia.
+> 
+> Variantes comunes
+> - RAG-Generate: el LLM genera texto libremente usando la evidencia como contexto.
+> - RAG-Extract (reader): primero extrae pasajes concretos y luego se sintetiza.
+> - Hybrid: combina búsqueda lexical (BM25) + búsqueda densa (embeddings) para mejor cobertura.
+> 
+> Tipos de retriever
+> - Sparse (BM25, Elasticsearch): buen rendimiento para palabras clave y es barato.
+> - Dense (embeddings + ANN, p. ej. FAISS, Pinecone, Weaviate): mejor para intención/semántica.
+> - Re-ranking: modelo que ordena los candidatos recuperados para mejorar precisión.
+> 
+> Ventajas
+> - Mejor factualidad y fundamento en datos externos.
+> - Permite respuestas con información más reciente sin reentrenar el LLM.
+> - Reduce necesidad de modelos extremadamente grandes en algunos casos.
+> 
+> Limitaciones y retos
+> - Calidad depende de la recuperación (si no recupera la info correcta, LLM seguirá equivocándose).
+> - Límite de contexto del LLM: hay que seleccionar/filtrar los snippets.
+> - Latencia y coste adicional por búsqueda y embeddings.
+> - Privacidad y seguridad de los datos recuperados.
+> - Riesgo de “contaminación” si los documentos contienen ruido o información errónea.
+> 
+> Buenas prácticas
+> - Chunking: dividir documentos en fragmentos coherentes (200–1,000 tokens) con solapamiento mínimo.
+> - Usar embeddings de buena calidad y/o combinar sparse + dense.
+> - Re-ranker para mejorar precisión de top-k.
+> - Prompt engineering: instruir al LLM a citar fuentes y a abstenerse si no encuentra evidencia.
+> - Cachear resultados comunes para reducir latencia.
+> - Evaluar con métricas de recuperación (recall@k, MRR) y de generación (F1/EM para QA, o evaluaciones humanas).
+> 
+> Casos de uso típicos
+> - Asistentes de atención al cliente con acceso a manuales/product docs.
+> - Respuestas a preguntas sobre bases de conocimiento internas.
+> - Generación de resúmenes de grandes colecciones de documentos.
+> - Agregar información actualizada sin reentrenar el modelo.
+> 
+> Ejemplo muy simple de prompt (conceptual)
+> - Contexto: [doc1], [doc2], …  
+> - Instrucción: “Usando únicamente la información en los documentos anteriores, responde brevemente a: <pregunta>. Si no > hay información suficiente, di ‘No hay información suficiente’”.
+> 
+> Si querés, puedo darte:
+> - Un ejemplo técnico de arquitectura (herramientas/stack: embeddings, vector DB, LLM).
+> - Un ejemplo de prompt listo para usar.
+> - O guiarte para implementar RAG con una librería (LangChain, LlamaIndex, etc.). ¿Qué preferís?"
 
 El agente acá sí metió RAG porque en el mensaje se le dice explícitamente “usá tu base de conocimiento”, así que el modelo detectó que debía llamar a rag_search y por eso la respuesta salió mucho más larga y apoyada en los documentos. Básicamente, esta vez el reasoning del asistente decidió que tenía que ir al nodo de tools antes de contestar.
 
@@ -429,46 +429,46 @@ for event in graph.stream(state2, stream_mode="values"):
 
 #### Pregunta 3
 > "Último mensaje: human → Usá tu base de conocimiento y decime qué es RAG.
-Último mensaje: ai → RAG = Retrieval-Augmented Generation. En pocas palabras: es una técnica que combina recuperación de información (search) con generación de texto por modelos de lenguaje para producir respuestas más precisas, actualizadas y fundamentadas.
-
-Concepto clave
-- En lugar de que el LLM dependa solo de lo que “recordó” durante su entrenamiento (closed‑book), RAG busca documentos relevantes en una base externa (por ejemplo, una colección de textos, una base de vectores) y luego usa esos documentos como contexto para que el generador produzca la respuesta (open‑book).
-
-Componentes típicos
-- Retriever: busca documentos relevantes (BM25/sparse o embeddings/dense).
-- Index/Store: base de documentos (vector DBs como FAISS, Milvus, Pinecone, o índices invertidos).
-- Ranker (opcional): reordena/filtra resultados para calidad.
-- Generator: modelo de lenguaje que recibe el prompt + contexto recuperado y genera la respuesta.
-- Pipeline: recuperación → construcción del prompt con evidencias → generación → (opcional) verificación o post‑filtrado.
-
-Variantes importantes
-- RAG‑Sequence vs RAG‑Token (originales de Facebook AI): difieren en cómo integran la evidencia con la generación.
-- Retrieval antes del generation (la forma más común) vs integración más estrecha entre ambas.
-
-Beneficios
-- Respuestas más factuales y verificables (reduce en parte alucinaciones).
-- Permite usar información actualizada sin reentrenar el LLM.
-- Posibilita modelos más pequeños si se apoya en una buena recuperación.
-
-Limitaciones y riesgos
-- Calidad final depende mucho del retriever y del contenido indexado.
-- Latencia extra por la búsqueda.
-- Si los documentos recuperados son erróneos o contradictorios, el LLM puede amplificarlos.
-- Requiere manejo de contexto (long prompts) y estrategia para seleccionar evidencia.
-
-Casos de uso
-- Asistentes con conocimiento empresarial o documentación interna.
-- Preguntas y respuestas sobre grandes colecciones (legal, médica, técnica).
-- Soporte al cliente con bases de conocimiento dinámicas.
-- Resumen o generación basada en fuentes concretas.
-
-Ejemplo simple de flujo
-1) Usuario pregunta algo.
-2) Sistema convierte la pregunta a embedding y busca los top‑k documentos.
-3) Se concatena la pregunta + extractos recuperados en el prompt.
-4) El LLM genera la respuesta fundamentada en esos extractos.
-
-Si querés, te muestro un ejemplo concreto (prompt + fake documentos) o te explico cómo montar un RAG con herramientas (vector DB + embeddings + LLM). ¿Qué preferís?"
+> Último mensaje: ai → RAG = Retrieval-Augmented Generation. En pocas palabras: es una técnica que combina recuperación de > información (search) con generación de texto por modelos de lenguaje para producir respuestas más precisas, actualizadas > y fundamentadas.
+> 
+> Concepto clave
+> - En lugar de que el LLM dependa solo de lo que “recordó” durante su entrenamiento (closed‑book), RAG busca documentos > relevantes en una base externa (por ejemplo, una colección de textos, una base de vectores) y luego usa esos documentos > como contexto para que el generador produzca la respuesta (open‑book).
+> 
+> Componentes típicos
+> - Retriever: busca documentos relevantes (BM25/sparse o embeddings/dense).
+> - Index/Store: base de documentos (vector DBs como FAISS, Milvus, Pinecone, o índices invertidos).
+> - Ranker (opcional): reordena/filtra resultados para calidad.
+> - Generator: modelo de lenguaje que recibe el prompt + contexto recuperado y genera la respuesta.
+> - Pipeline: recuperación → construcción del prompt con evidencias → generación → (opcional) verificación o post‑filtrado.
+> 
+> Variantes importantes
+> - RAG‑Sequence vs RAG‑Token (originales de Facebook AI): difieren en cómo integran la evidencia con la generación.
+> - Retrieval antes del generation (la forma más común) vs integración más estrecha entre ambas.
+> 
+> Beneficios
+> - Respuestas más factuales y verificables (reduce en parte alucinaciones).
+> - Permite usar información actualizada sin reentrenar el LLM.
+> - Posibilita modelos más pequeños si se apoya en una buena recuperación.
+> 
+> Limitaciones y riesgos
+> - Calidad final depende mucho del retriever y del contenido indexado.
+> - Latencia extra por la búsqueda.
+> - Si los documentos recuperados son erróneos o contradictorios, el LLM puede amplificarlos.
+> - Requiere manejo de contexto (long prompts) y estrategia para seleccionar evidencia.
+> 
+> Casos de uso
+> - Asistentes con conocimiento empresarial o documentación interna.
+> - Preguntas y respuestas sobre grandes colecciones (legal, médica, técnica).
+> - Soporte al cliente con bases de conocimiento dinámicas.
+> - Resumen o generación basada en fuentes concretas.
+> 
+> Ejemplo simple de flujo
+> 1) Usuario pregunta algo.
+> 2) Sistema convierte la pregunta a embedding y busca los top‑k documentos.
+> 3) Se concatena la pregunta + extractos recuperados en el prompt.
+> 4) El LLM genera la respuesta fundamentada en esos extractos.
+> 
+> Si querés, te muestro un ejemplo concreto (prompt + fake documentos) o te explico cómo montar un RAG con herramientas > (vector DB + embeddings + LLM). ¿Qué preferís?"
 
 El agente respondió tan largo porque el grafo detectó la frase “usá tu base de conocimiento” nuevamente como señal de activar retrieval, entonces el nodo de reasoning disparó la búsqueda, metió los documentos en el estado y el nodo de generación los usó para armar una explicación completa. En definitiva, el grafo pidió evidencia, entonces el flujo llamó al retriever y el generador aprovechó ese contexto y se extendió.
 
@@ -526,8 +526,8 @@ print("Nuevo summary:", state_mem["summary"])
 ```
 #### Resultado 1:
 > "Nuevo summary: - El usuario solicitó una explicación: "Hola, explícame LangGraph."  
-- El asistente dio una respuesta amplia: qué es LangGraph, conceptos clave, casos de uso, ventajas, flujo típico, buenas prácticas y cómo empezar.  
-- Quedó ofrecido hacer un ejemplo práctico (p. ej. RAG), un tutorial en Python/TypeScript o mostrar el grafo visualmente; se espera que el usuario elija."
+> - El asistente dio una respuesta amplia: qué es LangGraph, conceptos clave, casos de uso, ventajas, flujo típico, buenas prácticas y cómo empezar.  
+> - Quedó ofrecido hacer un ejemplo práctico (p. ej. RAG), un tutorial en Python/TypeScript o mostrar el grafo visualmente; se espera que el usuario elija."
 
 En la primera, se mandó un mensaje pidiendo “explicame LangGraph” y el grafo respondió normalmente, y después pasamos ese estado por memory_node, que generó un resumen cortito con lo que se habló.
 
@@ -545,8 +545,8 @@ print("Resumen actualizado:", state2_mem["summary"])
 ```
 #### Resultado 2:
 > "Resumen actualizado: - El usuario pidió "explícame LangGraph" y el asistente dio una explicación completa (qué es, conceptos clave, casos de uso, ventajas, flujo, buenas prácticas y cómo empezar) y ofreció hacer un ejemplo práctico (RAG), un tutorial en Python/TS o mostrar el grafo visualmente.  
-- El usuario pidió luego "Ahora explicame RAG" y el asistente explicó RAG en detalle (componentes, flujo, variantes, buenas prácticas, riesgos, métricas y pseudocódigo).  
-- Quedó ofrecido preparar un ejemplo concreto (p. ej. OpenAI + FAISS + Python) o un diagrama de flujo para un caso de uso; falta que el usuario elija qué prefiere."
+> - El usuario pidió luego "Ahora explicame RAG" y el asistente explicó RAG en detalle (componentes, flujo, variantes, buenas prácticas, riesgos, métricas y pseudocódigo).  
+> - Quedó ofrecido preparar un ejemplo concreto (p. ej. OpenAI + FAISS + Python) o un diagrama de flujo para un caso de uso; falta que el usuario elija qué prefiere."
 
 En esta segunda prueba se agregó un nuevo mensaje “Ahora explicame RAG”, y se volvió a ejecutar el grafo y otra vez el memory_node resumió todo, lo de la primer prueba más la nueva explicación. Básicamente se confirma que la memoria va acumulando y resumiendo la conversación a medida que se le pidan cosas.
 
