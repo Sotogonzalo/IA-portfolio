@@ -90,20 +90,17 @@ print(result["messages"][-1].content)
 
 #### Resultado: LLM
 > "¡Perfecto, felicitaciones por tu primer agente LangGraph! :)
-
 ¿Qué te gustaría hacer ahora? Puedo:
 - Revisar o crear un ejemplo mínimo de agente para probar (YAML/JSON/JS).
 - Ayudarte a configurar credenciales, conectores y modelos.
 - Diagnosticar errores: pega logs o mensajes y los reviso.
 - Sugerir pruebas y casos de uso para validar comportamiento.
-
 Checklist rápida para pruebas:
 1. ¿Tienes la API key / credenciales del modelo configuradas como variable de entorno?
 2. ¿El agente/flow está correctamente definido y activado en LangGraph?
 3. ¿Has conectado el modelo y los conectores (si aplican) en la UI o config?
 4. Ejecuta el flujo de prueba y revisa logs/console para errores.
 5. Si fallan llamadas a la API, verifica límites y permisos.
-
 Si quieres, pega tu config o dime qué lenguaje/archivo prefieres y te genero un ejemplo funcional para arrancar."
 
 El agente básicamente se comportó como una llamada normal al modelo, porque el grafo solo tiene un nodo que recibe el mensaje inicial y devuelve la respuesta del LLM sin hacer ningún procesamiento extra.
