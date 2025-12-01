@@ -55,3 +55,6 @@ Bienvenido a las entradas del portafolio. Usá la plantilla para crear nuevas p�
 #### Agentes con LangGraph: RAG, Tools y Memoria Conversacional
 - Práctica 15: [15-practica-15.md](15-practica-15.md)
 
+### UT5
+#### Google Cloud y Vertex AI para automaticación de modelos
+- Práctica 16: [16-practica-16.md](16-practica-16.md)
