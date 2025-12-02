@@ -30,5 +30,5 @@ Mi enfoque está en el desarrollo backend usando Python, Java y C#, con una base
 - Proactividad y capacidad de autogestión.
 
 ## Contacto
-GONZALO.SOTO@correo.ucu.edu.uy
+GONZALO.SOTO@correo.ucu.edu.uy  
 [Mi perfil de LinkedIn](https://www.linkedin.com/in/gonzalo-soto-fraga-0a14a816b)
