@@ -3,31 +3,31 @@ title: "Práctica 2"
 date: 2025-08-26
 ---
 
-# Práctica 2
-## 📊 Feature Engineering, Modelo base y Baseline
+# Práctica 2  
+## 📊 Feature Engineering, Modelo Base y Baseline
 
 ## Contexto
-Práctica número 2 de la primer unidad del curso. En esta práctica buscamos aprender a usar la libreria scikit-learn, vemos los tipos de modelos que ofrece, y aprendemos a crear nuevos parámetros a partir de los existentes.
+Práctica número 2 de la primer unidad del curso. En esta práctica buscamos aprender a usar la librería scikit-learn, ver los tipos de modelos que ofrece y crear nuevos parámetros a partir de los existentes.
 
 ## Objetivos
-- Familiarizarse con scikit-learn y algunos de sus modelos más básicos.
-- Entender la importancia de un baseline antes de entrenar modelos más complejos.
-- Practicar feature engineering simple para mejorar la representación de los datos.
+- Familiarizarse con scikit-learn y algunos de sus modelos más básicos.  
+- Entender la importancia de un baseline antes de entrenar modelos más complejos.  
+- Practicar feature engineering simple para mejorar la representación de los datos.  
 - Evaluar el rendimiento de los modelos usando métricas y gráficas.
 
 ## Actividades (con tiempos estimados)
-- Preguntas teóricas (60min)
-- Parte 1 (20min)
-- Parte 2 (30min)
+- **Preguntas teóricas:** 60 min  
+- **Parte 1:** 20 min  
+- **Parte 2:** 30 min  
 
 ## Desarrollo
-En la práctica trabajamos con el dataset del Titanic, creando nuevas variables. También entrenamos un modelo base, Dummy y uno de Regresión Logística, y comprobamos que el de Lógistica supera el baseline, mostrando la importancia de factores como sexo, edad y compañía al viajar.
+En la práctica trabajamos con el dataset del Titanic, creando nuevas variables. También entrenamos un modelo base, uno Dummy y uno de Regresión Logística, y comprobamos que el de Logística supera el baseline. Esto muestra la importancia de factores como sexo, edad y compañía al viajar.
 
 ## Evidencias
-- Se adjunta imagen "resultado-t2-parte1.png" en `docs/assets/`
+- Se adjunta imagen **"resultado-t2-parte1.png"** en `docs/assets/`.
 
 ## Reflexión
-Aprendimos a ver la utilidad de crear nuevas variables y de comparar un modelo real contra un baseline, y que no sólo basta con entrenar, sino que es clave medir, interpretar métricas y entender qué factores influyen más en las predicciones.
+Aprendí a ver la utilidad de crear nuevas variables y de comparar un modelo real contra un baseline. No sólo basta con entrenar: es clave medir, interpretar métricas y entender qué factores influyen más en las predicciones.
 
 ---
 

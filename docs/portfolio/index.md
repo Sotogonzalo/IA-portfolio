@@ -40,7 +40,7 @@ Aquí recopilo cada práctica, proyecto y experimento realizados durante el curs
 
 ---
 
-## UT3 — Visión por Computadora
+## UT3 — Computer Vision
 
 ### Redes Convolucionales y Transfer Learning  
 - **Práctica 9:** [CNNs y Transfer Learning](09-practica-9.md)
