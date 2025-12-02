@@ -7,14 +7,14 @@ date: 2025-09-30
 ## 📚 CNNs y Transfer Learning
 
 ## Contexto
-En esta práctica trabajamos con redes neuronales convolucionales (CNNs) y Transfer Learning usando TensorFlow/Keras. La idea es comparar un modelo creado desde cero con otro preentrenado (MobileNetV2) para clasificar imágenes del dataset CIFAR-10. Esto nos permite entender mejor cómo funcionan las CNNs y cómo aprovechar modelos ya entrenados para ahorrar tiempo y recursos.
+En esta práctica trabajamos con redes neuronales convolucionales (CNNs) y Transfer Learning usando TensorFlow/Keras. El objetivo fue comparar una CNN construida desde cero contra un modelo preentrenado (MobileNetV2) aplicado al dataset CIFAR-10. Esto permitió entender cómo funcionan las CNNs y cuándo conviene aprovechar pesos preentrenados para acelerar el desarrollo.
 
 ## Objetivos
-- Implementar CNNs usando TensorFlow/Keras para clasificación de imágenes
-- Aplicar Transfer Learning con modelos pre-entrenados de Keras Applications
-- Procesar datasets de imágenes con ImageDataGenerator
-- Evaluar modelos usando métricas de clasificación
-- Comparar arquitecturas CNN vs Transfer Learning
+- Implementar CNNs usando TensorFlow/Keras para clasificación de imágenes  
+- Aplicar Transfer Learning con modelos preentrenados de Keras Applications  
+- Procesar datasets de imágenes con ImageDataGenerator  
+- Evaluar modelos con métricas de clasificación  
+- Comparar arquitecturas CNN vs modelos con Transfer Learning  
 
 ## Actividades (con tiempos estimados)
 - Código completado (30min)
@@ -22,24 +22,23 @@ En esta práctica trabajamos con redes neuronales convolucionales (CNNs) y Trans
 - Diseño de la page (40min)
 
 ## Desarrollo
-Primero preparamos el dataset CIFAR-10 normalizando las imágenes y convirtiendo las etiquetas a formato categórico. Luego armamos una CNN simple con dos bloques convolucionales y una capa densa final, y también probamos un modelo de Transfer Learning con MobileNetV2 congelando sus capas base. Entrenamos ambos modelos y comparamos sus resultados.
-La CNN aprendió rápido y alcanzó cerca del 69% de precisión, mientras que el modelo con Transfer Learning apenas llegó al 31%. Se notó algo de overfitting en la CNN, pero igual logró mejores resultados en general. El transfer fue más estable, aunque no se adaptó bien al tamaño y tipo de imágenes de CIFAR-10.
+Primero se preparó el dataset CIFAR-10 mediante normalización y codificación categórica de las etiquetas. Luego se construyó una CNN simple con dos bloques convolucionales y una capa densa final. En paralelo, se implementó un modelo de Transfer Learning usando MobileNetV2, manteniendo congeladas sus capas base.
+
+Ambos modelos fueron entrenados y comparados.  
+La CNN alcanzó aproximadamente un 69% de accuracy, mostrando señales de overfitting pero un aprendizaje sólido. En cambio, el modelo con MobileNetV2 logró alrededor del 31%, funcionando de forma más estable pero sin adaptarse tan bien al tamaño reducido y características particulares de CIFAR-10.
 
 ## Evidencias
-- Se adjunta imagen "resultado-t9-1.png" en `docs/assets/`
-- Se adjunta imagen "resultado-t9-2.png" en `docs/assets/`
-- Se adjunta imagen "resultado-t9-3.png" en `docs/assets/`
-- Se adjunta imagen "resultado-t9-4.png" en `docs/assets/`
-- Se adjunta imagen "resultado-t9-5.png" en `docs/assets/`
-- Se adjunta imagen "resultado-t9-6.png" en `docs/assets/`
-- Se adjunta imagen "resultado-t9-7.png" en `docs/assets/`
+Todas las imágenes se encuentran en `docs/assets/`.
+
+### 📌 Conjuntos de resultados
+Incluye imagenes desde **resultado-t9-1.png** a la **resultado-t9-7.png**
 
 ## Reflexión
-Esta práctica ayudó a entender las ventajas y límites de cada enfoque. Entrenar una CNN desde cero funciona bien cuando el dataset es pequeño y las imágenes son simples, mientras que el Transfer Learning es más útil con datos similares al modelo base. En este caso, el modelo preentrenado no fue tan efectivo, pero igual aprendimos cómo usarlo y ajustar sus capas. En resumen, la práctica sirvió para ver que no siempre el modelo “grande” gana, depende mucho del tipo de dato y del ajuste fino que se haga.
+La práctica permitió comparar directamente cuándo conviene entrenar desde cero y cuándo usar Transfer Learning. En este caso, la CNN superó ampliamente al modelo preentrenado, mostrando que la arquitectura compacta se ajustaba mejor a imágenes pequeñas como CIFAR-10. El Transfer Learning puede ser muy potente, pero solo cuando el dominio del dataset coincide razonablemente con el modelo base. El ejercicio dejó claro que no existe un modelo universalmente superior, sino que depende del tipo de datos y del ajuste realizado.
 
 ---
 
-# CNNs y Transfer Learning con TensorFlow/Keras
+# CNNs y Transfer Learning con TensorFlow/Keras: solución
 ## Setup inicial
 
 Preparamos todo para empezar a trabajar sobre el dataset CIFAR-10 que vimos en prácticas anteriores.

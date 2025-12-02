@@ -19,27 +19,19 @@ En esta práctica trabajamos con el dataset Flowers102, que contiene imágenes d
 - Comparar modelos augmentados vs baseline
 
 ## Actividades (con tiempos estimados)
-- Parte 1 (10 min): Creación del pipeline base con EfficientNet y preparación del dataset.
-- Parte 2 (30 min): Análisis, completitud y visualización de data augmentation clásico (rotación, zoom, flip, etc.).
-- Parte 3 (60 min): Implementación y visualización de técnicas avanzadas (Mixup y CutMix).
-- Parte 4 (30 min): Entrenamiento y evaluación del modelo baseline y modelo augmentado.
-- Parte 5 (20 min): Analizar aplicación de GradCAM e Integrated Gradients.
-- Parte 6 (40 min): Análisis de resultados generales, errores del modelo y reflexión final.
+- **Parte 1 (10 min)**: Creación del pipeline base con EfficientNet y preparación del dataset.
+- **Parte 2 (30 min)**: Análisis, completitud y visualización de data augmentation clásico (rotación, zoom, flip, etc.).
+- **Parte 3 (60 min)**: Implementación y visualización de técnicas avanzadas (Mixup y CutMix).
+- **Parte 4 (30 min)**: Entrenamiento y evaluación del modelo baseline y modelo augmentado.
+- **Parte 5 (20 min)**: Analizar aplicación de GradCAM e Integrated Gradients.
+- **Parte 6 (40 min)**: Análisis de resultados generales, errores del modelo y reflexión final.
 
 ## Desarrollo
 Primero se usó un pipeline baseline usando EfficientNetB0 con un preprocesamiento básico y sin augmentation. Luego se incorporaron distintas capas de data augmentation, comparando cómo afectaban las imágenes y el entrenamiento.
 Más adelante se probaron las técnicas Mixup y CutMix, que combinan imágenes y etiquetas para aumentar la variedad de los datos. Se generaron visualizaciones para verificar su funcionamiento. Finalmente, se aplicaron GradCAM e Integrated Gradients para observar qué partes de las imágenes activaban el modelo y evaluar si realmente estaba mirando la flor. Los resultados mostraron una baja accuracy general y activaciones difusas, lo que indica que el modelo aún no logra captar bien los patrones visuales correctos.
 
 ## Evidencias
-- Se adjunta imagen "resultado-t10-1.png" en `docs/assets/`
-- Se adjunta imagen "resultado-t10-2.png" en `docs/assets/`
-- Se adjunta imagen "resultado-t10-3.png" en `docs/assets/`
-- Se adjunta imagen "resultado-t10-4.png" en `docs/assets/`
-- Se adjunta imagen "resultado-t10-5.png" en `docs/assets/`
-- Se adjunta imagen "resultado-t10-6.png" en `docs/assets/`
-- Se adjunta imagen "resultado-t10-7.png" en `docs/assets/`
-- Se adjunta imagen "resultado-t10-8.png" en `docs/assets/`
-- Se adjunta imagen "resultado-t10-9.png" en `docs/assets/`
+- Se adjuntan imágenes **"resultado-t10-1.png" a "resultado-t10-9.png"** en `docs/assets/`
 
 ## Reflexión
 La práctica mostró que el data augmentation y las técnicas avanzadas como Mixup y CutMix no lograron mejorar la accuracy, aunque ayudaron a generar mayor variabilidad visual. GradCAM e Integrated Gradients sirvieron para entender que el modelo todavía no presta atención a las regiones correctas, lo que explica sus errores. En general, la práctica ayudó a entender la importancia del aumento de datos y la explicabilidad en modelos de visión, y cómo un modelo potente necesita un entrenamiento más profundo y una mejor preparación del dataset para rendir bien.

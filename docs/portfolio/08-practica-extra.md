@@ -7,7 +7,7 @@ date: 2025-09-23
 ## ⚡ Backpropagation y Optimizadores (versión dataset MNIST)
 
 ## Contexto
-En esta práctica continuamos el trabajo previo de exploración y modelado, aplicando ahora la misma metodología al dataset MNIST, un conjunto clásico de imágenes de dígitos escritos a mano. La idea es reproducir el flujo de entrenamiento utilizado anteriormente (como en CIFAR-10), pero adaptandolo a este nuevo.
+En esta práctica continuamos el trabajo previo de exploración y modelado, aplicando ahora la misma metodología al dataset MNIST, un conjunto clásico de imágenes de dígitos escritos a mano. La idea es reproducir el flujo de entrenamiento utilizado anteriormente (como en CIFAR-10), pero adaptándolo a este nuevo dataset.
 
 ## Actividades (con tiempos estimados)
 - Preparar markdown (40min)
@@ -16,19 +16,23 @@ En esta práctica continuamos el trabajo previo de exploración y modelado, apli
 - Documentar hallazgos y generar evidencias (40min)
 
 ## Desarrollo
-Se entrenó una red MLP sobre el dataset MNIST, a partir de imágenes 28×28 aplanadas y estandarizadas con StandardScaler. Para mejorar la estabilidad y evitar overfitting, se usaron capas densas con activación ReLU, inicialización He normal, BatchNormalization, Dropout y una pequeña regularización L2. Además, se aplicó una augmentación simple agregando ruido a las imágenes. 
-El entrenamiento se controló con callbacks como EarlyStopping y ReduceLROnPlateau para lograr un ajuste más fino del modelo.
+Se entrenó una red MLP sobre el dataset MNIST, utilizando imágenes 28×28 aplanadas y estandarizadas con StandardScaler. Para mejorar la estabilidad del entrenamiento y evitar el sobreajuste, se emplearon capas densas con activación ReLU, inicialización He normal, Batch Normalization, Dropout y una pequeña regularización L2.  
+Además, se aplicó una forma simple de data augmentation agregando ruido a las imágenes para fomentar la generalización.
+
+El entrenamiento se controló con callbacks como EarlyStopping y ReduceLROnPlateau, permitiendo ajustar dinámicamente la tasa de aprendizaje y detener el entrenamiento cuando ya no aportaba mejoras.
 
 ## Evidencias
-- Se adjunta imagen "resultado-t8-extra-1.png" en `docs/assets/`
-- Se adjunta imagen "resultado-t8-extra-2.png" en `docs/assets/`
+Todas las imágenes se encuentran en `docs/assets/`.
+
+### 📌 Resultados del experimento
+Incluye las imágenes **resultado-t8-extra-1.png** y **resultado-t8-extra-2.png**.
 
 ## Reflexión
-El modelo MLP demostró un muy buen rendimiento en MNIST, donde alcanzó una precisión alta sin caer en un overfitting grave. Esto muestra que, con una buena normalización y regularización, incluso una arquitectura simple puede aprender de forma efectiva y generalizar bien a nuevos datos.
+El modelo MLP logró un rendimiento muy bueno en MNIST, alcanzando alta precisión sin caer en sobreajuste severo. Esto demuestra que, con una buena normalización y regularización, incluso arquitecturas relativamente simples pueden aprender de manera efectiva y generalizar correctamente hacia nuevos datos.
 
 ---
 
-# Backpropagation y Optimizadores
+# Backpropagation y Optimizadores: solución extra
 
 ## Preparación del Dataset MNIST
 

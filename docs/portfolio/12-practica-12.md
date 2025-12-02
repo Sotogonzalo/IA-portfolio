@@ -3,8 +3,8 @@ title: "Práctica 12"
 date: 2025-10-28
 ---
 
-# Práctica 12
-## SAM Segmentation
+# Práctica 12  
+## 🧩 SAM Segmentation
 
 ## Contexto
 En esta práctica se trabajó con el modelo Segment Anything Model (SAM) para la segmentación de áreas inundadas en imágenes satelitales. Se buscó evaluar su rendimiento en modo zero-shot (sin entrenamiento adicional) y tras un proceso de fine-tuning con un dataset específico de inundaciones, analizando su capacidad para distinguir correctamente zonas de agua.
@@ -14,38 +14,21 @@ En esta práctica se trabajó con el modelo Segment Anything Model (SAM) para la
 - Comparar performance de pretrained SAM zero-shot vs fine-tuned SAM.
 
 ## Actividades (con tiempos estimados)
-- Exploración del dataset (20 min): revisión de estructura y correspondencia imagen–máscara.
-- Configuración y carga del modelo SAM (30 min): carga del modelo base y checkpoint fine-tuned.
-- Generación de predicciones (40 min): comparación entre resultados zero-shot y fine-tuned.
-- Evaluación visual y registro de resultados (30 min): análisis de calidad de segmentaciones.
-- Reflexión y documentación (80 min).
+- **Exploración del dataset (20 min)**: revisión de estructura y correspondencia imagen–máscara.  
+- **Configuración y carga del modelo SAM (30 min)**: carga del modelo base y checkpoint fine-tuned.  
+- **Generación de predicciones (40 min)**: comparación entre resultados zero-shot y fine-tuned.  
+- **Evaluación visual y registro de resultados (30 min)**: análisis de calidad de segmentaciones.  
+- **Reflexión y documentación (80 min)**.  
 
 ## Desarrollo
-Se utilizó el dataset Flood Dataset con 290 pares de imágenes y máscaras. Se probó primero el SAM preentrenado, que tuvo dificultades para distinguir el agua de reflejos y sombras. Luego se cargó el modelo fine-tuned, ajustado en las capas del mask decoder y prompt encoder, manteniendo congelado el image encoder para aprovechar sus características generales.
-El modelo ajustado mostró mejoras destacables, en contornos más definidos, menor cantidad de falsos positivos y mejor reconocimiento en zonas complejas.
+Se utilizó el dataset Flood Dataset con 290 pares de imágenes y sus máscaras correspondientes. Se probó primero el SAM preentrenado, que tuvo dificultades para distinguir el agua de reflejos y sombras. Luego se cargó el modelo fine-tuned, ajustado en las capas del mask decoder y prompt encoder, manteniendo congelado el image encoder para aprovechar sus características generales.  
+El modelo ajustado mostró mejoras destacables: contornos más definidos, menos falsos positivos y un reconocimiento más estable en zonas complejas.
 
 ## Evidencias
-- Se adjunta imagen "resultado-t12-1.png" en `docs/assets/`
-- Se adjunta imagen "resultado-t12-2.png" en `docs/assets/`
-- Se adjunta imagen "resultado-t12-3.png" en `docs/assets/`
-- Se adjunta imagen "resultado-t12-4.png" en `docs/assets/`
-- Se adjunta imagen "resultado-t12-5.png" en `docs/assets/`
-- Se adjunta imagen "resultado-t12-6.png" en `docs/assets/`
-- Se adjunta imagen "resultado-t12-7.png" en `docs/assets/`
-- Se adjunta imagen "resultado-t12-8.png" en `docs/assets/`
-- Se adjunta imagen "resultado-t12-9.png" en `docs/assets/`
-- Se adjunta imagen "resultado-t12-10.png" en `docs/assets/`
-- Se adjunta imagen "resultado-t12-11.png" en `docs/assets/`
-- Se adjunta imagen "resultado-t12-12.png" en `docs/assets/`
-- Se adjunta imagen "resultado-t12-13.png" en `docs/assets/`
-- Se adjunta imagen "resultado-t12-14.png" en `docs/assets/`
-- Se adjunta imagen "resultado-t12-15.png" en `docs/assets/`
-- Se adjunta imagen "resultado-t12-16.png" en `docs/assets/`
-- Se adjunta imagen "resultado-t12-17.png" en `docs/assets/`
-- Se adjunta imagen "resultado-t12-18.png" en `docs/assets/`
+- Se adjuntan imágenes desde **"resultado-t12-1.png"** hasta **"resultado-t12-18.png"** en `docs/assets/`.
 
 ## Reflexión
-El fine-tuning permitió adaptar SAM a un contexto muy distinto de su entrenamiento original, logrando una segmentación más precisa del agua. Aun así, el sistema no está listo para uso real ya que faltan pruebas con distintos tipos de terreno, condiciones climáticas y cámaras. Si se contara con más datos, podría entrenarse un modelo más robusto y generalizable.
+El fine-tuning permitió adaptar SAM a un contexto muy distinto de su entrenamiento original, logrando una segmentación más precisa del agua. Aun así, el sistema no está listo para uso real ya que faltan pruebas con distintos tipos de terreno, condiciones climáticas y cámaras. Con más datos y variabilidad, podría entrenarse un modelo más robusto y generalizable.
 
 ---
 

@@ -4,7 +4,7 @@ date: 2025-11-4
 ---
 
 # Práctica 13
-## Fine-tuning de Transformers para Clasificación Ofensiva
+## 🗂️ Fine-tuning de Transformers para Clasificación Ofensiva
 
 ## Contexto
 En esta práctica se buscó comparar el rendimiento entre un modelo clásico basado en TF-IDF y regresión logística, y un modelo Transformer moderno, como FinBERT para la clasificación de tweets en tres categorías. El objetivo fue observar cómo cambia la capacidad de entendimiento semántico al pasar de un enfoque puramente estadístico a uno contextualizado.
@@ -16,16 +16,16 @@ En esta práctica se buscó comparar el rendimiento entre un modelo clásico bas
 - Comparar ambos enfoques y sus limitaciones.
 
 ## Actividades (con tiempos estimados)
-- EDA y analisis del dataset (20 min).
-- Entrenamiento baseline TF-IDF+LR (20 min).
-- Fine-tuning de FinBERT (30 min).
-- Visualización y análisis de resultados (30 min).
+- **EDA y analisis del dataset** (20 min).
+- **Entrenamiento baseline TF-IDF+LR** (20 min).
+- **Fine-tuning de FinBERT** (30 min).
+- **Visualización y análisis de resultados** (30 min).
 
 ## Desarrollo
 Primero se realizó un análisis del texto y distribución de clases. Luego se entrenó con un modelo base TF-IDF + Logistic Regression, que logró buenos resultados generales pero sin captar matices semánticos. Posteriormente se fine-tuneó un modelo FinBERT, con el que se observaron métricas superiores y una mejor separación entre clases.
 
 ## Evidencias
-- Se adjuntan imagenes desde "resultado-t13-1.png" a "resultado-t13-8.png" en `docs/assets/`
+- Se adjuntan imagenes desde **"resultado-t13-1.png"** a **"resultado-t13-8.png"** en `docs/assets/`
 - Gráficos de PCA/UMAP y curvas de métricas durante el fine-tuning.
 
 ## Reflexión

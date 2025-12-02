@@ -4,7 +4,7 @@ date: 2025-11-25
 ---
 
 # Práctica 16
-## Google Cloud + Vertex AI
+## 🌍 Google Cloud + Vertex AI
 
 ## Contexto
 En estas prácticas se trabajó sobre dos ejes principales: el uso de Google Cloud dentro de un entorno de laboratorio y la construcción de pipelines de machine learning con Vertex AI.
@@ -38,7 +38,7 @@ Posteriormente se desarrolló un pipeline de ejemplo con tres componentes simple
 Finalmente se construyó el pipeline completo de AutoML, se creó del dataset desde BigQuery, entrenamiento del modelo, evaluación personalizada y despliegue automático si las métricas superaban el umbral.
 
 ## Evidencias
-- Se adjuntan imagenes desde "resultado-t16-1.png" a "resultado-t16-24.png" en `docs/assets/`.
+- Se adjuntan imagenes desde **"resultado-t16-1.png"** a **"resultado-t16-24.png"** en `docs/assets/`.
 
 ## Reflexión
 Estas prácticas permiten ver cómo Google Cloud estructura su entorno y cómo Vertex AI unifica todo el flujo de machine learning. Lo más útil es entender cómo cada paso se vuelve reproducible gracias a los pipelines ya que cada componente es independiente y reutilizable.

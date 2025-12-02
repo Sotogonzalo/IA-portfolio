@@ -7,46 +7,44 @@ date: 2025-09-16
 ## 🧠 De Perceptrón a Redes Neuronales
 
 ## Contexto
-En esta práctica número 7 del curso, empezamos con los principios de Deep Learning.
+En esta práctica número 7 del curso comenzamos con los principios de Deep Learning, explorando perceptrones simples y redes neuronales más avanzadas.
 
 ## Objetivos
 - Descubrir las limitaciones del perceptrón simple (problema XOR).
 - Resolver problemas reales con redes multicapa (sklearn MLP).
-- Implementar redes neuronales profesionales (TensorFlow/PyTorch Lightning).
+- Implementar redes neuronales profesionales (TensorFlow / PyTorch Lightning).
 - Entender cuándo usar cada herramienta.
 
 ## Actividades (con tiempos estimados)
-- Parte 1 (60min)
-- Parte 2 (45min)
-- Actividad 2 (90min)
-- Teórico (30min)
+- **Parte 1:** 60 min  
+- **Parte 2:** 45 min  
+- **Actividad 2:** 90 min  
+- **Teórico:** 30 min  
 
 ## Desarrollo
-En esta práctica se trabajó con perceptrones simples como AND, OR, NOT para entender sus limitaciones, en especial la incapacidad de resolver el problema de XOR por ser no linealmente separable. Luego se exploraron redes multicapa, MLP, implementadas en sklearn, TensorFlow/Keras y PyTorch Lightning, donde se compararon sus arquitecturas, entrenamiento, métricas y visualizaciones de fronteras de decisión y matrices de confusión. De esta forma se pudo observar cómo los modelos más avanzados logran mayor flexibilidad y capacidad de generalización en problemas reales.
+En esta práctica se trabajó con perceptrones simples como AND, OR y NOT para comprender sus limitaciones, especialmente su incapacidad de resolver XOR por no ser linealmente separable. Luego se estudiaron redes multicapa (MLP) implementadas en sklearn, TensorFlow/Keras y PyTorch Lightning, comparando sus arquitecturas, procesos de entrenamiento, métricas de desempeño y visualizaciones como fronteras de decisión y matrices de confusión.
+
+Esto permitió observar cómo los modelos más avanzados brindan mayor flexibilidad, expresividad y capacidad de generalización frente a problemas reales.
 
 ## Evidencias
-- Se adjunta imagen "resultado-t7-parte1.1.png" en `docs/assets/`
-- Se adjunta imagen "resultado-t7-parte1.2.png" en `docs/assets/`
-- Se adjunta imagen "resultado-t7-parte1.3.png" en `docs/assets/`
-- Se adjunta imagen "resultado-t7-parte1.4.png" en `docs/assets/`
-- Se adjunta imagen "resultado-t7-parte1.5.png" en `docs/assets/`
-- Se adjunta imagen "resultado-t7-parte2.1.png" en `docs/assets/`
-- Se adjunta imagen "resultado-t7-parte2.2.png" en `docs/assets/`
-- Se adjunta imagen "resultado-t7-parte2.3.png" en `docs/assets/`
-- Se adjunta imagen "resultado-t7-parte2.4.png" en `docs/assets/`
-- Se adjunta imagen "resultado-t7-act2.1.png" en `docs/assets/`
-- Se adjunta imagen "resultado-t7-act2.2.png" en `docs/assets/`
-- Se adjunta imagen "resultado-t7-act2.3.png" en `docs/assets/`
-- Se adjunta imagen "resultado-t7-act2.4.png" en `docs/assets/`
-- Se adjunta imagen "resultado-t7-act2.5.png" en `docs/assets/`
-- Se adjunta imagen "resultado-t7-act2.6.png" en `docs/assets/`
+Todas las imágenes se encuentran en `docs/assets/`.
+
+### 📌 Parte 1
+Incluye las imágenes **resultado-t7-parte1.1.png** a **resultado-t7-parte1.5.png**.
+
+### 📌 Parte 2
+Incluye las imágenes **resultado-t7-parte2.1.png** a **resultado-t7-parte2.4.png**.
+
+### 📌 Actividad 2
+Incluye las imágenes **resultado-t7-act2.1.png** a **resultado-t7-act2.6.png**.
 
 ## Reflexión
-Un aprendizaje clave es que no basta con usar un modelo sencillo si el problema es complejo, por ejemplo, un perceptrón funciona en casos lineales, pero para relaciones más sofisticadas es necesario recurrir a arquitecturas profundas como MLP. Además, es importante valorar la diferencia entre frameworks, sklearn es rápido para prototipar, TensorFlow/Keras da control para producción y PyTorch Lightning simplifica la investigación avanzada. Siempre se debe tener en cuenta el balance entre precisión, complejidad y riesgo de overfitting a la hora de elegir el modelo.
+Un aprendizaje clave es que un modelo simple no alcanza si el problema es complejo. El perceptrón funciona bien en casos lineales, pero para relaciones más sofisticadas se requiere recurrir a arquitecturas más profundas como los MLP. También quedó clara la diferencia de propósito entre frameworks: sklearn es ideal para prototipado rápido, TensorFlow/Keras es adecuado para entornos de producción y PyTorch Lightning facilita la investigación aplicada.  
+La elección del modelo adecuado siempre debe equilibrar precisión, complejidad y riesgo de overfitting.
 
 ---
 
-# Deep Learning: Redes Neuronales
+# Deep Learning: Redes Neuronales - solución
 
 ## Setup inicial: Código
 

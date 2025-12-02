@@ -4,7 +4,7 @@ date: 2025-11-11
 ---
 
 # Práctica 14
-## LLMs con LangChain (OpenAI)
+## 🔥 LLMs con LangChain (OpenAI)
 
 ## Contexto
 En esta práctica se buscó familiarizarse con el uso de modelos de chat de OpenAI dentro del ecosistema LangChain, entendiendo cómo configurar el modelo, controlar su comportamiento mediante parámetros de decodificación y diseñar prompts robustos orientados a flujos reutilizables. Además, se introdujo el concepto de salidas estructuradas y observabilidad mediante medición de tokens y latencia, pilares fundamentales para construir aplicaciones conversacionales confiables y escalables.
@@ -17,41 +17,41 @@ En esta práctica se buscó familiarizarse con el uso de modelos de chat de Open
 - Medir tokens/latencia con tracing en LangSmith (o callbacks) como base de observabilidad.
 
 ## Actividades (con tiempos estimados)
-- Parte 0: SetUp (10 min)
+- **Parte 0: SetUp** (10 min)
 Configuración del entorno, instalación de dependencias y prueba inicial de importaciones de LangChain y OpenAI.
 
-- Parte 1: Parámetros (20 min)
+- **Parte 1: Parámetros** (20 min)
 Instanciación del modelo ChatOpenAI y experimentación con temperature, top_p y max_tokens para observar su efecto en la generación.
 
-- Parte 2: De texto suelto a plantillas (20 min)
+- **Parte 2: De texto suelto a plantillas** (20 min)
 Conversión de prompts escritos manualmente en estructuras formales mediante ChatPromptTemplate, separando sistema, usuario y variables.
 
-- Parte 3: Salida estructurada (30 min)
+- **Parte 3: Salida estructurada** (30 min)
 Uso de with_structured_output y modelos Pydantic para obtener respuestas controladas y libres de errores de formato.
 
-- Parte 4: Métricas mínimas: tokens y latencia (20 min)
+- **Parte 4: Métricas mínimas: tokens y latencia** (20 min)
 Registro de tokens usados, costo aproximado y tiempo de respuesta utilizando LangSmith o callbacks locales.
 
-- Parte 5: Mini-tareas guiadas (25 min)
+- **Parte 5: Mini-tareas guiadas** (25 min)
 Implementación de pequeñas funciones (resumir, corregir tono, clasificar) encadenadas con LCEL para practicar modularidad.
 
-- Parte 6: Zero-shot vs Few-shot (20 min)
+- **Parte 6: Zero-shot vs Few-shot** (20 min)
 Comparación directa de resultados con y sin ejemplos, analizando mejoras en precisión y reducción de alucinaciones.
 
-- Parte 7: Resúmenes: single-doc y multi-doc (25 min)
+- **Parte 7: Resúmenes: single-doc y multi-doc** (25 min)
 Creación de pipelines de resumen simple y estilo map-reduce, probando cambios en chunking, prompts y temperatura.
 
-- Parte 8: Extracción de información (20 min)
+- **Parte 8: Extracción de información** (20 min)
 Definición de entidades y esquemas para extraer fechas, organizaciones, personas y eventos mediante output estructurado.
 
-- Parte 9: RAG básico con textos locales (30 min)
+- **Parte 9: RAG básico con textos locales** (30 min)
 Construcción de un pipeline RAG minimalista con prompt de combinación y prueba con distintos k.
 
 ## Desarrollo
 Se configuró un modelo de chat de OpenAI utilizando ChatOpenAI, verificando primero su funcionamiento básico. Luego se experimentó con distintos parámetros de decodificación para observar su impacto en creatividad, coherencia y longitud de la respuesta. Posteriormente, se diseñaron prompts modulares con ChatPromptTemplate, permitiendo separar instrucciones del contenido variable. Como siguiente paso, se aplicó with_structured_output para obtener respuestas estrictamente formateadas mediante Pydantic, reduciendo errores y mejorando la confiabilidad. Finalmente, se conectó todo en un flujo LCEL y se habilitó trazado para analizar tokens, tiempo de inferencia y variantes de configuración.
 
 ## Evidencias
-- Se adjuntan imagenes desde "resultado-t14-1.png" a "resultado-t14-11.png" en `docs/assets/`
+- Se adjuntan imagenes desde **"resultado-t14-1.png"** a **"resultado-t14-11.png"** en `docs/assets/`
 
 ## Reflexión
 La práctica permitió ver cómo LangChain facilita no solo la invocación de modelos, sino también la construcción de pipelines limpios, trazables y robustos. También los parámetros de decodificación demostraron ser clave para obtener control fino sobre el estilo de generación, mientras que las salidas estructuradas evidenciaron la importancia de la validación y consistencia en aplicaciones reales.

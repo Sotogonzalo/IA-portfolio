@@ -7,34 +7,31 @@ date: 2025-09-23
 ## ⚡ Backpropagation y Optimizadores
 
 ## Contexto
-En esta práctica número 8 del curso probaremos distintas técnicas para mejorar el entrenamiento del modelo.
+En esta práctica número 8 se trabajó con distintas técnicas para mejorar y estabilizar el entrenamiento de redes neuronales profundas, enfocándose especialmente en regularización, normalización y optimización.
 
 ## Actividades (con tiempos estimados)
-- Mejora de código para entrenamiento (200min)
-- Diseño github page (40min)
+- **Mejora del código de entrenamiento**: 200 min
+- **Diseño del GitHub Page**: 40 min
 
 ## Desarrollo
-Se construyó un modelo de red neuronal profunda para clasificación, aplicando varias técnicas de preprocesamiento y regularización para mejorar su desempeño. Primero se estandarizaron los datos para que todas las características tuvieran media cero y varianza uno, lo que facilita el entrenamiento. Luego se implementó data augmentation agregando un pequeño ruido gaussiano para que el modelo vea versiones ligeramente distintas de los datos y aprenda patrones más generales. La arquitectura incluye varias capas densas con ReLU y HeNormal, combinadas con Batch Normalization, Dropout y L2, que ayudan a estabilizar el entrenamiento y prevenir el sobreajuste. Finalmente, se utilizó RMSprop como optimizador y se agregaron callbacks para detener el entrenamiento temprano y ajustar la tasa de aprendizaje automáticamente, garantizando que el modelo no sobreentrene y se guarde la mejor versión.
+Se construyó un modelo de red neuronal profunda para clasificación, aplicando varias técnicas de preprocesamiento y regularización. Los datos fueron estandarizados para facilitar la convergencia. Luego se incorporó *data augmentation* mediante ruido gaussiano, permitiendo que el modelo vea variaciones de los ejemplos originales y aprenda patrones más generales.
+
+La arquitectura utilizada incluyó capas densas con activación ReLU y inicialización HeNormal, combinadas con Batch Normalization, Dropout y regularización L2 para controlar el sobreajuste. Como optimizador se utilizó RMSprop, junto con callbacks de Early Stopping y ReduceLROnPlateau para frenar entrenamientos innecesarios y ajustar dinámicamente la tasa de aprendizaje. Finalmente, se guardó automáticamente el mejor modelo según desempeño en validación.
 
 ## Evidencias
-- Se adjunta imagen "resultado-t8-1.png" en `docs/assets/`
-- Se adjunta imagen "resultado-t8-2.png" en `docs/assets/`
-- Se adjunta imagen "resultado-t8-3.png" en `docs/assets/`
-- Se adjunta imagen "resultado-t8-4.png" en `docs/assets/`
-- Se adjunta imagen "resultado-t8-5.png" en `docs/assets/`
-- Se adjunta imagen "resultado-t8-6.png" en `docs/assets/`
-- Se adjunta imagen "resultado-t8-7.png" en `docs/assets/`
-- Se adjunta imagen "resultado-t8-8.png" en `docs/assets/`
-- Se adjunta imagen "resultado-t8-9.png" en `docs/assets/`
-- Se adjunta imagen "resultado-t8-10.png" en `docs/assets/`
-- Se adjunta imagen "resultado-t8-11.png" en `docs/assets/`
+Todas las imágenes se encuentran en `docs/assets/`.
+
+### 📌 Resultados del entrenamiento
+Incluye las imágenes **resultado-t8-1.png** a **resultado-t8-11.png**.
 
 ## Reflexión
-A lo largo del desarrollo del modelo, se observó que simplemente aumentar el tamaño de las capas o agregar más regularización no siempre mejora la performance, en algunos casos, empeoraba la generalización. Esto llevó a valorar la importancia de equilibrar capacidad y regularización y de probar cambios graduales. La incorporación de data augmentation y técnicas de normalización permitió que el modelo aprendiera mejor de los datos limitados, mejorando la precisión en validación y test sin sobreajustarse. La práctica que si bien la arquitectura es importante, el preprocesamiento, la regularización y la paciencia durante el entrenamiento son claves para construir modelos robustos y confiables.
+Se observó que incrementar tamaño de capas o aplicar más regularización no garantiza automáticamente mejor desempeño; en algunos casos incluso empeoraba la generalización. Esto reforzó la importancia de ajustar la arquitectura de forma incremental, monitorear el comportamiento del modelo y encontrar un equilibrio entre capacidad y regularización.
+
+El uso de normalización, data augmentation y callbacks tuvo un impacto positivo en la estabilidad del entrenamiento y en la precisión de validación y test. En conclusión, más allá de la arquitectura, el preprocesamiento, la regularización y la gestión del entrenamiento son claves para construir modelos robustos y confiables.
 
 ---
 
-# Backpropagation y Optimizadores
+# Backpropagation y Optimizadores: solución
 
 ## Setup inicial
 

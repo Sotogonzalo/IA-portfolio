@@ -4,7 +4,7 @@ date: 2025-11-18
 ---
 
 # Práctica 15
-## Agentes con LangGraph: RAG, Tools y Memoria Conversacional
+## 🧠 Agentes con LangGraph: RAG, Tools y Memoria Conversacional
 
 ## Contexto
 En esta práctica armamos un agente conversacional usando LangGraph. La idea fue combinar un modelo de chat que razona, un sistema de memoria del diálogo y varias tools dentro de un grafo que decide cuándo llamar al LLM y cuándo a una tool. Básicamente recreamos un “asistente” que puede conversar, recordar el estado y resolver consultas usando información externa.
@@ -33,7 +33,7 @@ En esta práctica armamos un agente conversacional usando LangGraph. La idea fue
 En esta práctica fui armando paso a paso un agente de soporte simple usando LangGraph. Primero dejé el entorno configurado y construí un AgentState que almacena todo el historial de mensajes y un campo de resumen. Después preparé un RAG básico con FAISS para que el modelo pueda recuperar información del dominio, y agregué una segunda tool que simula datos del usuario. Con el modelo OpenAI configurado en modo tool-calling, armé el grafo donde el LLM decide si responde directo o si debe llamar a una tool. Cuando la tool devuelve algo, el asistente entra otra vez para cerrar la respuesta. Finalmente probé conversaciones multi-turn mezclando preguntas de documentación y preguntas de cuenta, validando que el flujo asistente, tool, asistente se ejecute bien, y dejé lista una interfaz en Gradio para testearlo de forma más cómoda.
 
 ## Evidencias
-- Se adjunta "resultado-t15-1.png" en `docs/assets/`.
+- Se adjunta **"resultado-t15-1.png"** en `docs/assets/`.
 - Se agregaron resultados citados.
 
 ## Reflexión

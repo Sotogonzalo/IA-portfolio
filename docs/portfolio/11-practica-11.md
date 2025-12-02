@@ -4,7 +4,7 @@ date: 2025-10-21
 ---
 
 # Práctica 11
-## YOLOv8 Fine-tuning & Tracking
+## 🖥️ YOLOv8 Fine-tuning & Tracking
 
 ## Contexto
 En esta práctica se buscó aplicar un pipeline completo de detección y seguimiento de objetos usando YOLOv8. Primero se partió de un modelo pre-entrenado (COCO) y luego se realizó fine-tuning con un dataset de frutas de supermercado para mejorar el rendimiento en un dominio más específico. Finalmente, se aplicó tracking con Norfair sobre un video real para analizar la estabilidad de los IDs y la coherencia del seguimiento.
@@ -17,23 +17,23 @@ En esta práctica se buscó aplicar un pipeline completo de detección y seguimi
 - Implementar tracking con modelo fine-tuned en video.
 
 ## Actividades (con tiempos estimados)
-- Parte 1 (80 min): Cargar modelo base, dataset y verificar paths.
-- Parte 2 (90 min): Entrenar YOLOv8 con dataset propio (fine-tuning) y evaluar métricas.
-- Parte 3 (100 min): Procesar video, aplicar tracker Norfair y analizar resultados de tracking.
-- Parte 4 (200 min): Elaborar visualizaciones, reflexiones y documentación final.
+- **Parte 1 (80 min)**: Cargar modelo base, dataset y verificar paths.
+- **Parte 2 (90 min)**: Entrenar YOLOv8 con dataset propio (fine-tuning) y evaluar métricas.
+- **Parte 3 (100 min)**: Procesar video, aplicar tracker Norfair y analizar resultados de tracking.
+- **Parte 4 (200 min)**: Elaborar visualizaciones, reflexiones y documentación final.
 
 ## Desarrollo
 Se configuró el entorno con YOLOv8 y se corrigieron los paths del dataset de frutas. Se entrenó el modelo durante 10 epochs usando solo el 25% del dataset para ahorrar tiempo. El fine-tuning mejoró bastante el rendimiento, con un mAP@0.5=0.387 y buena precisión en naranjas y bananas, aunque las manzanas verdes siguieron dando problemas. Luego se aplicó tracking con Norfair, logrando seguir 12 frutas en un video de 11 s, con algunos cambios de ID pero detecciones estables en general.
 
 ## Evidencias
-- Se adjuntan imagenes: de "resultado-t11-1.png" hasta "resultado-t11-16.png" en `docs/assets/`
+- Se adjuntan imágenes **desde "resultado-t11-1.png" hasta "resultado-t11-16.png"** en `docs/assets/`
 - Resultados del fine-tuning (gráficos de pérdida y métricas).
 - Comparación entre modelo base y modelo fine-tuned.
 - Frames del video con bounding boxes y tracking IDs.
 - Visualizaciones de duración de tracks y detecciones por frame.
 
 ## Reflexión
-El fine-tuning mejoró significativamente el rendimiento del modelo, sobre todo en clases dominantes como naranja y banana, reduciendo falsos positivos. Sin embargo, la recall aún baja indica que algunas frutas (como manzanas verdes) siguen sin detectarse bien.
+El fine-tuning mejoró significativamente el rendimiento del modelo, sobre todo en clases dominantes como naranja y banana, reduciendo falsos positivos. Sin embargo, la recall aún baja indica que algunas frutas (como manzanas verdes) siguen sin detectarse bien.  
 El tracking fue aceptable, aunque hubo “ID switches” cuando los objetos se cruzaban. Ajustar parámetros de Norfair o usar un tracker más sofisticado podría mejorarlo.
 
 ---

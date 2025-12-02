@@ -4,11 +4,10 @@ date: 2025-11-08
 ---
 
 # Práctica 11 Extra
-## Comparación de Modelos YOLO
+## 🖥️ Comparación de Modelos YOLO
 
 ## Contexto
-En esta práctica extra, extendiendo la práctica 11 se realizó una evaluación comparativa entre distintas versiones de YOLO (v5n, v8n, v8s, v8m y v11n) para determinar cuál ofrece el mejor equilibrio entre precisión, velocidad y estabilidad de entrenamiento.
-El objetivo fue analizar cómo la evolución de la arquitectura YOLO afecta el desempeño en un mismo dataset de frutas, manteniendo las condiciones de entrenamiento constantes para una comparación justa.
+En esta práctica extra, extendiendo la práctica 11, se realizó una evaluación comparativa entre distintas versiones de YOLO (v5n, v8n, v8s, v8m y v11n) para determinar cuál ofrece el mejor equilibrio entre precisión, velocidad y estabilidad de entrenamiento. El objetivo fue analizar cómo la evolución de la arquitectura YOLO afecta el desempeño en un mismo dataset de frutas, manteniendo las condiciones de entrenamiento constantes para una comparación justa.
 
 ## Objetivos
 - Entrenar y evaluar distintas versiones de YOLO con idénticas configuraciones experimentales.
@@ -17,30 +16,22 @@ El objetivo fue analizar cómo la evolución de la arquitectura YOLO afecta el d
 - Identificar el modelo más equilibrado para un uso práctico.
 
 ## Actividades (con tiempos estimados)
-- Parte 1 (60 min): Preparación del entorno y verificación del dataset.
-- Parte 2 (150 min): Entrenamiento de YOLOv5n, YOLOv8n, YOLOv8s, YOLOv8m y YOLOv11n con los mismos parámetros (10 epochs, imgsz=416).
-- Parte 3 (120 min): Registro de métricas y generación de gráficas comparativas.
-- Parte 4 (90 min): Análisis de resultados y redacción de conclusiones.
+- **Parte 1 (60 min)**: Preparación del entorno y verificación del dataset.
+- **Parte 2 (150 min)**: Entrenamiento de YOLOv5n, YOLOv8n, YOLOv8s, YOLOv8m y YOLOv11n con los mismos parámetros (10 epochs, imgsz=416).
+- **Parte 3 (120 min)**: Registro de métricas y generación de gráficas comparativas.
+- **Parte 4 (90 min)**: Análisis de resultados y redacción de conclusiones.
 
 ## Desarrollo
-Cada modelo fue entrenado con el mismo subconjunto del dataset, buscando mantener condiciones idénticas, número de épocas, tamaño de imagen y batch.
-Se registraron métricas de pérdida, precisión, recall y mAP@0.5 para observar el progreso durante las épocas y luego se construyeron gráficos comparativos de desempeño.
+Cada modelo fue entrenado con el mismo subconjunto del dataset, buscando mantener condiciones idénticas, número de épocas, tamaño de imagen y batch. Se registraron métricas de pérdida, precisión, recall y mAP@0.5 para observar el progreso durante las épocas y luego se construyeron gráficos comparativos de desempeño.
 
-En la evolución de la pérdida y el mAP@0.5 se observó una convergencia más rápida y estable en YOLOv8s y YOLOv8m, mientras que los modelos más pequeños (v5n y v11n) tuvieron curvas más irregulares y menor rendimiento.
-El gráfico de precisión y recall reafirmó la superioridad del YOLOv8s, que mantuvo un equilibrio estable a lo largo de las épocas.
-Finalmente, el gráfico de trade-off entre precisión y velocidad mostró que YOLOv8s alcanza el mejor punto medio, ofreciendo buena exactitud sin sacrificar velocidad ni eficiencia de recursos.
+En la evolución de la pérdida y el mAP@0.5 se observó una convergencia más rápida y estable en YOLOv8s y YOLOv8m, mientras que los modelos más pequeños (v5n y v11n) tuvieron curvas más irregulares y menor rendimiento. El gráfico de precisión y recall reafirmó la superioridad del YOLOv8s, que mantuvo un equilibrio estable a lo largo de las épocas. Finalmente, el gráfico de trade-off entre precisión y velocidad mostró que YOLOv8s alcanza el mejor punto medio, ofreciendo buena exactitud sin sacrificar velocidad ni eficiencia de recursos.
 
 ## Evidencias
-- Se adjuntan imagenes: de "resultado-t11-extra-1.png" hasta "resultado-t11-extra-9.png" en `docs/assets/`.
+- Se adjuntan imágenes **desde "resultado-t11-extra-1.png" hasta "resultado-t11-extra-9.png"** en `docs/assets/`.
 - Gráficas de evolución de pérdida, mAP@0.5, precisión/recall y trade-off.
 
-
 ## Reflexión
-El análisis permitió comprobar cómo las versiones más recientes de YOLO integran mejoras sustanciales tanto en precisión como en estabilidad de entrenamiento.
-YOLOv8s destacó como el modelo más equilibrado, combinando buena capacidad de detección, velocidad de inferencia y uso razonable de recursos.
-Este balance lo hace ideal para implementaciones reales donde se requiere rendimiento sólido sin hardware de gama alta.
-En cambio, YOLOv8m podría considerarse cuando se prioriza la precisión absoluta por encima del tiempo de inferencia.
-En conjunto, el experimento reafirma la importancia de evaluar no solo la precisión, sino también el costo computacional de cada arquitectura antes de su implementación.
+El análisis permitió comprobar cómo las versiones más recientes de YOLO integran mejoras sustanciales tanto en precisión como en estabilidad de entrenamiento. YOLOv8s destacó como el modelo más equilibrado, combinando buena capacidad de detección, velocidad de inferencia y uso razonable de recursos. Este balance lo hace ideal para implementaciones reales donde se requiere rendimiento sólido sin hardware de gama alta. En cambio, YOLOv8m podría considerarse cuando se prioriza la precisión absoluta por encima del tiempo de inferencia. En conjunto, el experimento reafirma la importancia de evaluar no solo la precisión, sino también el costo computacional de cada arquitectura antes de su implementación.
 
 ---
 
