@@ -3,12 +3,11 @@ title: "Índice del Portafolio"
 date: 2025-01-01
 ---
 
-# Portafolio
-
+# Portafolio  
 Bienvenido a mi portafolio académico de Inteligencia Artificial y Machine Learning.  
 Aquí recopilo cada práctica, proyecto y experimento realizados durante el curso, organizados por unidades temáticas y presentados en orden de avance. El objetivo es mostrar mi progreso, las técnicas aplicadas y cómo fui integrando conceptos cada vez más avanzados.
 
-## UT1 — Fundamentos de Inteligencia Artificial y Machine Learning
+## 🧩 UT1 — Fundamentos de IA y Aprendizaje Automático
 
 ### Introducción y Exploración de Datos  
 - **Práctica 1:** [Exploración y análisis del Titanic (EDA)](01-practica-1.md)
@@ -30,9 +29,9 @@ Aquí recopilo cada práctica, proyecto y experimento realizados durante el curs
 
 ---
 
-## UT2 — Redes Neuronales y Optimización
+## 🔬 UT2 — Redes Neuronales y Backpropagation
 
-### De Perceptrón a Redes Neuronales  
+### Perceptrón → MLP → Redes Neuronales (SkLearn, TF, Lightning) 
 - **Práctica 7:** [MLP, TensorFlow y PyTorch Lightning](07-practica-7.md)
 
 ### Backpropagation y Optimizadores  
@@ -58,20 +57,20 @@ Aquí recopilo cada práctica, proyecto y experimento realizados durante el curs
 
 ---
 
-## UT4 — Modelos de Lenguaje y Agentes
+## 🧠 UT4 — LLMs, Transformes y Agentes
 
-### Transformers y Fine-tuning  
+### Fine-tuning de Transformers  
 - **Práctica 13:** [Fine-tuning de Transformers](13-practica-13.md)
 
-### Aplicaciones con LangChain  
+### LLMs con LangChain  
 - **Práctica 14:** [LLMs y LangChain](14-practica-14.md)
 
-### Agentes con LangGraph  
+### Agentes con LangGraph — RAG, Tools y Memoria   
 - **Práctica 15:** [Agentes, RAG y Herramientas con LangGraph](15-practica-15.md)
 
 ---
 
-## UT5 — Cloud Computing y MLOps
+## ☁️ UT5 — Google Cloud & Vertex AI
 
 ### Google Cloud y Vertex AI  
 - **Práctica 16:** [Automatización y despliegue de modelos](16-practica-16.md)
