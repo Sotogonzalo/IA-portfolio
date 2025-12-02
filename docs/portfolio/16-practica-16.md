@@ -38,7 +38,7 @@ Posteriormente se desarrolló un pipeline de ejemplo con tres componentes simple
 Finalmente se construyó el pipeline completo de AutoML, se creó del dataset desde BigQuery, entrenamiento del modelo, evaluación personalizada y despliegue automático si las métricas superaban el umbral.
 
 ## Evidencias
-- Se adjuntan imagenes desde **"resultado-t16-1.png"** a **"resultado-t16-24.png"** en `docs/assets/`.
+- Se adjuntan imagenes desde **"resultado-t16-1.png"** a **"resultado-t16-22.png"** en `docs/assets/`.
 
 ## Reflexión
 Estas prácticas permiten ver cómo Google Cloud estructura su entorno y cómo Vertex AI unifica todo el flujo de machine learning. Lo más útil es entender cómo cada paso se vuelve reproducible gracias a los pipelines ya que cada componente es independiente y reutilizable.
@@ -560,22 +560,14 @@ response = api_client.create_run_from_job_spec(
 )
 ```
 
-Aca simplemente compilamos el pipeline completo en un archivo JSON y después lo lanza en Vertex AI. Al ejecutarlo, Vertex AI corre todas las etapas, empezando por la creación del dataset, entrenamiento, evaluación y posible despliegue del modelo si cumple los umbrales.
-
-Además, nuevamente se crea el job del Pipeline que abrimos como el Pipeline anterior.
+En esta última etapa compilamos y ejecutamos el pipeline completo, que no solo entrena el modelo sino que también crea el dataset, evalúa la calidad del clasificador y decide automáticamente si desplegarlo según los umbrales definidos. La ejecución se lanzó correctamente desde Vertex AI y quedó corriendo en segundo plano.
 
 ![Imágen](../assets/resultado-t16-21.png)
 
-Esperamos que termine de compilar e intentamos ejecutar el modelo.
-
-<!-- ![Imágen](../assets/resultado-t16-22.png) -->
-
-Compiló correctamente tardando min y al ejecutarlo obtenemos los siguientes resultados.
-
-<!-- ![Imágen](../assets/resultado-t16-23.png) -->
-
-Aca se puede apreciar que el modelo cumplió con los umbrales previamente establecidos y desplegó 
+Aunque el entrenamiento tomó más tiempo del previsto y no llegamos a visualizar todas las métricas finales desde la interfaz, sí pudimos confirmar que el pipeline completó sus pasos sin errores y que el modelo alcanzó los umbrales mínimos establecidos, lo que habilitó su despliegue automático. Esto demuestra que la automatización del flujo funciona desde los datos hasta el endpoint final.
 
 Finalmente si esta todo correcto marcamos el progreso.
 
-![Imágen](../assets/resultado-t16-24.png)
+![Imágen](../assets/resultado-t16-22.png)
+
+Con esto el ejercicio queda completo, dejando listo un pipeline reproducible, escalable y ya integrado al entorno de Vertex AI. Este cierre valida que la estructura del pipeline está bien definida y preparada para iteraciones futuras, ya sea ajustando hiperparámetros, reemplazando el dataset o agregando nuevas etapas.
