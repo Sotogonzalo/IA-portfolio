@@ -7,74 +7,68 @@ date: 2025-09-09
 ## 🔍 Clustering y PCA
 
 ## Contexto
-En esta práctica número 6 del curso tenemos la siguiente problemática: Los centros comerciales buscan conocer mejor a sus clientes, pero el problema a resolver es la segmentación de clientes, es decir, agruparlos según sus características y comportamientos para poder diseñar campañas de marketing más personalizadas, ofrecer promociones específicas, invertir mejor en publicidad y comprender cómo compran los distintos tipos de clientes.
+En esta práctica número 6 del curso trabajamos el problema de segmentación de clientes para centros comerciales. El objetivo es agrupar clientes según sus características y comportamientos para permitir campañas de marketing personalizadas, promociones específicas, mejor inversión publicitaria y una mayor comprensión de los distintos perfiles de compradores.
 
 ## Objetivos
-- Identificar 3-5 segmentos de clientes distintos usando K-Means.
+- Identificar 3–5 segmentos de clientes usando K-Means.
 - Aplicar técnicas de normalización (MinMax, Standard, Robust).
 - Usar PCA para reducción de dimensionalidad y visualización.
 - Comparar PCA con métodos de selección de features.
-- Interpretar resultados desde perspectiva de negocio.
+- Interpretar resultados desde la perspectiva del negocio.
 
 ## Actividades (con tiempos estimados)
-- Parte 1 (180min)
-- Parte 2 (150min)
-- Parte 3 (30min)
-- Parte 4 (15min)
-- Challenge 1 (50min)
-- Challenge 2 (20min)
-- Challenge 3 (60min)
-- Challenge 4 (30min)
-- Challenge 5 (20min)
-- Diseño del github pages (200min)
+- **Parte 1:** 180 min  
+- **Parte 2:** 150 min  
+- **Parte 3:** 30 min  
+- **Parte 4:** 15 min  
+- **Challenge 1:** 50 min  
+- **Challenge 2:** 20 min  
+- **Challenge 3:** 60 min  
+- **Challenge 4:** 30 min  
+- **Challenge 5:** 20 min  
+- **Diseño del GitHub Pages:** 200 min  
 
 ## Desarrollo
-En esta práctica trabajamos en segmentar clientes usando clustering y PCA. Primero exploramos y entendimos el dataset, viendo qué variables eran más relevantes y codificando las categóricas. Después aplicamos distintos escaladores y PCA para reducir dimensiones, comparando con Feature Selection, y vimos que PCA daba mejores resultados. Con K-Means, y usando Elbow Method y Silhouette Score, identificamos 4 clusters que tenían sentido para el negocio, diferenciando perfiles como jóvenes gastadores y clientes mayores más conservadores.
+En esta práctica segmentamos clientes utilizando clustering y PCA. Primero se exploró el dataset, identificando variables relevantes y codificando variables categóricas. Luego se aplicaron distintos métodos de escalado y PCA para reducción dimensional, comparándolos con estrategias de selección de features, observándose que PCA brindó mejores resultados.  
+Finalmente, mediante K-Means y evaluando el número óptimo de clusters con Elbow Method y Silhouette Score, se identificaron **4 clusters** consistentes para el negocio, diferenciando perfiles como jóvenes con mayor gasto y adultos con hábitos de consumo más conservadores.
 
 ## Evidencias
-- Se adjunta imagen "resultado-t6-parte1.1.png" en `docs/assets/`
-- Se adjunta imagen "resultado-t6-parte1.2.png" en `docs/assets/`
-- Se adjunta imagen "resultado-t6-parte1.3.png" en `docs/assets/`
-- Se adjunta imagen "resultado-t6-parte1.4.png" en `docs/assets/`
-- Se adjunta imagen "resultado-t6-parte1.5.png" en `docs/assets/`
-- Se adjunta imagen "resultado-t6-parte1.6.png" en `docs/assets/`
-- Se adjunta imagen "resultado-t6-parte1.7.png" en `docs/assets/`
-- Se adjunta imagen "resultado-t6-parte1.8.png" en `docs/assets/`
-- Se adjunta imagen "resultado-t6-parte1.9.png" en `docs/assets/`
-- Se adjunta imagen "resultado-t6-parte1.10.png" en `docs/assets/`
-- Se adjunta imagen "resultado-t6-parte2.1.png" en `docs/assets/`
-- Se adjunta imagen "resultado-t6-parte2.2.png" en `docs/assets/`
-- Se adjunta imagen "resultado-t6-parte2.3.png" en `docs/assets/`
-- Se adjunta imagen "resultado-t6-parte2.4.png" en `docs/assets/`
-- Se adjunta imagen "resultado-t6-parte2.5.png" en `docs/assets/`
-- Se adjunta imagen "resultado-t6-parte2.6.png" en `docs/assets/`
-- Se adjunta imagen "resultado-t6-parte2.7.png" en `docs/assets/`
-- Se adjunta imagen "resultado-t6-parte3.1.png" en `docs/assets/`
-- Se adjunta imagen "resultado-t6-parte3.2.png" en `docs/assets/`
-- Se adjunta imagen "resultado-t6-parte3.3.png" en `docs/assets/`
-- Se adjunta imagen "resultado-t6-parte3.4.png" en `docs/assets/`
-- Se adjunta imagen "resultado-t6-parte4.1.png" en `docs/assets/`
-- Se adjunta imagen "resultado-t6-parte4.2.png" en `docs/assets/`
-- Se adjunta imagen "resultado-t6-parte5.1.png" en `docs/assets/`
-- Se adjunta imagen "resultado-t6-parte5.2.png" en `docs/assets/`
-- Se adjunta imagen "resultado-t6-parte5.3.png" en `docs/assets/`
-- Se adjunta imagen "resultado-t6-parte5.4.png" en `docs/assets/`
-- Se adjunta imagen "resultado-t6-parte5.5.png" en `docs/assets/`
-- Se adjunta imagen "resultado-t6-reto1.1.png" en `docs/assets/`
-- Se adjunta imagen "resultado-t6-reto1.2.png" en `docs/assets/`
-- Se adjunta imagen "resultado-t6-reto1.3.png" en `docs/assets/`
-- Se adjunta imagen "resultado-t6-reto1.4.png" en `docs/assets/`
-- Se adjunta imagen "resultado-t6-reto2.png" en `docs/assets/`
-- Se adjunta imagen "resultado-t6-reto3.1.png" en `docs/assets/`
-- Se adjunta imagen "resultado-t6-reto3.2.png" en `docs/assets/`
-- Se adjunta imagen "resultado-t6-reto3.3.png" en `docs/assets/`
-- Se adjunta imagen "resultado-t6-reto4.1.png" en `docs/assets/`
-- Se adjunta imagen "resultado-t6-reto4.2.png" en `docs/assets/`
-- Se adjunta imagen "resultado-t6-reto4.3.png" en `docs/assets/`
-- Se adjunta imagen "resultado-t6-reto5.png" en `docs/assets/`
+A continuación se listan las evidencias agrupadas por secciones de la práctica.  
+Todas se encuentran en `docs/assets/`.
+
+### 📌 Parte 1
+Incluye las imágenes **resultado-t6-parte1.1.png** a **resultado-t6-parte1.10.png**.
+
+### 📌 Parte 2
+Incluye las imágenes **resultado-t6-parte2.1.png** a **resultado-t6-parte2.7.png**.
+
+### 📌 Parte 3
+Incluye las imágenes **resultado-t6-parte3.1.png** a **resultado-t6-parte3.4.png**.
+
+### 📌 Parte 4
+Incluye las imágenes **resultado-t6-parte4.1.png** y **resultado-t6-parte4.2.png**.
+
+### 📌 Parte 5
+Incluye las imágenes **resultado-t6-parte5.1.png** a **resultado-t6-parte5.5.png**.
+
+### 📌 Challenge 1
+Incluye las imágenes **resultado-t6-reto1.1.png** a **resultado-t6-reto1.4.png**.
+
+### 📌 Challenge 2
+Incluye la imagen **resultado-t6-reto2.png**.
+
+### 📌 Challenge 3
+Incluye las imágenes **resultado-t6-reto3.1.png** a **resultado-t6-reto3.3.png**.
+
+### 📌 Challenge 4
+Incluye las imágenes **resultado-t6-reto4.1.png** a **resultado-t6-reto4.3.png**.
+
+### 📌 Challenge 5
+Incluye la imagen **resultado-t6-reto5.png**.
 
 ## Reflexión
-Lo más desafiante fue preparar los datos sin perder información relevante, pero la práctica mostró la importancia de combinar comprensión del negocio con técnicas de análisis. Los clusters permiten pensar en estrategias de marketing más personalizadas, aunque hay limitaciones por el tamaño y simplificación del dataset. En general, se reforzó cómo la preparación de datos y la elección correcta de métodos impactan directamente en la calidad y utilidad de los resultados.
+El mayor desafío fue la preparación de los datos sin perder información relevante. La práctica dejó claro el valor de combinar la comprensión del negocio con las técnicas de análisis. Los clusters generados permiten pensar estrategias de marketing más personalizadas, aunque existen limitaciones inherentes al tamaño y simplificación del dataset.  
+En general, se reforzó la importancia de la preparación de datos y de la elección adecuada de métodos para lograr resultados útiles y aplicables.
 
 ---
 

@@ -3,36 +3,33 @@ title: "Práctica 4"
 date: 2025-08-24
 ---
 
-# Práctica 4
+# Práctica 4  
 ## 📝 Regresión Lineal y Logística
 
 ## Contexto
-Práctica número 4 del curso, se busca entender los primeros pasos de modelos reales entrenados con regresión líneal vs regresión logística.
+Práctica número 4 del curso. El objetivo principal es comprender los primeros pasos en el entrenamiento de modelos reales utilizando regresión lineal y regresión logística, analizando sus diferencias y aplicaciones.
 
 ## Objetivos
-- Aprender a cargar y explorar datos
-- Implementar regresión lineal paso a paso
-- Implementar regresión logística paso a paso
-- Interpretar resultados de forma simple
+- Aprender a cargar y explorar datos.  
+- Implementar regresión lineal paso a paso.  
+- Implementar regresión logística paso a paso.  
+- Interpretar los resultados de forma simple.
 
 ## Actividades (con tiempos estimados)
-- Parte 1: regresión lineal (90min)
-- Parte 2: regresión logística (50min)
-- Teórico y formato del archivo (100min)
+- **Parte 1:** Regresión lineal (90 min)  
+- **Parte 2:** Regresión logística (50 min)  
+- **Teórico y formato del archivo:** 100 min  
 
 ## Desarrollo
-Se completó fragmentos de código con la finalidad de aprender a usar funciones específicas para predecir determinados casos reales. 
-Se usaron funciones de regresión lineal y logística.
-Se afianzaron conceptos teóricos de las nombradas regresiones.
+Se completaron fragmentos de código con el fin de aprender a usar funciones específicas para predecir casos reales. Se aplicaron tanto regresión lineal como regresión logística y se reforzaron los conceptos teóricos asociados a cada tipo de modelo.
 
 ## Evidencias
-- Se adjunta imagen "tarea4_tabla.png" en `docs/assets/`
-- Se adjunta imagen "resultado-t4-parte1.png" en `docs/assets/`
-- Se adjunta imagen "resultado-t4-parte2.png" en `docs/assets/`
+- Imagen **"tarea4_tabla.png"** en `docs/assets/`  
+- Imagen **"resultado-t4-parte1.png"** en `docs/assets/`  
+- Imagen **"resultado-t4-parte2.png"** en `docs/assets/`  
 
 ## Reflexión
-Lo que más costó fueron identificar las funciones necesarias para completar el código y ententer lo que se estaba imprimiendo por pantalla.
-Los conceptos en sí, fueron fáciles de aprender e identificar.
+Lo más desafiante fue identificar las funciones necesarias para completar el código y entender correctamente la salida mostrada en pantalla. Los conceptos teóricos fueron relativamente sencillos de aprender e interpretar.
 
 ---
 

@@ -3,44 +3,44 @@ title: "Práctica 5"
 date: 2025-08-26
 ---
 
-# Práctica 5
+# Práctica 5  
 ## 📝 Validación y Selección de Modelos
 
 ## Contexto
-Práctica número 5 de la primer unidad del curso. Aquí se hacen comparativas de modelos, analisis de datos y toma de desiciones basado en variables generales de cada problema.
+Práctica número 5 de la primera unidad del curso. En esta instancia realizamos comparativas entre distintos modelos, analizamos los datos y tomamos decisiones basadas en métricas y características generales de cada problema.
 
 ## Objetivos
-- Aprender a prevenir data leakage usando pipelines
-- Implementar validación cruzada (cross-validation) robusta
-- Comparar múltiples modelos de forma sistemática
-- Interpretar métricas de estabilidad y selección de modelos
+- Aprender a prevenir *data leakage* utilizando **pipelines**.  
+- Implementar **validación cruzada (cross-validation)** de forma robusta.  
+- Comparar múltiples modelos de manera sistemática.  
+- Interpretar métricas de estabilidad y criterios de selección de modelos.
 
 ## Actividades (con tiempos estimados)
-- Parte 1 (40min)
-- Parte 2 (50min)
-- Parte 3 (60min)
-- Bonus 1 (40min)
-- Bonus 2 (60min)
-- Parte 4 (20min)
-- Formato de la page (90min)
+- Parte 1 (40 min)  
+- Parte 2 (50 min)  
+- Parte 3 (60 min)  
+- Bonus 1 (40 min)  
+- Bonus 2 (60 min)  
+- Parte 4 (20 min)  
+- Formato de la página (90 min)  
 
 ## Desarrollo
-En esta Práctica probamos distintos modelos y comparamos sus resultados usando validación cruzada. Esto nos ayudó a ver cómo cambia el rendimiento dependiendo de los datos que se usan para entrenar y probar.
+En esta práctica probamos distintos modelos y comparamos sus resultados utilizando validación cruzada. Esto permitió observar cómo varía el rendimiento según los datos usados para entrenar y evaluar, mostrando la importancia de la estabilidad y del comportamiento del modelo en múltiples particiones del dataset.
 
 ## Evidencias
-- Se adjunta imagen "resultado-t5-parte1.1.png" en `docs/assets/`
-- Se adjunta imagen "resultado-t5-parte1.2.png" en `docs/assets/`
-- Se adjunta imagen "resultado-t5-parte2.png" en `docs/assets/`
-- Se adjunta imagen "resultado-t5-parte3.png" en `docs/assets/`
-- Se adjunta imagen "resultado-t5-bonus-1.png" en `docs/assets/`
-- Se adjunta imagen "resultado-t5-bonus2-1.png" en `docs/assets/`
-- Se adjunta imagen "resultado-t5-bonus2-2.png" en `docs/assets/`
-- Se adjunta imagen "resultado-t5-bonus2-3.png" en `docs/assets/`
-- Se adjunta imagen "resultado-t5-bonus2-4.png" en `docs/assets/`
+- Imagen **"resultado-t5-parte1.1.png"** en `docs/assets/`  
+- Imagen **"resultado-t5-parte1.2.png"** en `docs/assets/`  
+- Imagen **"resultado-t5-parte2.png"** en `docs/assets/`  
+- Imagen **"resultado-t5-parte3.png"** en `docs/assets/`  
+- Imagen **"resultado-t5-bonus-1.png"** en `docs/assets/`  
+- Imagen **"resultado-t5-bonus2-1.png"** en `docs/assets/`  
+- Imagen **"resultado-t5-bonus2-2.png"** en `docs/assets/`  
+- Imagen **"resultado-t5-bonus2-3.png"** en `docs/assets/`  
+- Imagen **"resultado-t5-bonus2-4.png"** en `docs/assets/`  
 
 ## Reflexión
-Aprendí que no siempre gana el modelo con mayor precisión, sino el que es más estable y consistente. Es importante evaluar bien antes de elegir, porque así se pueden tomar decisiones más seguras.
-Además, en los bonuses se aprende a elegir bien el modelo según los parámetros del mismo, y la gran importancia que tienen las características dentro de un dataset para analizar y tomar la mejor decision según la situación en cuestión. Es un conjunto de muchos factores lo que hace que un modelo de predición sea exitoso y que este haya sido elegido y utilizado correctamente.
+Aprendí que no siempre gana el modelo con mayor precisión, sino aquel que resulta más estable y consistente. La correcta evaluación previa permite tomar decisiones más confiables.  
+Además, los *bonus* refuerzan la importancia de elegir el modelo adecuado según sus parámetros y características, así como del rol fundamental de las variables del dataset. Un modelo exitoso surge de la combinación correcta entre datos, selección, evaluación y entendimiento profundo del problema en cuestión.
 
 ---
 
