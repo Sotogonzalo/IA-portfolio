@@ -3,32 +3,33 @@ title: "Práctica 1"
 date: 2025-08-26
 ---
 
-# Práctica 1
-## 💻 Introducción a IA, ML y DL, exploración y análisis de datos: EDA del Titanic
+# Práctica 1  
+## 💻 Introducción a IA, ML y DL — Exploración y Análisis de Datos (EDA) del Titanic
 
 ## Contexto
-Práctica número 1 de la primer unidad del curso. Aquí se dan los primeros pasos del curso, trabajamos con dataset con información del accidente famoso "Titanic".
+Práctica número 1 de la primer unidad del curso. Aquí se dan los primeros pasos del curso, trabajamos con un dataset con información del accidente famoso “Titanic”.
 
 ## Objetivos
-- Aprender a usas Google Collab.
-- Cargar primer dataset.
-- Analizar datos de un dataset.
+- Aprender a usas Google Collab.  
+- Cargar primer dataset.  
+- Analizar datos de un dataset.  
 - Vizualizar datos y relaciones del dataset.
 
 ## Actividades (con tiempos estimados)
-- SetUp (30min). 
-- Analisis de datos y preguntas (60min). 
-- Formato de la página (30min). 
+- **SetUp:** 30 min  
+- **Análisis de datos y preguntas:** 60 min  
+- **Formato de la página:** 30 min  
 
 ## Desarrollo
-Inicialmente analizamos a grandes razgos los tipos de datos que tenia el dataset, y los la cantidad de valores faltantes, de manera que se pueda entender lo que estamos modelando. En base a eso hicimos una vizualización de datos, y en este analisis quedó en evidencia las relaciones entre los sobrevivientes y las características que los mismos poseían, ya que influían drásticamente en su tasa de supervivencia. 
+Inicialmente analizamos a grandes rasgos los tipos de datos que tenía el dataset y la cantidad de valores faltantes, de manera que se pueda entender lo que estamos modelando.  
+En base a eso hicimos una visualización de datos, y en este análisis quedó en evidencia las relaciones entre los sobrevivientes y las características que los mismos poseían, ya que influían drásticamente en su tasa de supervivencia.
 
 ## Evidencias
-- Se adjunta imagen "resultado-t1-parte1.png" en `docs/assets/`.
-- Se adjunta imagen "resultado-t1-parte2.png" en `docs/assets/`. 
+- Se adjunta imagen **“resultado-t1-parte1.png”** en `docs/assets/`.  
+- Se adjunta imagen **“resultado-t1-parte2.png”** en `docs/assets/`.  
 
 ## Reflexión
-Analizando el dataset es posible predecir qué pasajeros tienen más probabilidad de sobrevivir, basandonos en las caracteristicas y visualizaciones realizadas. 
+Analizando el dataset es posible predecir qué pasajeros tienen más probabilidad de sobrevivir, basándonos en las características y visualizaciones realizadas.
 
 ---
 
